@@ -1,0 +1,7 @@
+To initialize database: python manage.py syncdb
+
+To run testing server: python manage.py runserver
+
+Website will be at 127.0.0.1:8000
+
+Note that Django uses python2
