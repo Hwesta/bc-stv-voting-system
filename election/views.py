@@ -41,23 +41,23 @@ def close_poll():
 
 # Riding Information
 
-def view_all_ridings:
+def view_all_ridings():
     """ View summary information about all the ridings. """
     pass
 
-def view_riding:
+def view_riding():
     """ View all the details about a riding on one page. """
     pass
 
-def add_riding:
+def add_riding():
     """ Input information for a new riding. """
     pass
 
-def modify_riding:
+def modify_riding():
     """ Edit a riding's information. """
     pass
 
-def delete_riding:
+def delete_riding():
     """ Delete a riding. """
     pass
 
@@ -85,22 +85,22 @@ def delete_riding:
 
 # User Management
 
-def view_all_users:
+def view_all_users():
     """ View summary information about all users. """
     pass
 
-def add_user:
+def add_user():
     """ Create a new user. """
     pass
 
-def modify_user:
+def modify_user():
     """ Edit a user's information. """
     pass
 
-def delete_user:
+def delete_user():
     """ Delete a user. """
     pass
 
-def ban_user:
+def ban_user():
     """ Leave the user intact, but prevent them from logging in. """
     pass
