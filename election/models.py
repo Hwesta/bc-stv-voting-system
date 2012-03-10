@@ -9,7 +9,18 @@ ROLE_CHOICES = (
 class User(models.Model):
     name = models.CharField(max_length=128)
     role = models.CharField(max_length=2, choices=ROLE_CHOICES)
-    #authentication = ???
+    #credentials = ???
+    
+    def __unicode__(self):
+        return self.name+", "+self.role
+    
+    def __delete__(self):
+        """ Delete this user. """
+        pass
+    
+    def banUser(self):
+        """ Leave the user account intact, but block them from logging in."""
+        pass
     
 
 class Riding(models.Model):
@@ -18,6 +29,7 @@ class Riding(models.Model):
     created = models.DateField()
     num_voters = models.IntegerField(help_text="Number of eligible voters.")
     num_seats = models.IntegerField(help_text="Number of seats available.")
+    active = models.BooleanField(help_text="Whether an election is accepting ballots.")
 
     # These could be functions??
     num_ballots = models.IntegerField(help_text="Number of ballots cast.",
@@ -48,6 +60,10 @@ class Riding(models.Model):
     def num_polls(self):
         """ Return the number of polls in the riding. """
         return self.poll_set.count()
+        
+    def calculate_results(self):
+        """ Determine who gets elected. """
+        pass
 
    
 class Person(models.Model):
@@ -71,12 +87,25 @@ STATUS_CHOICES = (
 )
 class Election(models.Model):
     status = models.CharField(max_length=3, choices=STATUS_CHOICES)
+    description = models.CharField(max_length=128)
+    start = models.DateField(help_text="Date the polls open")
     #archive = 
+    
+    def __unicode__(self):
+        return "Election "+self.status
+    
+    def changeStatus(self):
+        """ Move the election to the next status. """
+        pass
+    
+    def archive(self):
+        """ Archive an election """
+        pass
 
 
 class Poll(models.Model):
     riding = models.ForeignKey(Riding)
-    closed = models.BooleanField()
+    active = models.BooleanField(help_text="Whether the poll is still accepting ballots.")
     polling_stn = models.CharField(max_length=128)
     
     def __unicode__(self):
@@ -85,12 +114,12 @@ class Poll(models.Model):
     
 class Ballot(models.Model):
     ballot_num = models.IntegerField()
-    candidate = models.ForeignKey(Person)
-    rank = models.IntegerField()
     poll = models.ForeignKey(Poll)
-    spoiled = models.BooleanField(default=False)
+    verified = models.BooleanField()
+    # Vote will store a list of candidate : ranking pairs or a spoiled : true flag
+    vote = models.TextField()
     
     def __unicode__(self):
-        return str(self.candidate)+", "+str(self.rank)
+        return str(self.ballot_num)+", "+str(self.verified)
 
     

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>{% block title %}BC-STV Voting System{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/static/style.css" />
+</head>
+
+<body id="home">
+<div id="header">
+User, Role, Election Status, Date
+</div>
+
+<div id="breadcrumbs">
+    <ul>
+    {% block breadcrumbs %}<li><a href="/">BC-STV home</a></li>{% block subbreadcrumbs %}{% endblock subbreadcrumbs %}{% endblock breadcrumbs%}
+    </ul>
+</div>
+
+{% block actions %}{% endblock %}
+
+<div id="main">
+    <h1>{% block h1 %}BC-STV Voting System{% endblock %}</h1>
+    {% block content %}{% endblock %}
+</div>
+
+</body>
+</html>

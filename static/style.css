@@ -1,0 +1,23 @@
+/* CSS file */
+
+body { 
+    
+}
+
+p {
+    
+}
+
+#header {
+    width: 100%;
+    background-color: #00ff00;
+    text-align: center;
+    padding: .1em;
+}
+
+#breadcrumbs {
+    margin: 0;
+    padding: 0;
+    
+}
+
