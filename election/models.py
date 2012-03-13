@@ -66,7 +66,7 @@ class Riding(models.Model):
         pass
 
    
-class Person(models.Model):
+class Politician(models.Model):
     name = models.CharField(max_length=128)
     party = models.CharField(max_length=128)
     is_candidate = models.BooleanField()
@@ -79,7 +79,28 @@ class Person(models.Model):
     def __unicode__(self):
         return self.name
 
+KEYWORD_TYPE = (
+    ('RID', 'riding'),
+    ('POL', 'politician'),
+    )
+
+class KeywordList(models.Model):
+    name = models.CharField(max_length=128)
+    keyword_type = models.CharField(max_length='3')
+    
+    def __unicode__(self):
+        return self.keyword_type+", "+self.name
+    
+class KeywordValue(models.Model):
+    keyword = models.ForeignKey(KeywordList)
+    value = models.CharField(max_length=128)
+    # One of these should be blank, depending on the keyword type
+    riding = models.ForeignKey(Riding, null=True, blank=True)
+    person = models.ForeignKey(Politician, null=True, blank=True)        
        
+    def __unicode__(self):
+        return str(self.keyword)+" "+self.value
+    
 STATUS_CHOICES = (
     ('BEF', 'before'),
     ('DUR', 'during '),
