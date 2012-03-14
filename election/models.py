@@ -69,10 +69,10 @@ class Riding(models.Model):
 class Politician(models.Model):
     name = models.CharField(max_length=128)
     party = models.CharField(max_length=128)
-    is_candidate = models.BooleanField()
+    # This should be null if the politician is not a candidate
     candidate_riding = models.ForeignKey(Riding, null=True, blank=True,
         related_name="candidate_riding")
-    is_incumbent = models.BooleanField()
+    # This should be null if the politician is not an incumbent
     incumbent_riding = models.ForeignKey(Riding, null=True, blank=True,
         related_name="incumbent_riding")
 
@@ -84,22 +84,38 @@ KEYWORD_TYPE = (
     ('POL', 'politician'),
     )
 
-class KeywordList(models.Model):
+class RidingKeywordList(models.Model):
     name = models.CharField(max_length=128)
-    keyword_type = models.CharField(max_length='3')
     
     def __unicode__(self):
-        return self.keyword_type+", "+self.name
-    
-class KeywordValue(models.Model):
-    keyword = models.ForeignKey(KeywordList)
-    value = models.CharField(max_length=128)
-    # One of these should be blank, depending on the keyword type
-    riding = models.ForeignKey(Riding, null=True, blank=True)
-    person = models.ForeignKey(Politician, null=True, blank=True)        
-       
+        return self.name
+
+class RidingKeywordValue(models.Model):
+   keyword = models.ForeignKey(RidingKeywordList)
+   riding = models.ForeignKey(Riding)
+   value = models.CharField(max_length=128)
+
+   def __unicode__(self):
+       return str(self.keyword)+" "+self.value
+   class Meta:
+        unique_together = (('riding','keyword'))
+
+class PoliticianKeywordList(models.Model):
+    name = models.CharField(max_length=128)
+
     def __unicode__(self):
-        return str(self.keyword)+" "+self.value
+        return self.name
+
+class PoliticianKeywordValue(models.Model):
+   keyword = models.ForeignKey(PoliticianKeywordList)
+   politician = models.ForeignKey(Politician)
+   value = models.CharField(max_length=128)
+
+   def __unicode__(self):
+       return str(self.keyword)+" "+self.value
+   class Meta:
+        unique_together = (('politician','keyword'))
+
     
 STATUS_CHOICES = (
     ('BEF', 'before'),
