@@ -19,17 +19,17 @@ class Riding(models.Model):
 
     def candidates(self):
         """ Return all the candidates in the riding. """
-        return self.person_set.filter(is_candidate=True)
+        return self.candidate_riding.filter(candidate_riding__isnull=False)
     def num_candidates(self):
         """ Return the number of candidates in the riding. """
-        return self.person_set.filter(is_candidate=True).count()
+        return self.candidates().count()
 
     def incumbents(self):
         """ Return all the incumbents in the riding. """
-        return self.person_set.filter(is_incumbent=True)
+        return self.incumbent_riding.filter(incumbent_riding__isnull=False)
     def num_incumbents(self):
         """ Return the number of incumbents in the riding. """
-        return self.person_set.filter(is_incumbent=True).count()
+        return self.incumbents().count()
 
     def polls(self):
         """ Return all the polls in the riding. """
