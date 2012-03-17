@@ -25,3 +25,7 @@ def close_poll():
     a list of ballots that need ot be verified.
     """
     pass
+
+def view_ballots(request):
+    ballot_list = Ballot.objects.all()
+    return render_to_response('ballots/view.html', {'ballots':ballot_list})

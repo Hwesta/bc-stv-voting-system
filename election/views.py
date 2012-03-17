@@ -18,5 +18,7 @@ def index(request):
 
 # Election Management
 
-
+def view_election(request):
+   elec_list = Election.objects.all()
+   return render_to_response('election/view.html', {'election':elec_list})
 
