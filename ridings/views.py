@@ -5,13 +5,15 @@ from ridings.models import Riding, Poll
 
 # Riding Information
 
-def view_all_ridings():
-    """ View summary information about all the ridings. """
-    pass
+def view_all_ridings(request):
+    #""" View summary information about all the ridings. """
+    r = Riding.objects.all()
+    return render_to_response('ridings/ridings.html',{'ridings': r, 'type': str('Ridings')})
 
-def view_riding():
-    """ View all the details about a riding on one page. """
-    pass
+def view_riding(request, _id):
+    #""" View all the details about a riding on one page. """
+    r = Riding.objects.get(id=_id)
+    return render_to_response('ridings/riding.html',{'riding': r})
 
 def add_riding():
     """ Input information for a new riding. """
