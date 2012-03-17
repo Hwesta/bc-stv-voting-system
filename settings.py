@@ -1,7 +1,14 @@
+import sys, os
+
 # Django settings for bcstv project.
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+
+# add ./external directory to search path so we find modules there
+sys.path.append( os.path.dirname(__file__) )
+sys.path.append( os.path.join(os.path.dirname(__file__), 'external') )
+
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
