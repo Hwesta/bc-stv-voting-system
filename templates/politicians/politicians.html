@@ -3,6 +3,21 @@
 {% block h1 %}List of {{type}}{% endblock %}
 
 {% block content %}
-{{politicians}}
+<table>
+<tr>
+<th>Name</th>
+<th>Party</th>
+<th>Incumbant in</th>
+<th>Candidate in</th>
+</tr>
+{% for politician in politicians %}
+<tr>
+<td>{{politician.name}}</td>
+<td>{{politician.party}}</td>
+<td>{{politician.incumbent_riding}}</td>
+<td>{{politician.candidate_riding}}</td>
+</tr>
+{% endfor %}
+</table>
 
 {% endblock %}
