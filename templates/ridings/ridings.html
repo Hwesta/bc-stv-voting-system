@@ -3,7 +3,26 @@
 {% block h1 %}List of {{type}}{% endblock %}
 
 {% block content %}
-{{ridings}}
+<table>
+<tr>
+<th>Name</th>
+<th>Date Created</th>
+<th>Number of Voters</th>
+<th>Number of Seats</th>
+<th>Number of Ballots</th>
+<th>Number of Spoiled Ballots</th>
+</tr>
+{% for Riding in ridings %}
+<tr>
+<td>{{Riding.name}}</td>
+<td>{{Riding.created}}</td>
+<td>{{Riding.num_voters}}</td>
+<td>{{Riding.num_seats}}</td>
+<td>{{Riding.num_ballots}}</td>
+<td>{{Riding.num_ballots_spoiled}}</td>
+</tr>
+{% endfor %}
+</table>
 
 {% endblock %}
 
