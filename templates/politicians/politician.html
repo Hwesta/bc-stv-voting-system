@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block h1 %}Politician Information{% endblock %}
+
+{% block content %}
+<p>Name: {{politician.name}}</p>
+<p>Party: {{politician.party}}</p>
+<p>Incumbant in: {{politician.incumbent_riding}}</p>
+<p>Candidate in: {{politician.candidate_riding}}</p>
+{% endblock %}
