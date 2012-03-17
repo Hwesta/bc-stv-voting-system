@@ -1,4 +1,4 @@
-import sys, os
+import sys, os, platform
 
 # Django settings for bcstv project.
 
@@ -108,7 +108,10 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'bcstv.urls'
+if platform.system()=='Windows':
+    ROOT_URLCONF = 'urls'
+else:
+    ROOT_URLCONF = 'bcstv.urls'
 
 TEMPLATE_DIRS = (
     'templates',
