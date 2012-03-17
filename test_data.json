@@ -187,16 +187,6 @@
     },
     {
         "pk": 1,
-        "model": "ballots.ballot",
-        "fields": {
-            "vote": "{ bob: 1 }",
-            "ballot_num": 1,
-            "poll": 1,
-            "verified": false
-        }
-    },
-    {
-        "pk": 1,
         "model": "election.election",
         "fields": {
             "status": "BEF",
