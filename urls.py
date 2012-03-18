@@ -36,5 +36,8 @@ urlpatterns = patterns('',
     url(r'^ridings/polls/$', 'ridings.views.view_polls'),
 
     url(r'^keywords/$', 'keywords.views.keywordDisplay'),
-    url(r'^addkeywords/$', 'keywords.views.submitKeywordList'),
+    url(r'^addpoliticiankeywords/$', 'keywords.views.submitKeywordList'),
+    url(r'^addridingkeywords/$', 'keywords.views.submitKeywordList')
+    url(r'^addridingkeywordvalue/$', 'keywords.views.submitKeywordList')
+    url(r'^addpoliticiankeywordvalue/$', 'keywords.views.submitKeywordList')
 )
