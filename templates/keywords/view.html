@@ -3,8 +3,9 @@
 {% block h1 %}Keywords {% endblock %}
 
 {% block content %}
-<h1> Keywords </h1>
 
-{{ keyword_list }}
+{% for RidingKeywordList in keyword_list %}
+<p> {{RidingKeywordList.name}} </p>
+{% endfor %}
 
 {% endblock %}
