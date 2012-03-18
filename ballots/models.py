@@ -4,6 +4,7 @@ from jsonfield import JSONField
 from django.forms import ModelForm
 
 class Ballot(models.Model):
+    
     ballot_num = models.IntegerField()
     poll = models.ForeignKey(Poll)
     verified = models.BooleanField(default=False)
