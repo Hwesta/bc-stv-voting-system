@@ -1,5 +1,5 @@
 from django.shortcuts import render_to_response
-from ridings.models import Riding, Poll
+from ridings.models import Riding, Poll, RidingForm
 
 # TODO Add decorators limiting access
 
@@ -26,6 +26,16 @@ def modify_riding():
 def delete_riding():
     """ Delete a riding. """
     pass
+
+
+def add_riding(request):
+    if request.method == 'POST':
+	form = RidingForm(request.POST)
+	if form.is_valid():
+	    return HttpResponseRedirect('ridings/ridings.html')
+    else:
+	form = RidingForm()
+    return render_to_response('ridings/add_riding.html', {'form': form, })
 
 # Poll Management
 

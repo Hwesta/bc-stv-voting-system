@@ -1,4 +1,5 @@
 from django.db import models
+from django.forms import ModelForm
 
 class Riding(models.Model):
     name = models.CharField(max_length=128)
@@ -49,4 +50,12 @@ class Poll(models.Model):
     
     def __unicode__(self):
         return str(self.riding)+", "+str(self.id)
+
+class RidingForm(ModelForm):
+    class Meta:
+	model = Riding
+
+class PollForm(ModelForm):
+    class Meta:
+	model = Poll
 
