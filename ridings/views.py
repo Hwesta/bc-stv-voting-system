@@ -43,18 +43,18 @@ def add_riding(request):
 	form = RidingForm()
     return render(request, 'ridings/add_riding.html', {'form': form, })
 
+
+# Poll Management
+
 def add_poll(request):
     if request.method == 'POST':
-	form = RidingForm(request.POST)
+	form = PollForm(request.POST)
 	if form.is_valid():
 	    form.save()
 	    return HttpResponseRedirect(reverse(view_polls))
     else:
-	form = RidingForm()
+	form = PollForm()
     return render(request, 'ridings/add_poll.html', {'form': form, })
-
-# Poll Management
-
 
 
 # Searching and Reports
