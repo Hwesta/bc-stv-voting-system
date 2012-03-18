@@ -1,6 +1,6 @@
 from django.shortcuts import render_to_response
 from ridings.models import Riding
-from politicians.models import Politician
+from politicians.models import Politician, PoliticianForm
 
 # TODO Add decorators limiting access
 
@@ -23,3 +23,14 @@ def view_incumbents(request):
 def view_politicians(request):
     p = Politician.objects.all()
     return render_to_response('politicians/politicians.html',{'politicians': p,'type':str("Politicians")})
+
+def add_politician(request):
+    if request.method == 'POST':
+	form = PoliticianForm(request.POST)
+	if form.is_valid():
+	    return HttpResponseRedirect('politicians/politicians.html')
+    else:
+	form = PoliticianForm()
+    return render_to_response('politicians/add_politician.html', 		{ 'form':form,})
+
+

@@ -17,6 +17,7 @@ urlpatterns = patterns('',
 
     url(r'^politicians/$', 'politicians.views.view_politicians'),
     url(r'^politicians/(\d+)/$', 'politicians.views.view_politician'),
+    url(r'^politicians/add/$', 'politicians.views.add_politician'),
 
     url(r'^election/$', 'election.views.view_election'),
     url(r'^ballots/$', 'ballots.views.view_ballots'),

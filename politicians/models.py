@@ -1,5 +1,6 @@
 from django.db import models
 from ridings.models import Riding
+from django.forms import ModelForm 
 
 class Politician(models.Model):
     name = models.CharField(max_length=128)
@@ -13,3 +14,9 @@ class Politician(models.Model):
 
     def __unicode__(self):
         return self.name+", "+self.party+" candidate in "+str(self.candidate_riding)+" incumbent in "+str(self.incumbent_riding)
+
+
+class PoliticianForm(ModelForm):
+    class Meta:
+	model = Politician
+
