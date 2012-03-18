@@ -1,0 +1,4 @@
+# Ignore compiled files and vim temp
+*.pyc
+*.pyo
+*~
