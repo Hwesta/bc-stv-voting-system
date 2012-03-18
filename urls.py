@@ -37,7 +37,7 @@ urlpatterns = patterns('',
 
     url(r'^keywords/$', 'keywords.views.keywordDisplay'),
     url(r'^addpoliticiankeywords/$', 'keywords.views.submitKeywordList'),
-    url(r'^addridingkeywords/$', 'keywords.views.submitKeywordList')
-    url(r'^addridingkeywordvalue/$', 'keywords.views.submitKeywordList')
-    url(r'^addpoliticiankeywordvalue/$', 'keywords.views.submitKeywordList')
+    url(r'^addridingkeywords/$', 'keywords.views.submitKeywordList'),
+    url(r'^addridingkeywordvalue/$', 'keywords.views.submitKeywordList'),
+    url(r'^addpoliticiankeywordvalue/$', 'keywords.views.submitKeywordList'),
 )
