@@ -3,13 +3,13 @@
 {% block h1 %}Keywords {% endblock %}
 
 {% block content %}
-<h2>Riding Keywords</h2>
+<h2>Riding Keywords</h2><a href="/keywords/riding/add/">Add keywords</a>
 <p>
 {% for RidingKeywordList in ridlist %}
-{{RidingKeywordList.name}}
+<p>{{RidingKeywordList.name}} <a href="{% url keywords.views.modifyRidingKeywordList RidingKeywordList.id %}">modify</a></p>
 {% endfor %}
 </p>
-<h2>Riding Keyword Values</h2>
+<h2>Riding Keyword Values</h2><a href="/keywords/riding/values/">Add keyword values</a>
 <table>
 	<tr>
 		<th>Keyword</th>
@@ -21,15 +21,16 @@
 		<td>{{RidingKeywordValue.keyword}}</td>
 		<td>{{RidingKeywordValue.riding}}</td>
 		<td>{{RidingKeywordValue.value}}</td>
+		<td><a href="{% url keywords.views.modifyRidingKeywordValue RidingKeywordValue.id %}">modify</a></td>
 	</tr>
 {% endfor %}
 </table>
-<h2>Politician Keywords</h2>
+<h2>Politician Keywords</h2><a href="/keywords/politician/add/">Add keywords</a>
 <p>
 {% for PoliticianKeywordList in pollist %}
-{{PoliticianKeywordList.name}}
+<p>{{PoliticianKeywordList.name}}<a href="{% url keywords.views.modifyPoliticianKeywordList PoliticianKeywordList.id %}">  modify</a></p>
 {% endfor %}
-<h2>Politician Keyword Values</h2>
+<h2>Politician Keyword Values</h2><a href="/keywords/politician/values/">Add keyword values</a>
 <table>
 	<tr>
 		<th>Keyword</th>
@@ -41,6 +42,7 @@
 		<td>{{PoliticianKeywordValue.keyword}}</td>
 		<td>{{PoliticianKeywordValue.politician}}</td>
 		<td>{{PoliticianKeywordValue.value}}</td>
+		<td><a href="{% url keywords.views.modifyPoliticianKeywordValue PoliticianKeywordValue.id %}">modify</a></td>
 	</tr>
 {% endfor %}
 </table>

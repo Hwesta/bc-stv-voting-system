@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
-{% block h1 %}Add Keywords {% endblock %}
+{% block h1 %}Add Riding Keyword{% endblock %}
 
 {% block content %}
-<form action ="{% url keywords.views.submitKeywordList %}" method ="post">{% csrf_token %}
+<form action ={% url keywords.views.submitRidingKeywordList %} method ="post">{% csrf_token %}
 {{form.as_p}}
 <input type="submit" value="Submit"/>
 </form> 
