@@ -1,5 +1,6 @@
-from django.shortcuts import render_to_response
-from ridings.models import Riding
+from django.shortcuts import render_to_response, render
+from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
 from politicians.models import Politician
 from keywords.models import RidingKeywordList,RidingKeywordValue,RidingKeywordListForm,RidingKeywordValueForm,PoliticianKeywordList,PoliticianKeywordValue,PoliticianKeywordListForm,PoliticianKeywordValueForm
 
@@ -15,9 +16,10 @@ def keywordDisplay(request):
 
 def submitKeywordList(request):
     if request.method == 'POST':
-        form = RidingKeywordListForm(request.Post)
+        form = RidingKeywordListForm(request.POST)
         if form.is_valid():
-            return HttpResponseRedirect('keywords/view.html')
+            return HttpResponseRedirect(reverse(keywordDisplay))
     else:
         form = RidingKeywordListForm()
-    return render_to_response('keywords/view.html',{'form':form})
+
+    return render(request,'keywords/addkeywords.html',{'form':form})
