@@ -24,11 +24,11 @@
 			column=element.data("column");
 			$("input[data-column="+column+"]").prop("checked", false);
 			element.prop("checked", true);
-			console.log("Clear column "+column);
 		};
 
 		function onSubmit() {
-			var t = 'JSON:'+$(this).serializeArray();
+			// JSON Class only in new browsers, test it in IE9!
+			var t = 'JSON:' + JSON.stringify({'a': 1, 'b': 2});
 			console.log(t);
 			return false;
 		}
