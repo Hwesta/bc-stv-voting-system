@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block h1 %}Add Riding{% endblock %}
+{% block h1 %}Modify Riding{% endblock %}
 
 {% block content %}
 <form action="{% url ridings.views.modify_riding riding.id %}" method="post">{% csrf_token %}

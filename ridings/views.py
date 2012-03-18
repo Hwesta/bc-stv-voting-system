@@ -46,6 +46,9 @@ def add_riding(request):
 
 # Poll Management
 
+def view_polls(request):
+    pass
+
 def add_poll(request):
     if request.method == 'POST':
 	form = PollForm(request.POST)
@@ -55,6 +58,18 @@ def add_poll(request):
     else:
 	form = PollForm()
     return render(request, 'ridings/add_poll.html', {'form': form, })
+
+def modify_poll(request, _id):
+    poll = Poll.objects.get(id=_id)
+    if request.method == 'POST':
+	form = PollForm(request.POST, instance=poll)
+	if form.is_valid():
+	    form.save()
+	    return HttpResponseRedirect(reverse(view_polls))
+    else:
+	form = PollForm(instance=poll)
+    return render(request, 'ridings/modify_poll.html', {'form': form, 'poll': poll, })
+
 
 
 # Searching and Reports
