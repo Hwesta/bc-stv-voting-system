@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block h1 %}List of {{type}}{% endblock %}
+
+{% block content %}
+<table>
+<tr>
+<th>Riding</th>
+<th>Active</th>
+<th>Polling Station</th>
+</tr>
+{% for poll in polls %}
+<tr>
+<td><a href="{% url ridings.views.view_polls %}">{{poll.riding}}</a></td>
+<td>{{poll.active}}</td>
+<td>{{poll.polling_stn}}</td>
+</tr>
+{% endfor %}
+</table>
+
+{% endblock %}
+

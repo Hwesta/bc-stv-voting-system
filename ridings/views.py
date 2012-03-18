@@ -10,7 +10,7 @@ from ridings.models import Riding, Poll, RidingForm, PollForm
 def view_all_ridings(request):
     #""" View summary information about all the ridings. """
     r = Riding.objects.all()
-    return render_to_response('ridings/ridings.html',{'ridings': r, 'type': str('Ridings')})
+    return render_to_response('ridings/ridings.html',{'ridings': r, 'type': str('ridings')})
 
 def view_riding(request, _id):
     #""" View all the details about a riding on one page. """
@@ -47,7 +47,8 @@ def add_riding(request):
 # Poll Management
 
 def view_polls(request):
-    pass
+    p = Poll.objects.all()
+    return render_to_response('ridings/polls.html', {'polls': p, 'type':str('polls'), })
 
 def add_poll(request):
     if request.method == 'POST':
