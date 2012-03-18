@@ -3,9 +3,36 @@
 {% block h1 %}Keywords {% endblock %}
 
 {% block content %}
-
-{% for RidingKeywordList in keyword_list %}
-<p> {{RidingKeywordList.name}} </p>
+<h2>Riding Keyword Values</h2>
+<table>
+	<tr>
+		<th>Keyword</th>
+		<th>Riding</th>
+		<th>Value</th> 
+	</tr>
+{% for RidingKeywordValue in keyword_list %}
+	<tr>
+		<td>{{RidingKeywordValue.keyword}}</td>
+		<td>{{RidingKeywordValue.riding}}</td>
+		<td>{{RidingKeywordValue.value}}</td>
+	</tr>
 {% endfor %}
+</table>
+
+<h2>Politician Keyword Values</h2>
+<table>
+	<tr>
+		<th>Keyword</th>
+		<th>Politician</th>
+		<th>Value</th> 
+	</tr>
+{% for PoliticianKeywordValue in pol_list %}
+	<tr>
+		<td>{{PoliticianKeywordValue.keyword}}</td>
+		<td>{{PoliticianKeywordValue.politician}}</td>
+		<td>{{PoliticianKeywordValue.value}}</td>
+	</tr>
+{% endfor %}
+</table>
 
 {% endblock %}

@@ -9,9 +9,9 @@ from keywords.models import RidingKeywordList,RidingKeywordValue,RidingKeywordLi
 # Keyword Management
 
 def keywordDisplay(request):
-    keyList = RidingKeywordList.objects.all()
-    return render_to_response('keywords/view.html', {'keyword_list' : keyList})
-
+    keyList = RidingKeywordValue.objects.all()
+    PolList = PoliticianKeywordValue.objects.all()
+    return render_to_response('keywords/view.html', {'keyword_list' : keyList,'pol_list' : PolList})
 
 def submitKeywordList(request):
     if request.method == 'POST':
