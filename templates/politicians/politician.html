@@ -7,4 +7,5 @@
 <p>Party: {{politician.party}}</p>
 <p>Incumbant in: {{politician.incumbent_riding}}</p>
 <p>Candidate in: {{politician.candidate_riding}}</p>
+<p><a href="{% url politicians.views.modify_politician politician.id %}">Modify</a></p>
 {% endblock %}

@@ -36,4 +36,15 @@ def add_politician(request):
 	form = PoliticianForm()
     return render(request, 'politicians/add_politician.html', 		{ 'form':form,})
 
+def modify_politician(request, p_id):
+    politician = Politician.objects.get(id=p_id)
+    if request.method == 'POST':
+	form = PoliticianForm(request.POST,instance=politician)
+	if form.is_valid():
+	    form.save()
+	    return HttpResponseRedirect(reverse(view_politicians))
+    else:
+	form = PoliticianForm(instance=politician)
+    return render(request, 'politicians/modify_politician.html', 		{ 'form':form, 'politician':politician})
+
 
