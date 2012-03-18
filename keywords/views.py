@@ -103,4 +103,7 @@ def modifyPoliticianKeywordValue(request, k_id):
         form = PoliticianKeywordValueForm(instance=keyword)
     return render(request, 'keywords/modifypoliticiankeywordvalue.html', {'form':form,'keyword':keyword})
 
+def submitKeywordList(request):
+    pass
+
 
