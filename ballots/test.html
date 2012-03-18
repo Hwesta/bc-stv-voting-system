@@ -33,12 +33,6 @@
 			return false;
 		}
 
-		$(function(){
-			$("input[type=radio]").click(enforceBallotValidity);
-			$('#myform').submit(onSubmit);
-			$('#fakesubmit').click(onSubmit);
-			console.log("Loaded");
-		});
 	</script>
 
     <form id="myform" action="">
@@ -71,7 +65,13 @@
     <button id="fakesubmit" type="foo">fake submit</button>
     <input type="submit" />
     <button class="reset">reset</button>
-    </form>
+</form>
+<script>
+	$("input[type=radio]").click(enforceBallotValidity);
+	$('#myform').submit(onSubmit);
+	$('#fakesubmit').click(onSubmit);
+	console.log("Loaded");
+</script>
     
   </body>
 </html>
