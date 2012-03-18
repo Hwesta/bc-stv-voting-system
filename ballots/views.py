@@ -1,6 +1,7 @@
 from django.shortcuts import render_to_response, render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.db.models import Count
 from ridings.models import Riding, Poll
 from ballots.models import Ballot, BallotForm
 
@@ -9,10 +10,6 @@ from ballots.models import Ballot, BallotForm
 
 def select_poll():
     """ Enter the poll number to enter/verify ballots for."""
-    pass
-
-def enter_ballot():
-    """ Enter a ballot information. """
     pass
 
 def verify_ballot():
@@ -46,3 +43,18 @@ def input_ballot(request):
         form = BallotForm()
 
     return render(request, 'ballots/add.html', {'form':form})
+
+def view_conflict_list(request):
+    auto_ballots = Ballot.objects.filter(verified=False).values('ballot_num','vote').annotate(cnt=Count('ballot_num')).filter(cnt__gt=1)
+    for b in auto_ballots:
+        ballots = Ballot.objects.filter(ballot_num=b['ballot_num'])
+        for ballot in ballots:
+            ballot.verified = True
+            ballot.save()
+    manual_ballots = Ballot.objects.filter(verified=False).values('ballot_num','vote').annotate(cnt=Count('ballot_num')).values('ballot_num').annotate(cnt=Count('ballot_num'))
+    ballots = {}
+    for b in manual_ballots:
+        if b['ballot_num'] not in ballots:
+            ballots[b['ballot_num']] = []
+        ballots[b['ballot_num']].append(Ballot.objects.filter(ballot_num=b['ballot_num']))
+    return render_to_response('ballots/view_conflicts.html', {'ballots':ballots, 'ballot_nums':ballots.keys()})
