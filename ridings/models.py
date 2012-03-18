@@ -4,7 +4,7 @@ from django.forms import ModelForm
 class Riding(models.Model):
     name = models.CharField(max_length=128)
     #map = models.ImageField(upload_to="??")
-    created = models.DateField()
+    created = models.DateField(help_text="YYYY-MM-DD")
     num_voters = models.IntegerField(help_text="Number of eligible voters.")
     num_seats = models.IntegerField(help_text="Number of seats available.")
     active = models.BooleanField(help_text="Whether an election is accepting ballots.")
