@@ -1,6 +1,7 @@
 from django.db import models
 from ridings.models import Riding
 from politicians.models import Politician
+from django.forms import ModelForm
 
 class RidingKeywordList(models.Model):
     """ The name of the keyword.
@@ -42,3 +43,18 @@ class PoliticianKeywordValue(models.Model):
     class Meta:
         unique_together = (('politician','keyword'))
 
+class RidingKeywordListForm(ModelForm):
+    class Meta:
+        model = RidingKeywordList
+
+class PoliticianKeywordListForm(ModelForm):
+    class Meta:
+        model = PoliticianKeywordList
+
+class RidingKeywordValueForm(ModelForm):
+    class Meta:
+        model = RidingKeywordValue
+        
+class PoliticianKeywordValueForm(ModelForm):
+    class Meta:
+        model = PoliticianKeywordValue
