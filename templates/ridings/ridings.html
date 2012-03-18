@@ -14,7 +14,7 @@
 </tr>
 {% for Riding in ridings %}
 <tr>
-<td>{{Riding.name}}</td>
+<td><a href="{% url ridings.views.view_riding Riding.id %}">{{Riding.name}}</a></td>
 <td>{{Riding.created}}</td>
 <td>{{Riding.num_voters}}</td>
 <td>{{Riding.num_seats}}</td>
