@@ -17,9 +17,16 @@ def view_riding(request, _id):
     r = Riding.objects.get(id=_id)
     return render_to_response('ridings/riding.html',{'riding': r})
 
-def modify_riding():
-    """ Edit a riding's information. """
-    pass
+def modify_riding(request, _id):
+    riding = Riding.objects.get(id=_id)
+    if request.method == 'POST':
+	form = RidingForm(request.POST, instance=riding)
+	if form.is_valid():
+	    form.save()
+	    return HttpResponseRedirect(reverse(view_all_ridings))
+    else:
+	form = RidingForm(instance=riding)
+    return render(request, 'ridings/modify_riding.html', {'form': form, 'riding': riding, })
 
 def delete_riding():
     """ Delete a riding. """

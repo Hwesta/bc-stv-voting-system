@@ -27,9 +27,9 @@ urlpatterns = patterns('',
 
     url(r'^ridings/$', 'ridings.views.view_all_ridings'),
     url(r'^ridings/(\d+)/$', 'ridings.views.view_riding'),
+    url(r'^ridings/(\d+)/modify/$', 'ridings.views.modify_riding'),
     url(r'^ridings/add/$', 'ridings.views.add_riding'),
 
     url(r'^keywords/$', 'keywords.views.keywordDisplay'),
     url(r'^addkeywords/$', 'keywords.views.submitKeywordList'),
-    url(r'^ridings/(\d+)/$', 'ridings.views.view_riding'),
 )
