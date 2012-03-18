@@ -17,27 +17,31 @@
   </head>
   <body>
     <script src="../static/jquery.js"></script>
-	<script>
-      $(function matrix()
-	  {
-        var column, element;
-		$("input[type=radio]").click(function()
-        {
-            element=$(this);
-            column=element.data("column");
-            $("input[data-column="+column+"]").prop("checked", false);
-            element.prop("checked", true);
-        });
-    });
-	
-	$('form').submit(function()
-	{
-        console.log($(this).serializeArray());
-        return false;
-    });
-  </script>
-    
-    <form>
+	<script type="text/javascript">
+		function enforceBallotValidity(){
+			var column, element;
+			element=$(this);
+			column=element.data("column");
+			$("input[data-column="+column+"]").prop("checked", false);
+			element.prop("checked", true);
+			console.log("Clear column "+column);
+		};
+
+		function onSubmit() {
+			var t = 'JSON:'+$(this).serializeArray();
+			console.log(t);
+			return false;
+		}
+
+		$(function(){
+			$("input[type=radio]").click(enforceBallotValidity);
+			$('#myform').submit(onSubmit);
+			$('#fakesubmit').click(onSubmit);
+			console.log("Loaded");
+		});
+	</script>
+
+    <form id="myform" action="">
     <table>
 	    <tr>
 		    <th>Candidate/Choice</th>
@@ -64,7 +68,7 @@
             <td><input type="radio" name="Bobina" data-column="3" value="3" /></td>
         </tr>
     </table>
-    <button class="submit">fake submit</button>
+    <button id="fakesubmit" type="foo">fake submit</button>
     <input type="submit" />
     <button class="reset">reset</button>
     </form>
