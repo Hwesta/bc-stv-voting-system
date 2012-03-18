@@ -1,6 +1,6 @@
 To initialize database: python manage.py syncdb
 
-To load test data: python manage.py loaddata test_data.json
+To load test data: python manage.py loaddata test_data_*.json
 
 To run testing server: python manage.py runserver
 

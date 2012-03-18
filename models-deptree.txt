@@ -1,0 +1,16 @@
+# This MUST be ordered by the depencencies
+# For any given Model with a ForeignKey field
+# The foreignkey referenced table must come before the table that uses it
+# Eg, Politician references Riding, so Riding must be created First
+election.Election ridings.Riding users.User keywords.PoliticianKeywordList keywords.RidingKeywordList
+ridings.Poll politicians.Politician
+ballots.Ballot
+keywords.RidingKeywordValue 
+keywords.PoliticianKeywordValue 
+
+# This is the set of internal models for Django
+# That also have the referenctial integrity catch
+auth.User auth.Group
+contenttypes.ContentType sessions.Session sites.Site
+auth.Permission
+admin.logentry
