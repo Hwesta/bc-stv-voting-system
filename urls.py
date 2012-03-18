@@ -21,6 +21,7 @@ urlpatterns = patterns('',
 
     url(r'^election/$', 'election.views.view_election'),
     url(r'^ballots/$', 'ballots.views.view_ballots'),
+    url(r'^ballots/add/$', 'ballots.views.input_ballot'),
 
     url(r'^ridings/$', 'ridings.views.view_all_ridings'),
     url(r'^ridings/(\d+)/$', 'ridings.views.view_riding'),
