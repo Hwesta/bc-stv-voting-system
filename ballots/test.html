@@ -17,12 +17,13 @@
   </head>
   <body>
     <script src="../static/jquery.js"></script>
+    <script src="../static/json2.js"></script>
 	<script type="text/javascript">
 		function enforceBallotValidity(){
 			var column, element;
 			element=$(this);
-			column=element.data("column");
-			$("input[data-column="+column+"]").prop("checked", false);
+			column=jQuery.grep(element.attr("class").split(/ /), function(x){ return x.match(/data-column/) }).map(function(x){ return x.replace(/data-column-/,''); })[0]
+			$("input[type=radio].data-column-"+column+"").prop("checked", false);
 			element.prop("checked", true);
 		};
 
@@ -45,21 +46,21 @@
         </tr>
         <tr>
             <td>Bob</td>
-            <td><input type="radio" name="Bob" data-column="1" value="1" /></td>
-            <td><input type="radio" name="Bob" data-column="2" value="2" /></td>
-            <td><input type="radio" name="Bob" data-column="3" value="3" /></td>
+            <td><input type="radio" name="Bob" class="data-column-1" value="1" /></td>
+            <td><input type="radio" name="Bob" class="data-column-2" value="2" /></td>
+            <td><input type="radio" name="Bob" class="data-column-3" value="3" /></td>
         </tr>
         <tr>
             <td>Billiam</td>
-            <td><input type="radio" name="Billiam" data-column="1" value="1" /></td>
-            <td><input type="radio" name="Billiam" data-column="2" value="2" /></td>
-            <td><input type="radio" name="Billiam" data-column="3" value="3" /></td>
+            <td><input type="radio" name="Billiam" class="data-column-1" value="1" /></td>
+            <td><input type="radio" name="Billiam" class="data-column-2" value="2" /></td>
+            <td><input type="radio" name="Billiam" class="data-column-3" value="3" /></td>
         </tr>
         <tr>
             <td>Bobina</td>
-            <td><input type="radio" name="Bobina" data-column="1" value="1" /></td>
-            <td><input type="radio" name="Bobina" data-column="2" value="2" /></td>
-            <td><input type="radio" name="Bobina" data-column="3" value="3" /></td>
+            <td><input type="radio" name="Bobina" class="data-column-1" value="1" /></td>
+            <td><input type="radio" name="Bobina" class="data-column-2" value="2" /></td>
+            <td><input type="radio" name="Bobina" class="data-column-3" value="3" /></td>
         </tr>
     </table>
     <button id="fakesubmit" type="foo">fake submit</button>
