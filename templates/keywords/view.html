@@ -3,6 +3,12 @@
 {% block h1 %}Keywords {% endblock %}
 
 {% block content %}
+<h2>Riding Keywords</h2>
+<p>
+{% for RidingKeywordList in ridlist %}
+{{RidingKeywordList.name}}
+{% endfor %}
+</p>
 <h2>Riding Keyword Values</h2>
 <table>
 	<tr>
@@ -18,7 +24,11 @@
 	</tr>
 {% endfor %}
 </table>
-
+<h2>Politician Keywords</h2>
+<p>
+{% for PoliticianKeywordList in pollist %}
+{{PoliticianKeywordList.name}}
+{% endfor %}
 <h2>Politician Keyword Values</h2>
 <table>
 	<tr>

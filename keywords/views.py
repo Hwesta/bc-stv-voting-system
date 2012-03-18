@@ -12,12 +12,15 @@ from keywords.models import RidingKeywordList,RidingKeywordValue,RidingKeywordLi
 def keywordDisplay(request):
     keyList = RidingKeywordValue.objects.all()
     PolList = PoliticianKeywordValue.objects.all()
-    return render_to_response('keywords/view.html', {'keyword_list' : keyList,'pol_list' : PolList})
+    keylist = RidingKeywordList.objects.all()
+    pollist = PoliticianKeywordList.objects.all()
+    return render_to_response('keywords/view.html', {'keyword_list' : keyList,'pol_list' : PolList,'ridlist':keylist, 'pollist':pollist})
 
 def submitKeywordList(request):
     if request.method == 'POST':
         form = RidingKeywordListForm(request.POST)
         if form.is_valid():
+	    form.save()
             return HttpResponseRedirect(reverse(keywordDisplay))
     else:
         form = RidingKeywordListForm()
