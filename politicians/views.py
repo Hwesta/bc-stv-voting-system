@@ -8,8 +8,8 @@ from politicians.models import Politician
 # NOTE Should we have one set of functions for incumbents and candidates,
 # and just display different info based on a flag?
 
-def view_politician(request, _id):
-    p = Politician.objects.get(id=_id)
+def view_politician(request, p_id):
+    p = Politician.objects.get(id=p_id)
     return render_to_response('politicians/politician.html',{'politician': p})
 	
 def view_candidates(request):

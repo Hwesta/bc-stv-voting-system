@@ -12,7 +12,7 @@
 </tr>
 {% for politician in politicians %}
 <tr>
-<td>{{politician.name}}</td>
+<td><a href="{% url politicians.views.view_politician politician.id %}">{{politician.name}}</a></td>
 <td>{{politician.party}}</td>
 <td>{{politician.incumbent_riding}}</td>
 <td>{{politician.candidate_riding}}</td>
