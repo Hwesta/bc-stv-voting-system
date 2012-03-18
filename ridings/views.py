@@ -1,5 +1,7 @@
-from django.shortcuts import render_to_response
-from ridings.models import Riding, Poll, RidingForm
+from django.shortcuts import render_to_response, render
+from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
+from ridings.models import Riding, Poll, RidingForm, PollForm
 
 # TODO Add decorators limiting access
 
@@ -15,10 +17,6 @@ def view_riding(request, _id):
     r = Riding.objects.get(id=_id)
     return render_to_response('ridings/riding.html',{'riding': r})
 
-def add_riding():
-    """ Input information for a new riding. """
-    pass
-
 def modify_riding():
     """ Edit a riding's information. """
     pass
@@ -32,10 +30,21 @@ def add_riding(request):
     if request.method == 'POST':
 	form = RidingForm(request.POST)
 	if form.is_valid():
-	    return HttpResponseRedirect('ridings/ridings.html')
+	    form.save()
+	    return HttpResponseRedirect(reverse(view_all_ridings))
     else:
 	form = RidingForm()
-    return render_to_response('ridings/add_riding.html', {'form': form, })
+    return render(request, 'ridings/add_riding.html', {'form': form, })
+
+def add_poll(request):
+    if request.method == 'POST':
+	form = RidingForm(request.POST)
+	if form.is_valid():
+	    form.save()
+	    return HttpResponseRedirect(reverse(view_polls))
+    else:
+	form = RidingForm()
+    return render(request, 'ridings/add_poll.html', {'form': form, })
 
 # Poll Management
 
