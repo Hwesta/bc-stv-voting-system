@@ -8,6 +8,8 @@ class RidingKeywordList(models.Model):
 
     For example, area, population,  This is the 'title on the column'."""
     name = models.CharField(max_length=128)
+    delete = models.BooleanField()
+    delete.default = False
 
     def __unicode__(self):
         return self.name
@@ -28,7 +30,9 @@ class PoliticianKeywordList(models.Model):
 
     For example, age, gender,  This is the 'title on the column'."""
     name = models.CharField(max_length=128)
-
+    delete = models.BooleanField()
+    delete.default = False
+	
     def __unicode__(self):
         return self.name
 

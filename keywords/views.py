@@ -2,7 +2,8 @@ from django.shortcuts import render_to_response, render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from politicians.models import Politician
-from keywords.models import RidingKeywordList,RidingKeywordValue,RidingKeywordListForm,RidingKeywordValueForm,PoliticianKeywordList,PoliticianKeywordValue,PoliticianKeywordListForm,PoliticianKeywordValueForm
+from keywords.models import RidingKeywordList,RidingKeywordValue,RidingKeywordListForm,RidingKeywordValueForm
+from keywords.models import PoliticianKeywordList,PoliticianKeywordValue,PoliticianKeywordListForm,PoliticianKeywordValueForm
 
 
 # TODO Add decorators limiting access
@@ -12,8 +13,8 @@ from keywords.models import RidingKeywordList,RidingKeywordValue,RidingKeywordLi
 def keywordDisplay(request):
     keyList = RidingKeywordValue.objects.all()
     PolList = PoliticianKeywordValue.objects.all()
-    keylist = RidingKeywordList.objects.all()
-    pollist = PoliticianKeywordList.objects.all()
+    keylist = RidingKeywordList.objects.filter(delete=False)
+    pollist = PoliticianKeywordList.objects.filter(delete=False)
     return render_to_response('keywords/view.html', {'keyword_list' : keyList,'pol_list' : PolList,'ridlist':keylist, 'pollist':pollist})
 
 def submitRidingKeywordList(request):
@@ -103,7 +104,14 @@ def modifyPoliticianKeywordValue(request, k_id):
         form = PoliticianKeywordValueForm(instance=keyword)
     return render(request, 'keywords/modifypoliticiankeywordvalue.html', {'form':form,'keyword':keyword})
 
-def submitKeywordList(request):
-    pass
+def restoreRidingKeyword(request):
+	title = "Riding"
+	list = RidingKeywordList.objects.filter(delete=True)
+	return render_to_response('keywords/restoreridingkeyword.html', {'list':list})
+
+def restorePoliticianKeyword(request):
+	title = "Politician"
+	list = PoliticianKeywordList.objects.filter(delete=True)
+	return render_to_response('keywords/restorepoliticiankeyword.html', {'list':list})
 
 

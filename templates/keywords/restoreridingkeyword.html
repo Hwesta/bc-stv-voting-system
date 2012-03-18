@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block h1 %}Restore Riding Keyword {% endblock %}
+
+{% block content %}
+<h2>Deleted Riding Keywords</h2>
+{% for RidingKeywordList in list %}
+<a href="{% url keywords.views.modifyRidingKeywordList RidingKeywordList.id %}">{{RidingKeywordList.name}}</a>
+{% endfor %}
+{% endblock %}

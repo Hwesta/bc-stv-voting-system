@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block h1 %}Restore Politician Keyword {% endblock %}
+
+{% block content %}
+<h2>Deleted Politician Keywords</h2>
+{% for PoliticianKeywordList in list %}
+<a href="{% url keywords.views.modifyPoliticianKeywordList PoliticianKeywordList.id %}">{{PoliticianKeywordList.name}}</a>
+{% endfor %}
+{% endblock %}
