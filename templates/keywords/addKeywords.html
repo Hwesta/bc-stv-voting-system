@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block h1 %}Add Keywords {% endblock %}
+<form action ="/addkeywords/" method ="post">
+{{form.as_p}}
+<input type="submit" value="Add Keyword"/>
+</form> 
+{% block content %}
+
+{% endblock %}
