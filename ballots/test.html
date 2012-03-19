@@ -22,10 +22,14 @@
 			function enforceBallotValidity(){
 				var column, element, selector;
 				element=$(this);
+				// IE does not support grep/match functions natively.
+				column = element.attr("class").split(/ /); 
 				column = jQuery.grep(
-							element.attr("class").split(/ /), 
+							column,
 							function(x){ return x.match(/data-column/) }
-						).map(
+						);
+				column = jQuery.map(
+							column,
 							function(x){ return x.replace(/data-column-/,''); }
 						)[0];
 				selector = "input[type=radio].data-column-"+column;
@@ -79,6 +83,7 @@
 			$('#fakesubmit').click(onSubmit);
 			console.log("Loaded");
 		</script>
+    
   </body>
 </html>
 <!-- 
