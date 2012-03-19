@@ -8,4 +8,11 @@
 <p>Incumbant in: {{politician.incumbent_riding}}</p>
 <p>Candidate in: {{politician.candidate_riding}}</p>
 <p><a href="{% url politicians.views.modify_politician politician.id %}">Modify</a></p>
+
+<h2>Keywords</h2>
+{% for PoliticianKeywordValue in keywords %}
+{% if not PoliticianKeywordValue.keyword.delete %}
+<p>{{PoliticianKeywordValue.keyword.name}}: <a href="{% url keywords.views.modifyPoliticianKeywordValue PoliticianKeywordValue.id %}">{{PoliticianKeywordValue.value}}</a></p>
+{% endif %}
+{% endfor %}
 {% endblock %}

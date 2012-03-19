@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from ridings.models import Riding
 from politicians.models import Politician, PoliticianForm
+from keywords.models import PoliticianKeywordValue, PoliticianKeywordList
 
 # TODO Add decorators limiting access
 
@@ -12,7 +13,8 @@ from politicians.models import Politician, PoliticianForm
 
 def view_politician(request, p_id):
     p = Politician.objects.get(id=p_id)
-    return render_to_response('politicians/politician.html',{'politician': p})
+    k = PoliticianKeywordValue.objects.filter(politician=p)
+    return render_to_response('politicians/politician.html',{'politician': p, 'keywords': k})
 	
 def view_candidates(request):
     p = Politician.objects.filter(candidate_riding__isnull=False)
