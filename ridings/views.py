@@ -12,9 +12,9 @@ def view_all_ridings(request):
     r = Riding.objects.all()
     return render_to_response('ridings/ridings.html',{'ridings': r, 'type': str('ridings')})
 
-def view_riding(request, _id):
+def view_riding(request, r_id):
     #""" View all the details about a riding on one page. """
-    r = Riding.objects.get(id=_id)
+    r = Riding.objects.get(id=r_id)
     return render_to_response('ridings/riding.html', {'riding': r})
 
 def modify_riding(request, _id):

@@ -11,6 +11,8 @@ class Politician(models.Model):
     # This should be null if the politician is not an incumbent
     incumbent_riding = models.ForeignKey(Riding, null=True, blank=True,
         related_name="incumbent_riding")
+    delete = models.BooleanField()
+    delete.default = False
 
     def __unicode__(self):
         return self.name+", "+self.party+" candidate in "+str(self.candidate_riding)+" incumbent in "+str(self.incumbent_riding)
