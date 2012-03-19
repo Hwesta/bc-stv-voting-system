@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block h1 %}RO Homepage{% endblock %}
+
+{% block content %}
+<a href="{% url ballots.views.choose_poll_entry %}">Enter Ballots</a>
+<a href="{% url ballots.views.choose_poll_verify %}">Verify Ballots</a>
+
+
+
+{% endblock %}
+

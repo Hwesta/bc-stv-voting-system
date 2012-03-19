@@ -7,13 +7,28 @@ from election.models import Election
 
 def index(request):
     """ Display the index page. """
-    polls = Poll.objects.all()
-    people = Person.objects.all()
-    ballots = Ballot.objects.all()
     return render_to_response('index.html', 
-        { 'polls' : polls,
-          'people' : people,
-          'ballots' : ballots, })
+        {  })
+
+def ro_homepage(request):
+    """ Display the index page. """
+    return render_to_response('election/ro_homepage.html', 
+        {  })
+
+def eo_homepage(request):
+    """ Display the index page. """
+    return render_to_response('election/ro_homepage.html', 
+        {  })
+
+def reporter_homepage(request):
+    """ Display the index page. """
+    return render_to_response('election/reporter_homepage.html.html', 
+        {  })
+
+def admin_homepage(request):
+    """ Display the index page. """
+    return render_to_response('election/admin_homepage.html.html', 
+        {  })
 
 
 # Election Management

@@ -1,11 +1,13 @@
 {% extends "base.html" %}
 
-{% block h1 %}Testing page {% endblock %}
+{% block h1 %}Login Page{% endblock %}
 
 {% block content %}
-{{ polls }}
-{{ ballots }}
-{{ people }}
+<a href="{% url election.views.ro_homepage %}">RO Home Page</a>
+<a href="{% url election.views.eo_homepage %}">EO Home Page</a>
+<a href="{% url election.views.reporter_homepage %}">Rep Home Page</a>
+<a href="{% url election.views.admin_homepage %}">Admin Home Page</a>
+
 
 {% endblock %}
 

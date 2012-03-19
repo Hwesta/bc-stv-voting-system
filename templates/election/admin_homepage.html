@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block h1 %}RO Homepage{% endblock %}
+
+{% block content %}
+<a href="{% url users.views.index %}">Manage Users</a>
+<a href="{% url election.views.change_election_status %}">Manage Election</a>
+<a href="{% url election.views.set_location %}">Set Location</a>
+
+
+
+{% endblock %}
+

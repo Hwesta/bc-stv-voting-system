@@ -7,6 +7,11 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'election.views.index'),
+    url(r'^ro_home.html$', 'election.views.ro_homepage'),
+    url(r'^eo_home.html$', 'election.views.eo_homepage'),
+    url(r'^reporter_home.html$', 'election.views.reporter_homepage'),
+    url(r'^admin_home.html$', 'election.views.admin_homepage'),
+    
     # url(r'^bcstv/', 'bcstv.election.views.index'),
 
     # Uncomment the admin/doc line below to enable admin documentation:
