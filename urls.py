@@ -24,7 +24,6 @@ urlpatterns = patterns('',
     url(r'^politicians/(\d+)/$', 'politicians.views.view_politician'),
     url(r'^politicians/(\d+)/modify/$', 'politicians.views.modify_politician'),
     url(r'^politicians/add/$', 'politicians.views.add_politician'),
-   
 
     url(r'^election/$', 'election.views.view_election'),
 
@@ -32,6 +31,7 @@ urlpatterns = patterns('',
     url(r'^ballots/add/$', 'ballots.views.input_ballot'),
     url(r'^ballots/(\d+)/$', 'ballots.views.view_ballot'),
     url(r'^ballots/verify/$', 'ballots.views.view_conflict_list'),
+    url(r'^ballots/verify/(\d+)/$', 'ballots.views.compare_ballot'),
 
     url(r'^ridings/$', 'ridings.views.view_all_ridings'),
     url(r'^ridings/(\d+)/$', 'ridings.views.view_riding'),
@@ -50,7 +50,7 @@ urlpatterns = patterns('',
     url(r'^keywords/riding/modify/values/(\d+)/$', 'keywords.views.modifyRidingKeywordValue'),
     url(r'^keywords/politician/modify/list/(\d+)/$', 'keywords.views.modifyPoliticianKeywordList'),
     url(r'^keywords/politician/modify/values/(\d+)/$', 'keywords.views.modifyPoliticianKeywordValue'),
-	url(r'^keywords/riding/restore/$', 'keywords.views.restoreRidingKeyword'),
-	url(r'^keywords/politician/restore/$', 'keywords.views.restorePoliticianKeyword'),
+    url(r'^keywords/riding/restore/$', 'keywords.views.restoreRidingKeyword'),
+    url(r'^keywords/politician/restore/$', 'keywords.views.restorePoliticianKeyword'),
 	
 )

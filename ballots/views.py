@@ -12,9 +12,10 @@ def select_poll():
     """ Enter the poll number to enter/verify ballots for."""
     pass
 
-def verify_ballot():
-    """ Display the screen to verify a ballot. """
-    pass
+def compare_ballot(request, b_id):
+    ballot = Ballot.objects.get(id=b_id)
+    ballot_list = Ballot.objects.filter(ballot_num=ballot.ballot_num)
+    return render_to_response('ballots/compare.html', {'ballots':ballot_list})
 
 def close_poll():
     """ Close the poll and check all inputted ballots.
@@ -51,10 +52,17 @@ def view_conflict_list(request):
         for ballot in ballots:
             ballot.verified = True
             ballot.save()
-    manual_ballots = Ballot.objects.filter(verified=False).values('ballot_num','vote').annotate(cnt=Count('ballot_num')).values('ballot_num').annotate(cnt=Count('ballot_num'))
-    ballots = {}
-    for b in manual_ballots:
-        if b['ballot_num'] not in ballots:
-            ballots[b['ballot_num']] = []
-        ballots[b['ballot_num']].append(Ballot.objects.filter(ballot_num=b['ballot_num']))
-    return render_to_response('ballots/view_conflicts.html', {'ballots':ballots, 'ballot_nums':ballots.keys()})
+    manual_ballots = Ballot.objects.filter(verified=False).values('ballot_num','vote').annotate(cnt=Count('ballot_num')).filter(cnt=1)
+    wrong_ballots = []
+    single_ballots = []
+    for b_1 in manual_ballots:
+        added = False
+        ballot = Ballot.objects.get(ballot_num=b_1['ballot_num'], vote=b_1['vote'])
+        for b_2 in manual_ballots:
+            if b_1['ballot_num'] == b_2['ballot_num'] and b_1['vote'] != b_2['vote']:
+                wrong_ballots.append(ballot)
+                added = True
+                break
+        if added == False:
+            single_ballots.append(ballot)
+    return render_to_response('ballots/view_conflicts.html', {'ballots':wrong_ballots})

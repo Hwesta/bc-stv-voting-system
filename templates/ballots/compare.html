@@ -5,17 +5,21 @@
 {% block content %}
 <table>
 <tr>
+{% for ballot in ballots %}
 <th>Ballot Number</th>
-<th>Poll</th>
+<th>Vote</th>
 <th>Id</th>
+<th>          </th>
+{% endfor %}
 </tr>
 
-{% for ballot in ballots %}
 <tr>
-<td><a href="{% url ballots.views.compare_ballots ballot.id %}">{{ballot.ballot_num}}</a></td>
-<td>{{ballot.poll}}</td>
+{% for ballot in ballots %}
+<td{{ballot.ballot_num}}</td>
+<td>{{ballot.vote}}</td>
 <td>{{ballot.id}}</td>
-</tr>
+<td>         </td>
 {% endfor %}
+</tr>
 </table>
 {% endblock %}
