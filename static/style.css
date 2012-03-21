@@ -1,23 +1,122 @@
 /* CSS file */
+/* Colors in BC flag:
+ * Blue: #002B7F
+ * Red: #CE1126
+ * Yellow: #FFD600
+ */
 
-body { 
-    
+/* General styling */
+body {
+    color: #000000;
+    background-color: #f0f0ff;
 }
 
 p {
     
 }
 
-#header {
-    width: 100%;
-    background-color: #00ff00;
-    text-align: center;
-    padding: .1em;
+a {
+    color: #CE1126;
+}
+h1 {
+    color: #002B7F;
+    border-bottom: 1px solid #002B7F;
+    padding: 10px;
+    padding-bottom: 0px;
+    margin: auto;
+    width: 80%;
 }
 
+h2 {
+    font-size: 1.2em;
+}
+
+/* Layout */
+#header {
+    width: 99%;
+    color: #ffffff;
+    background-color: #002B7F;
+    text-align: center;
+    padding: .1em .5em;
+    margin: auto
+}
+
+
+/* Breadcrumbs styling based on http://css.maxdesign.com.au/listamatic/horizontal33.htm */
 #breadcrumbs {
-    margin: 0;
+    font-size: .9em;
+    padding-bottom: 15px;
+    width: 80%;
+    margin: auto;
+}
+
+#breadcrumbs ul {
+    list-style: none;
     padding: 0;
-    
+    margin: 0;
+}
+
+#breadcrumbs li {
+    display: inline;
+    padding: 0;
+    margin: 0;
+}
+
+#breadcrumbs li:before { content: "> "; }
+#breadcrumbs li:first-child:before { content: ""; }
+
+/* From CourSys stylesheets by Greg Baker et. al. */
+#actions {
+  border: 1px solid #002B7F;
+  float: right;
+  width: 200px;
+  margin: 0 0 1em 1em;
+}
+#actions h2 {
+  background: #002B7F;
+  color: #ffffff;
+  padding: 3px 10px;
+  margin: 0;
+}
+#actions ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+#actions ul li{
+  padding: 0;
+}
+#actions li a {
+  background-color: #ffffff;
+  width: auto;
+  height: 1.7em;
+  line-height: 1.7em;
+  text-decoration: none;
+  text-indent: 0.8em;
+  display: block;
+}
+#actions li a:hover {
+  background-color: #EAF2FA;
+  color: #002B7F;
+  text-decoration: none;
+}
+
+
+#main {
+    width: 80%;
+    margin: auto;
+    padding: 15px;
+    border: 1px solid #002B7F;
+    background-color: #ffffff;
+    min-height: 200px;
+}
+
+#footer {
+    font-size: .9em;
+    width: 80%;
+    border: 1px solid #002B7F;
+    margin: 20px auto;
+    background-color: #ffffff;
+    padding: 5px;
 }
 

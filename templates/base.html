@@ -6,22 +6,36 @@
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/static/style.css" />
 </head>
 
-<body id="home">
+<body>
+
 <div id="header">
-User, Role, Election Status, Date
+<span style="float:left">User (Role)</span>
+Election Status, Date
+<span style="float:right">Logout</span>
 </div>
+
+<h1>{% block h1 %}BC-STV Voting System{% endblock %}</h1>
 
 <div id="breadcrumbs">
     <ul>
-    {% block breadcrumbs %}<li><a href="/">BC-STV home</a></li>{% block subbreadcrumbs %}{% endblock subbreadcrumbs %}{% endblock breadcrumbs%}
+    {% block breadcrumbs %}
+        <li><a href="/">BC-STV home</a></li>
+        {% block subbreadcrumbs %}
+            <li>Item2</li>
+            <li>Item3</li>
+        {% endblock subbreadcrumbs %}
+    {% endblock breadcrumbs%}
     </ul>
 </div>
 
-{% block actions %}{% endblock %}
 
 <div id="main">
-    <h1>{% block h1 %}BC-STV Voting System{% endblock %}</h1>
-    {% block content %}{% endblock %}
+{% block menu %}{% endblock %}
+{% block content %}{% endblock %}
+</div>
+
+<div id="footer">
+    {% block footer %}Created by team Awesome Blimps in Awesome Space: Holly Becker, Dale Floer, Chris Bolognese, Maria Kaardal, Justin Symonds, Alpha Ip, Antonio Abaya, &amp; Jay Szeto.{% endblock %}
 </div>
 
 </body>

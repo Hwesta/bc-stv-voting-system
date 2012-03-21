@@ -3,10 +3,12 @@
 {% block h1 %}Login Page{% endblock %}
 
 {% block content %}
-<a href="{% url election.views.ro_homepage %}">RO Home Page</a>
-<a href="{% url election.views.eo_homepage %}">EO Home Page</a>
-<a href="{% url election.views.reporter_homepage %}">Rep Home Page</a>
-<a href="{% url election.views.admin_homepage %}">Admin Home Page</a>
+<ul>
+<li><a href="{% url election.views.ro_homepage %}">RO Home Page</a></li>
+<li><a href="{% url election.views.eo_homepage %}">EO Home Page</a></li>
+<li><a href="{% url election.views.reporter_homepage %}">Rep Home Page</a></li>
+<li><a href="{% url election.views.admin_homepage %}">Admin Home Page</a></li>
+</ul>
 
 
 {% endblock %}
