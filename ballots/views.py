@@ -7,11 +7,10 @@ from ballots.models import Ballot, BallotForm
 
 # Entering Ballots
 # TODO Add decorators limiting access
-
-def select_poll():
-    """ Enter the poll number to enter/verify ballots for."""
-    pass
-
+def choose_poll(request):
+    """ Enter the poll number to enter ballots for."""
+    return render_to_response('ballots/choose_poll.html', { })
+    
 def compare_ballot(request, b_id):
     ballot = Ballot.objects.get(id=b_id)
     ballot_list = Ballot.objects.filter(ballot_num=ballot.ballot_num)

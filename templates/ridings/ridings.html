@@ -1,28 +1,26 @@
-{% extends "base.html" %}
+{% extends "base-subsection.html" %}
 
 {% block h1 %}List of {{type}}{% endblock %}
+
+{% block actions %}
+<li><a href="{% url ridings.views.add_riding %}">Add New Riding</a></li>
+{% endblock %}
 
 {% block content %}
 <table>
 <tr>
 <th>Name</th>
-<th>Date Created</th>
-<th>Number of Voters</th>
-<th>Number of Seats</th>
-<th>Number of Ballots</th>
-<th>Number of Spoiled Ballots</th>
+
+<th>Edit</th>
 </tr>
 {% for riding in ridings %}
 <tr>
 <td><a href="{% url ridings.views.view_riding riding.id %}">{{riding.name}}</a></td>
-<td>{{riding.created}}</td>
-<td>{{riding.num_voters}}</td>
-<td>{{riding.num_seats}}</td>
-<td>{{riding.num_ballots}}</td>
-<td>{{riding.num_ballots_spoiled}}</td>
+<td><a href="{% url ridings.views.modify_riding riding.id %}">Edit</a></td>
 </tr>
 {% endfor %}
 </table>
+
 
 {% endblock %}
 

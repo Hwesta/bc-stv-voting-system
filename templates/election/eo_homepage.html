@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block h1 %}RO Homepage{% endblock %}
+{% block h1 %}EO Homepage{% endblock %}
 
 {% block content %}
-<a href="{% url ridings.views.view_all_ridings %}">Riding Management</a>
-<a href="{% url keywords.views.view_all_keywords %}">Keyword Management</a>
-<a href="{% url keywords.search.home %}">Search</a>
-
+<ul>
+<li><a href="{% url ridings.views.view_all_ridings %}">Riding Management</a></li>
+<li><a href="{% url keywords.views.index %}">Keyword Management</a></li>
+</ul>
 
 {% endblock %}
 

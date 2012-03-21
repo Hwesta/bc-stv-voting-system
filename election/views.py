@@ -17,7 +17,7 @@ def ro_homepage(request):
 
 def eo_homepage(request):
     """ Display the index page. """
-    return render_to_response('election/ro_homepage.html', 
+    return render_to_response('election/eo_homepage.html',
         {  })
 
 def reporter_homepage(request):

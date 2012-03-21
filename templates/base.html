@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>{% block title %}BC-STV Voting System{% endblock %}</title>
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/static/style.css" />
+    <link rel="stylesheet" type="text/css" href="/static/style.css" />
 </head>
 
 <body>
@@ -19,7 +19,7 @@ Election Status, Date
 <div id="breadcrumbs">
     <ul>
     {% block breadcrumbs %}
-        <li><a href="/">BC-STV home</a></li>
+        <li><a href="{% url election.views.index %}">BC-STV home</a></li>
         {% block subbreadcrumbs %}
             <li>Item2</li>
             <li>Item3</li>

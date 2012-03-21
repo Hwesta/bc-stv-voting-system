@@ -2,6 +2,8 @@ from django.shortcuts import render_to_response, render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from ridings.models import Riding, Poll, RidingForm, PollForm
+from politicians.models import Politician
+from keywords.models import RidingKeywordValue, PoliticianKeywordValue
 
 # TODO Add decorators limiting access
 
@@ -9,13 +11,23 @@ from ridings.models import Riding, Poll, RidingForm, PollForm
 
 def view_all_ridings(request):
     #""" View summary information about all the ridings. """
-    r = Riding.objects.all()
-    return render_to_response('ridings/ridings.html',{'ridings': r, 'type': str('ridings')})
+    ridings = Riding.objects.all()
+    return render_to_response('ridings/ridings.html',{'ridings': ridings, 'type': str('ridings')})
 
 def view_riding(request, r_id):
     #""" View all the details about a riding on one page. """
-    r = Riding.objects.get(id=r_id)
-    return render_to_response('ridings/riding.html', {'riding': r})
+    riding = Riding.objects.get(id=r_id)
+    polls = riding.polls()
+    incumbents = riding.incumbents()
+    candidates =riding.candidates()
+    keywords = RidingKeywordValue.objects.filter(riding=riding)
+    return render_to_response('ridings/riding.html',
+        {'riding': riding,
+         'polls': polls,
+         'candidates': candidates,
+         'incumbents': incumbents,
+         'keywords': keywords,
+        })
 
 def modify_riding(request, _id):
     riding = Riding.objects.get(id=_id)
@@ -46,33 +58,43 @@ def add_riding(request):
 
 # Poll Management
 
-def view_polls(request):
-    p = Poll.objects.all()
-    return render_to_response('ridings/polls.html', {'polls': p, 'type':str('polls'), })
+def view_polls(request, riding_id):
+    riding = Riding.objects.get(id=riding_id)
+    p = Poll.objects.filter(riding=riding)
+    return render_to_response('ridings/polls.html',
+        {'polls': p,
+         'type': str('polls'),
+         'riding': riding,
+        })
 
-def add_poll(request):
+def add_poll(request, riding_id):
+    riding = Riding.objects.get(id=riding_id)
     if request.method == 'POST':
-	form = PollForm(request.POST)
-	if form.is_valid():
-	    form.save()
-	    return HttpResponseRedirect(reverse(view_polls))
+        form = PollForm(request.POST)
+        if form.is_valid():
+            new_poll = form.save(commit=False)
+            new_poll.riding = riding
+            new_poll.save()
+            return HttpResponseRedirect(reverse(view_polls, args=(riding_id,)))
     else:
-	form = PollForm()
-    return render(request, 'ridings/add_poll.html', {'form': form, })
+        form = PollForm()
+    return render(request, 'ridings/add_poll.html',
+        {'form': form,
+         'riding': riding,
+        })
 
-def modify_poll(request, _id):
-    poll = Poll.objects.get(id=_id)
+def modify_poll(request, riding_id, poll_id):
+    riding = Riding.objects.get(id=riding_id)
+    poll = Poll.objects.get(id=poll_id, riding=riding)
     if request.method == 'POST':
-	form = PollForm(request.POST, instance=poll)
-	if form.is_valid():
-	    form.save()
-	    return HttpResponseRedirect(reverse(view_polls))
+        form = PollForm(request.POST, instance=poll)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse(view_polls, args=(riding_id,)))
     else:
-	form = PollForm(instance=poll)
-    return render(request, 'ridings/modify_poll.html', {'form': form, 'poll': poll, })
-
-
-
-# Searching and Reports
-
-
+        form = PollForm(instance=poll)
+    return render(request, 'ridings/modify_poll.html',
+        {'form': form,
+         'poll': poll,
+         'riding': riding,
+        })

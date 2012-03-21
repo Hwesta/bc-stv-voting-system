@@ -69,7 +69,6 @@ h2 {
 #actions {
   border: 1px solid #002B7F;
   float: right;
-  width: 200px;
   margin: 0 0 1em 1em;
 }
 #actions h2 {
@@ -84,7 +83,7 @@ h2 {
   list-style-type: none;
 }
 #actions ul li{
-  padding: 0;
+  padding: 0 2em 0 0;
 }
 #actions li a {
   background-color: #ffffff;

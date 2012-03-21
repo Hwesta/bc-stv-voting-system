@@ -1,60 +1,34 @@
-{% extends "base.html" %}
+{% extends "base-subsection.html" %}
 
-{% block h1 %}Keywords {% endblock %}
+{% block h1 %}Keywords{% endblock %}
+
+{% block actions %}
+<li><a href="{% url keywords.views.new_riding_keyword %}">Add New Riding Keyword</a></li>
+<li><a href="{% url keywords.views.new_politician_keyword %}">Add New Politician Keyword</a></li>
+{% endblock %}
 
 {% block content %}
-<h2>Riding Keywords</h2><a href="/keywords/riding/add/">Add</a> <a href="{% url keywords.views.restoreRidingKeyword %}">Restore</a>
+<h2>Riding Keywords</h2>
 <table>
-{% for RidingKeywordList in ridlist %}
+<th>Keyword</th>
+<th>Modify</th>
+{% for keyword in riding_keywords %}
 <tr>
-	<td>{{RidingKeywordList.name}}</td>
-	<td><a href="{% url keywords.views.modifyRidingKeywordList RidingKeywordList.id %}">modify</a></td>
+	<td>{{keyword.name}}</td>
+	<td><a href="{% url keywords.views.edit_riding_keyword keyword.id %}">Modify Keyword</a></td>
 </tr>
 {% endfor %}
 </table>
-<h2>Riding Keyword Values</h2><a href="/keywords/riding/values/">Add keyword values</a>
+
+<h2>Politician Keywords</h2>
 <table>
-	<tr>
-		<th>Keyword</th>
-		<th>Riding</th>
-		<th>Value</th> 
-	</tr>
-{% for RidingKeywordValue in keyword_list %}
-{% if not RidingKeywordValue.keyword.delete %}
-	<tr>
-		<td>{{RidingKeywordValue.keyword}}</td>
-		<td>{{RidingKeywordValue.riding}}</td>
-		<td>{{RidingKeywordValue.value}}</td>
-		<td><a href="{% url keywords.views.modifyRidingKeywordValue RidingKeywordValue.id %}">modify</a></td>
-	</tr>
-{% endif %}
-{% endfor %}
-</table>
-<h2>Politician Keywords</h2><a href="/keywords/politician/add/">Add</a> <a href="{% url keywords.views.restorePoliticianKeyword %}">Restore</a>
-<table>
-{% for PoliticianKeywordList in pollist %}
+<th>Keyword</th>
+<th>Modify</th>
+{% for keyword in politician_keywords %}
 <tr>
-	<td>{{PoliticianKeywordList.name}}</td>
-	<td><a href="{% url keywords.views.modifyPoliticianKeywordList PoliticianKeywordList.id %}">modify</a></td>
+    <td>{{keyword.name}}</td>
+    <td><a href="{% url keywords.views.modifyPoliticianKeywordList keyword.id %}">Modify Keyword</a></td>
 </tr>
-{% endfor %}
-</table>
-<h2>Politician Keyword Values</h2><a href="/keywords/politician/values/">Add keyword values</a>
-<table>
-	<tr>
-		<th>Keyword</th>
-		<th>Politician</th>
-		<th>Value</th> 
-	</tr>
-{% for PoliticianKeywordValue in pol_list %}
-{% if not PoliticianKeywordValue.keyword.delete %}
-	<tr>
-		<td>{{PoliticianKeywordValue.keyword}}</td>
-		<td>{{PoliticianKeywordValue.politician}}</td>
-		<td>{{PoliticianKeywordValue.value}}</td>
-		<td><a href="{% url keywords.views.modifyPoliticianKeywordValue PoliticianKeywordValue.id %}">modify</a></td>
-	</tr>
-{% endif %}
 {% endfor %}
 </table>
 

@@ -34,11 +34,11 @@ class Riding(models.Model):
 
     def polls(self):
         """ Return all the polls in the riding. """
-        return self.poll_set
+        return self.poll_set.all()
     def num_polls(self):
         """ Return the number of polls in the riding. """
         return self.poll_set.count()
-
+   
     def calculate_results(self):
         """ Determine who gets elected. """
         pass
@@ -53,9 +53,10 @@ class Poll(models.Model):
 
 class RidingForm(ModelForm):
     class Meta:
-	model = Riding
+        model = Riding
 
 class PollForm(ModelForm):
     class Meta:
-	model = Poll
+        model = Poll
+        exclude = ('riding',)
 

@@ -1,14 +1,47 @@
-{% extends "base.html" %}
+{% extends "base-subsection.html" %}
 
-{% block h1 %}Riding Information{% endblock %}
+{% block h1 %}{{riding}} Information{% endblock %}
+
+{% block actions %}
+<li><a href="">Edit General Information</a></li>
+<li><a href="">Edit Candidates</a></li>
+<li><a href="">Edit Incumbents</a></li>
+<li><a href="">Edit Keywords</a></li>
+
+{% endblock %}
 
 {% block content %}
-<p>Name: {{riding.name}}</p>
-<p>Date Created: {{riding.created}}</p>
-<p>Number of Voters: {{riding.num_voters}}</p>
-<p>Number of Seats: {{riding.num_seats}}</p>
-<p>Number of Ballots: {{riding.num_ballots}}</p>
-<p>Number of Spoiled Ballots: {{riding.num_ballots_spoiled}}</p>
-<p><a href="{% url ridings.views.modify_riding riding.id %}">Modify</a></p>
+
+<h2>General Information</h2>
+<ul>
+<li>Created: {{riding.created}}</li>
+<li>Voters: {{riding.num_voters}}</li>
+<li>Seats: {{riding.num_seats}}</li>
+<li>Number of Candidates: {{riding.num_candidates}}</li>
+<li>Number of Incuments: {{riding.num_incumbents}}</li>
+
+</ul>
+
+<h2>Candidates</h2>
+<ul>
+{% for candidate in candidates %}
+    <li><a href="{% url politicians.views.view_politician candidate.id %}">{{ candidate.name }}</a></li>
+{% endfor %}
+</ul>
+
+<h2>Incumbents</h2>
+<ul>
+{% for incumbent in incumbents %}
+    <li><a href="{% url politicians.views.view_politician incumbent.id %}">{{ incumbent.name }}</a></li>
+{% endfor %}
+</ul>
+
+
+<h2>Keywords</h2>
+<ul>
+{% for keyword in keywords %}
+<li>{{ keyword.keyword }}: {{keyword.value}}</li>
+{% endfor %}
+</ul>
 
 {% endblock %}
