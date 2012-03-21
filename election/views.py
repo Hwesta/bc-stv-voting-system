@@ -1,5 +1,7 @@
-from django.shortcuts import render_to_response  
-from election.models import Election
+from django.shortcuts import render_to_response, render
+from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
+from election.models import Election, RecountForm
 
 # TODO Add decorators limiting access
 
@@ -22,12 +24,12 @@ def eo_homepage(request):
 
 def reporter_homepage(request):
     """ Display the index page. """
-    return render_to_response('election/reporter_homepage.html.html', 
+    return render_to_response('election/reporter_homepage.html',
         {  })
 
 def admin_homepage(request):
     """ Display the index page. """
-    return render_to_response('election/admin_homepage.html.html', 
+    return render_to_response('election/admin_homepage.html',
         {  })
 
 
@@ -37,3 +39,25 @@ def view_election(request):
    elec_list = Election.objects.all()
    return render_to_response('election/view.html', {'election':elec_list})
 
+def change_election_status(request):
+   elec_list = Election.objects.all()
+   return render_to_response('election/change_status.html', {'election':elec_list})
+
+def set_location(request):
+   return render_to_response('election/set_location.html', {})
+
+def start_recount(request):
+    # TODO Add message in redirect saying recount has been started.
+    if request.method == 'POST': 
+        form = RecountForm(request.POST) 
+        if form.is_valid():
+            riding = form.cleaned_data['riding']
+            riding.active = True
+            riding.save()
+            return HttpResponseRedirect(reverse(index))
+    else:
+        form = RecountForm()
+
+    return render(request, 'election/start_recount.html',
+        {'form': form,
+        })

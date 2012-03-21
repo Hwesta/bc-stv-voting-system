@@ -12,6 +12,12 @@ urlpatterns = patterns('',
     url(r'^reporter_home.html$', 'election.views.reporter_homepage'),
     url(r'^admin_home.html$', 'election.views.admin_homepage'),
     
+    url(r'^users/$', 'users.views.index'),
+    url(r'^users/add/$', 'users.views.add_user'),
+    url(r'^users/(\d+)/$', 'users.views.view_user'),
+    url(r'^users/(\d+)/modify/$', 'users.views.modify_user'),
+    url(r'^users/(\d+)/ban/$', 'users.views.ban_user'),
+    url(r'^users/(\d+)/delete/$', 'users.views.delete_user'),
 
     url(r'^politicians/$', 'politicians.views.view_politicians'),
     url(r'^politicians/(\d+)/$', 'politicians.views.view_politician'),
@@ -19,6 +25,9 @@ urlpatterns = patterns('',
     url(r'^politicians/add/$', 'politicians.views.add_politician'),
 
     url(r'^election/$', 'election.views.view_election'),
+    url(r'^election/recount/$', 'election.views.start_recount'),
+    url(r'^election/status/$', 'election.views.change_election_status'),
+    url(r'^election/location/$', 'election.views.set_location'),
 
     url(r'^ballots/$', 'ballots.views.view_ballots'),
     url(r'^ballots/add/poll/$', 'ballots.views.choose_poll'),

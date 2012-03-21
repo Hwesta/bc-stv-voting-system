@@ -2,6 +2,8 @@
 
 {% block h1 %}List of {{type}}{% endblock %}
 
+{% block subbreadcrumbs %}<li>Riding Management</li>{% endblock %}
+
 {% block actions %}
 <li><a href="{% url ridings.views.add_riding %}">Add New Riding</a></li>
 {% endblock %}

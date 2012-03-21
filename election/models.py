@@ -1,4 +1,6 @@
 from django.db import models
+from django import forms
+from ridings.models import Riding
 
 STATUS_CHOICES = (
     ('BEF', 'before'),
@@ -21,5 +23,9 @@ class Election(models.Model):
     def archive(self):
         """ Archive an election """
         pass
+
+class RecountForm(forms.Form):
+    riding = forms.ModelChoiceField(queryset=Riding.objects.filter(active=False))
+
 
 

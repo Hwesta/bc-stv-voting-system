@@ -2,6 +2,11 @@
 
 {% block h1 %}Add Riding{% endblock %}
 
+{% block subbreadcrumbs %}
+    <li><a href="{% url ridings.views.view_all_ridings %}">Riding Management</a></li>
+    <li>Add Riding</li>
+{% endblock %}
+
 {% block content %}
 <form action="{% url ridings.views.add_riding %}" method="post">{% csrf_token %}
 {{ form.as_p }}

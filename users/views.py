@@ -1,25 +1,38 @@
 from django.shortcuts import render_to_response
-from ridings.models import User
+from users.models import User
 
 # User Management
 # TODO Add decorators limiting access
 
-def view_all_users():
+def index(request):
     """ View summary information about all users. """
-    pass
+    return render_to_response('users/view_all_users.html',
+        {  })
 
-def add_user():
+def view_user(request, user_id):
+    """ View detailed information about one user. """
+    return render_to_response('users/view_user.html',
+        {  })
+
+def add_user(request):
     """ Create a new user. """
-    pass
+    return render_to_response('users/add_user.html',
+        {  })
 
-def modify_user():
+def modify_user(request, user_id):
     """ Edit a user's information. """
-    pass
+    return render_to_response('users/modify_user.html',
+        {  })
 
-def delete_user():
+
+def delete_user(request, user_id):
     """ Delete a user. """
-    pass
+    return render_to_response('users/delete_user.html',
+        {  })
 
-def ban_user():
+
+def ban_user(request, user_id):
     """ Leave the user intact, but prevent them from logging in. """
-    pass
+    return render_to_response('users/ban_user.html',
+        {  })
+
