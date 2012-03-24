@@ -2,6 +2,15 @@
 
 {% block h1 %}Politician Information{% endblock %}
 
+{% block subbreadcrumbs %}
+    
+{% endblock %}
+
+{% block actions %}
+<li><a href="{% url politicians.views.modify_politician politician.id %}">Edit Information</a></li>
+<li><a href="">Edit Keywords</a></li>
+{% endblock %}
+
 {% block content %}
 <p>Name: {{politician.name}}</p>
 <p>Party: {{politician.party}}</p>

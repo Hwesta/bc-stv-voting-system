@@ -14,8 +14,7 @@ class Riding(models.Model):
         default=0)
     num_ballots_spoiled = models.IntegerField(help_text="Number of ballots spoiled.",
         default=0)
-    delete = models.BooleanField()
-    delete.default = False
+    delete = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.name

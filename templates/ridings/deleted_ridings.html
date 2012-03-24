@@ -5,7 +5,6 @@
 {% block subbreadcrumbs %}<li>Riding Management</li>{% endblock %}
 
 {% block actions %}
-<li><a href="{% url ridings.views.add_riding %}">Add New Riding</a></li>
 <li><a href="{% url ridings.views.view_all_ridings %}">Return to Ridings</a></li>
 {% endblock %}
 
@@ -13,13 +12,10 @@
 <table>
 <tr>
 <th>Name</th>
-
-<th>Edit</th>
 </tr>
 {% for riding in ridings %}
 <tr>
 <td><a href="{% url ridings.views.view_riding riding.id %}">{{riding.name}}</a></td>
-<td><a href="{% url ridings.views.modify_riding riding.id %}">Edit</a></td>
 </tr>
 {% endfor %}
 </table>
