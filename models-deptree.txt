@@ -11,6 +11,6 @@ keywords.PoliticianKeywordValue
 # This is the set of internal models for Django
 # That also have the referenctial integrity catch
 auth.User auth.Group
-contenttypes.ContentType sessions.Session sites.Site
+sessions.Session sites.Site
 auth.Permission
 admin.logentry

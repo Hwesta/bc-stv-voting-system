@@ -1,0 +1,5 @@
+[
+{"pk": "0b4a0e2b4548e1bb1f7940cc77507bdd", "model": "sessions.session", "fields": {"expire_date": "2012-03-30 02:25:44", "session_data": "OTU3NjI0YjFjOTI2ODM5ZmIxYjdjMjg1YzgzZTY0YTQ2MDliN2E2OTqAAn1xAShVEl9hdXRoX3Vz\nZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHED\nVQ1fYXV0aF91c2VyX2lkcQRLAXUu\n"}}, 
+{"pk": "beb910fc5713e266c18d82888cb1c0b4", "model": "sessions.session", "fields": {"expire_date": "2012-03-30 02:12:47", "session_data": "OTU3NjI0YjFjOTI2ODM5ZmIxYjdjMjg1YzgzZTY0YTQ2MDliN2E2OTqAAn1xAShVEl9hdXRoX3Vz\nZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHED\nVQ1fYXV0aF91c2VyX2lkcQRLAXUu\n"}}, 
+{"pk": 1, "model": "sites.site", "fields": {"domain": "example.com", "name": "example.com"}}
+]
