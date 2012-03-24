@@ -1,4 +1,5 @@
 from django.db import models
+from django import forms
 from ridings.models import Poll
 from jsonfield import JSONField
 from django.forms import ModelForm
@@ -18,3 +19,6 @@ class Ballot(models.Model):
 class BallotForm(ModelForm):
     class Meta:
         model = Ballot
+
+class ChoosePollForm(forms.Form):
+    poll = forms.ModelChoiceField(Poll.objects.all())

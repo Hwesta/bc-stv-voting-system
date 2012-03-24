@@ -2,19 +2,14 @@
 
 {% block h1 %}Add Ballot{% endblock %}
 
-{% block subbreadcrumbs %}<li><a href="">Enter ballots for poll 42</a></li>
-<li>Enter Ballot</li>{% endblock %}
+{% block subbreadcrumbs %}<li>Choose Poll</li>{% endblock %}
 {% block content %}
 
 
 <form
 action="" method="post">
 {% csrf_token %}
-<select>
-{% for p in polls %}
-  <option>{{p.riding}}, {{forloop.counter}}</option>
-{% endfor %}
-</select> 
+{{ form }}
 <input type="submit" value="Enter Ballots" />
 </form> 
 {% endblock %}

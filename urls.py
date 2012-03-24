@@ -34,7 +34,7 @@ urlpatterns = patterns('',
 
     url(r'^ballots/$', 'ballots.views.view_ballots'),
     url(r'^ballots/add/poll/$', 'ballots.views.choose_poll'),
-    url(r'^ballots/add/$', 'ballots.views.input_ballot'),
+    url(r'^ballots/add/(\d+)/$', 'ballots.views.input_ballot'),
     url(r'^ballots/(\d+)/$', 'ballots.views.view_ballot'),
     url(r'^ballots/verify/$', 'ballots.views.view_conflict_list'),
     url(r'^ballots/verify/(\d+)/$', 'ballots.views.compare_ballot'),

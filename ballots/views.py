@@ -3,16 +3,23 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.db.models import Count
 from ridings.models import Riding, Poll
-from ballots.models import Ballot, BallotForm
+from ballots.models import Ballot, BallotForm, ChoosePollForm
+from politicians.models import Politician
 
 # Entering Ballots
 # TODO Add decorators limiting access
 def choose_poll(request):
     """ Enter the poll number to enter ballots for."""
-    riding = Riding.objects.get(id=1) # TODO this should take a parameter
-    polls = Poll.objects.filter(riding=riding)
-    return render_to_response('ballots/choose_poll.html',
-        {'polls': polls,
+    if request.method == 'POST':
+        form = ChoosePollForm(request.POST)
+        if form.is_valid():
+            poll = form.cleaned_data['poll']
+            return HttpResponseRedirect(reverse(input_ballot, args=(poll.id,)))
+    else:
+        form = ChoosePollForm()
+
+    return render(request, 'ballots/choose_poll.html',
+        {'form': form,
         })
     
 def compare_ballot(request, b_id):
@@ -37,7 +44,9 @@ def view_ballot(request, b_id):
     ballot = Ballot.objects.get(id=b_id)
     return render_to_response('ballots/view_single.html', {'ballot':ballot, 'ballot_num':b_id})
 
-def input_ballot(request):
+def input_ballot(request, poll_id):
+    poll = Poll.objects.get(id=poll_id)
+    candidates = Politician.objects.filter(candidate_riding=poll.riding)
     if request.method == 'POST':
         form = BallotForm(request.POST)
         if form.is_valid():
@@ -45,8 +54,7 @@ def input_ballot(request):
             return HttpResponseRedirect(reverse(view_ballots))
     else:
         form = BallotForm()
-
-    return render(request, 'ballots/add.html', {'form':form})
+    return render(request, 'ballots/add.html', {'form':form, 'poll_id':poll_id})
 
 def view_conflict_list(request):
     auto_ballots = Ballot.objects.filter(verified=False).values('ballot_num','vote').annotate(cnt=Count('ballot_num')).filter(cnt__gt=1)

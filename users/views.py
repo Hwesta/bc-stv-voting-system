@@ -1,4 +1,5 @@
 from django.shortcuts import render_to_response
+from django.contrib.auth.forms import UserCreationForm
 from users.models import User
 
 # User Management
@@ -16,8 +17,10 @@ def view_user(request, user_id):
 
 def add_user(request):
     """ Create a new user. """
+    form = UserCreationForm()
     return render_to_response('users/add_user.html',
-        {  })
+        {'form': form,
+        })
 
 def modify_user(request, user_id):
     """ Edit a user's information. """
