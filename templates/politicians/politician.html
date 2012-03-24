@@ -1,14 +1,14 @@
-{% extends "base.html" %}
+{% extends "base-subsection.html" %}
 
 {% block h1 %}Politician Information{% endblock %}
 
 {% block subbreadcrumbs %}
-    
+<li><a href="{% url ridings.views.view_all_ridings %}">Riding Management</a></li>
+<li>View Politician</li>
 {% endblock %}
 
 {% block actions %}
 <li><a href="{% url politicians.views.modify_politician politician.id %}">Edit Information</a></li>
-<li><a href="">Edit Keywords</a></li>
 {% endblock %}
 
 {% block content %}
@@ -16,12 +16,11 @@
 <p>Party: {{politician.party}}</p>
 <p>Incumbant in: {{politician.incumbent_riding}}</p>
 <p>Candidate in: {{politician.candidate_riding}}</p>
-<p><a href="{% url politicians.views.modify_politician politician.id %}">Modify</a></p>
 
 <h2>Keywords</h2>
 {% for PoliticianKeywordValue in keywords %}
 {% if not PoliticianKeywordValue.keyword.delete %}
-<p>{{PoliticianKeywordValue.keyword.name}}: <a href="{% url keywords.views.modifyPoliticianKeywordValue PoliticianKeywordValue.id %}">{{PoliticianKeywordValue.value}}</a></p>
+<p>{{PoliticianKeywordValue.keyword.name}}: {{PoliticianKeywordValue.value}}&nbsp<a href="{% url keywords.views.modifyPoliticianKeywordValue PoliticianKeywordValue.id %}">Modify</a></p>
 {% endif %}
 {% endfor %}
 {% endblock %}

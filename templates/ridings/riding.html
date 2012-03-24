@@ -28,14 +28,14 @@
 <h2>Candidates</h2>
 <ul>
 {% for candidate in candidates %}
-    <li><a href="{% url politicians.views.view_politician candidate.id %}">{{ candidate.name }}</a>&nbsp&nbsp&nbsp&nbsp{{ candidate.party }}</li>
+    <li><a href="{% url politicians.views.view_politician candidate.id %}">{{ candidate.name }}</a>&nbsp{{ candidate.party }}</li>
 {% endfor %}
 </ul>
 
 <h2>Incumbents</h2>
 <ul>
 {% for incumbent in incumbents %}
-    <li><a href="{% url politicians.views.view_politician incumbent.id %}">{{ incumbent.name }}</a>&nbsp&nbsp&nbsp&nbsp{{ incumbent.party }}</li>
+    <li><a href="{% url politicians.views.view_politician incumbent.id %}">{{ incumbent.name }}</a>&nbsp{{ incumbent.party }}</li>
 {% endfor %}
 </ul>
 
