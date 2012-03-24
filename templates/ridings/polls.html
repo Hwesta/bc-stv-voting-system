@@ -20,14 +20,16 @@
 <th>{{ poll.riding }}</th>
 {% endif %}
 {% endfor %}
+<th>Poll Number</th>
 <th>Active</th>
 <th>Polling Station</th>
 </tr>
 {% for poll in polls %}
 <tr>
 <td><a href="{% url ridings.views.modify_poll riding.id poll.id %}">Modify</a></td>
-<td>{{poll.active}}</td>
-<td>{{poll.polling_stn}}</td>
+<td>{{ poll.id }}</td>
+<td>{{ poll.active }}</td>
+<td>{{ poll.polling_stn }}</td>
 </tr>
 {% endfor %}
 </table>

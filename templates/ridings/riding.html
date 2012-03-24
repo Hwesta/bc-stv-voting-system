@@ -20,7 +20,10 @@
 <li>Created: {{riding.created}}</li>
 <li>Voters: {{riding.num_voters}}</li>
 <li>Seats: {{riding.num_seats}}</li>
-<li>Number of Polls: {{ num_polls }}</li>
+<li>Polls Numbers:<br/>
+{% for poll in polls %}
+{{ poll.id }}<br/>
+{% endfor %}</li>
 <li>Number of Candidates: {{riding.num_candidates}}</li>
 <li>Number of Incuments: {{riding.num_incumbents}}</li>
 
