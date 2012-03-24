@@ -9,9 +9,9 @@
 <body>
 
 <div id="header">
-<span style="float:left">User (Role)</span>
+<span style="float:left">{{ user }} (Role)</span>
 Election Status, Date
-<span style="float:right">Logout</span>
+<span style="float:right"><a href="{% url election.views.logout_user %}">Logout</a></span>
 </div>
 
 <h1>{% block h1 %}BC-STV Voting System{% endblock %}</h1>
@@ -21,8 +21,6 @@ Election Status, Date
     {% block breadcrumbs %}
         <li><a href="{% url election.views.index %}">BC-STV home</a></li>
         {% block subbreadcrumbs %}
-            <li>Item2</li>
-            <li>Item3</li>
         {% endblock subbreadcrumbs %}
     {% endblock breadcrumbs%}
     </ul>

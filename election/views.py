@@ -1,6 +1,7 @@
 from django.shortcuts import render_to_response, render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.contrib.auth import logout, authenticate, login 
 from election.models import Election, RecountForm, ElectionForm
 
 # TODO Add decorators limiting access
@@ -32,6 +33,12 @@ def admin_homepage(request):
     return render_to_response('election/admin_homepage.html',
         {  })
 
+# Login Management
+
+def logout_user(request):
+    logout(request)
+    # TODO display message telling user they're logged out
+    return HttpResponseRedirect(reverse(index))
 
 # Election Management
 

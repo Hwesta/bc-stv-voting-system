@@ -107,6 +107,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
 )
+LOGIN_REDIRECT_URL = ('/')
 
 if platform.system()=='Windows':
     ROOT_URLCONF = 'urls'
