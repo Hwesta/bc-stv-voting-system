@@ -1,7 +1,7 @@
 from django.shortcuts import render_to_response, render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from election.models import Election, RecountForm
+from election.models import Election, RecountForm, ElectionForm
 
 # TODO Add decorators limiting access
 
@@ -41,7 +41,14 @@ def view_election(request):
 
 def change_election_status(request):
    elec_list = Election.objects.all()
-   return render_to_response('election/change_status.html', {'election':elec_list})
+   if request.method == 'POST':
+       form = ElectionForm(request.Post,instance = elec_list)
+       if form.is_valid():
+           form.save()
+           return HttpResponseRedirect(reverse(admin_home))
+   else:
+       form = ElectionForm()
+   return render_to_response('election/change_election_status.html', {'election':elec_list})
 
 def set_location(request):
    return render_to_response('election/set_location.html', {})
