@@ -10,8 +10,7 @@ class Ballot(models.Model):
     verified = models.BooleanField(default=False)
     valid = models.BooleanField(default=True)
     # Vote will store a list of candidate : ranking pairs or a spoiled : true flag
-    vote = models.CharField(max_length=128)
-    # vote = JSONField()
+    vote = JSONField()
 
     def __unicode__(self):
         return str(self.ballot_num)+", "+str(self.verified)
