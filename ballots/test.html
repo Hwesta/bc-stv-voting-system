@@ -27,20 +27,28 @@
 				column = jQuery.grep(
 							column,
 							function(x){ return x.match(/data-column/) }
-						);
+				);
 				column = jQuery.map(
 							column,
 							function(x){ return x.replace(/data-column-/,''); }
-						)[0];
+				)[0];
 				selector = "input[type=radio].data-column-"+column;
 				$(selector).prop("checked", false);
 				element.prop("checked", true);
 			};
 		
 			function onSubmit() {
-				// JSON Class only in new browsers, test it in IE9!
-				var t = 'JSON:' + JSON.stringify({'a': 1, 'b': 2});
-				console.log(t);
+				var formVals = $(this).serializeArray();
+  				var jsonObj = {};
+				
+				//Inspired by a comment on the jquery documentation at http://api.jquery.com/serializeArray/
+  				for (i in formVals)
+    				jsonObj[formVals[i].name] = formVals[i].value;
+				
+				console.log(jsonObj);
+  				var submitVals = JSON.stringify(jsonObj);
+				
+				console.log(submitVals);
 				return false;
 			}
 		
@@ -56,9 +64,9 @@
 				</tr>
 				<tr>
 					<td>Bob</td>
-					<td><input type="radio" name="Bob" class="foo data-column-1" value="1" /></td>
-					<td><input type="radio" name="Bob" class="bar data-column-2" value="2" /></td>
-					<td><input type="radio" name="Bob" class="baz data-column-3" value="3" /></td>
+					<td><input type="radio" name="Bob" class="data-column-1" value="1" /></td>
+					<td><input type="radio" name="Bob" class="data-column-2" value="2" /></td>
+					<td><input type="radio" name="Bob" class="data-column-3" value="3" /></td>
 				</tr>
 				<tr>
 					<td>Billiam</td>
@@ -73,14 +81,12 @@
 					<td><input type="radio" name="Bobina" class="data-column-3" value="3" /></td>
 				</tr>
 			</table>
-			<button id="fakesubmit" type="foo">fake submit</button>
 			<input type="submit" />
-			<button class="reset">reset</button>
+			<input type="reset" value="Clear"></input>
 		</form>
 		<script>
 			$("input[type=radio]").click(enforceBallotValidity);
 			$('#myform').submit(onSubmit);
-			$('#fakesubmit').click(onSubmit);
 			console.log("Loaded");
 		</script>
     
