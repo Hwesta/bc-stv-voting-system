@@ -10,9 +10,14 @@ from keywords.models import RidingKeywordValue, PoliticianKeywordValue
 # Riding Information
 
 def view_all_ridings(request):
-    #""" View summary information about all the ridings. """
-    ridings = Riding.objects.all()
+    #""" View list of all the ridings. """
+    ridings = Riding.objects.filter(delete=False)
     return render_to_response('ridings/ridings.html',{'ridings': ridings, 'type': str('ridings')})
+
+def view_deleted_ridings(request):
+    #""" View list of deleted ridings. """
+    ridings = Riding.objects.filter(delete=True)
+    return render_to_response('ridings/deleted_ridings.html',{'ridings': ridings, 'type': str('ridings')})
 
 def view_riding(request, r_id):
     #""" View all the details about a riding on one page. """
@@ -39,11 +44,6 @@ def modify_riding(request, _id):
     else:
 	form = RidingForm(instance=riding)
     return render(request, 'ridings/modify_riding.html', {'form': form, 'riding': riding, })
-
-def delete_riding():
-    """ Delete a riding. """
-    pass
-
 
 def add_riding(request):
     if request.method == 'POST':
