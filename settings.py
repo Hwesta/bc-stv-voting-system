@@ -122,6 +122,7 @@ TEMPLATE_DIRS = (
 
 INSTALLED_APPS = (
     # Uncomment the next line to enable the admin:
+    # Django modules
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -130,6 +131,10 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # Django addons
+    'ipauth',
+
+    # Our code
     'ballots',
     'election',
     'keywords',
