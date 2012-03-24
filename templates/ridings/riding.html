@@ -10,7 +10,7 @@
 {% block actions %}
 <li><a href="{% url ridings.views.modify_riding riding.id %}">Edit General Information</a></li>
 <li><a href="{% url politicians.views.add_politician %}">Add Politician</a></li>
-<li><a href="">Edit Keywords</a></li>
+<li><a href="{% url ridings.views.view_polls riding.id %}">View Polls</a></li>
 {% endblock %}
 
 {% block content %}
@@ -20,6 +20,7 @@
 <li>Created: {{riding.created}}</li>
 <li>Voters: {{riding.num_voters}}</li>
 <li>Seats: {{riding.num_seats}}</li>
+<li>Number of Polls: {{ num_polls }}</li>
 <li>Number of Candidates: {{riding.num_candidates}}</li>
 <li>Number of Incuments: {{riding.num_incumbents}}</li>
 

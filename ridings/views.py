@@ -23,12 +23,14 @@ def view_riding(request, r_id):
     #""" View all the details about a riding on one page. """
     riding = Riding.objects.get(id=r_id)
     polls = riding.polls()
+    num_polls = riding.polls().count()
     incumbents = riding.incumbents()
     candidates =riding.candidates()
     keywords = RidingKeywordValue.objects.filter(riding=riding)
     return render_to_response('ridings/riding.html',
         {'riding': riding,
          'polls': polls,
+	 'num_polls': num_polls,
          'candidates': candidates,
          'incumbents': incumbents,
          'keywords': keywords,

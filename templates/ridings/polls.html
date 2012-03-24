@@ -1,23 +1,36 @@
-{% extends "base.html" %}
+{% extends "base-subsection.html" %}
 
 {% block h1 %}List of {{type}}{% endblock %}
+
+{% block subbreadcrumbs %}
+    <li><a href="{% url ridings.views.view_all_ridings %}">Riding Management</a></li>
+    <li>View Polls</li>
+{% endblock %}
+
+{% block actions %}
+<li><a href="{% url ridings.views.add_poll riding.id %}">Add Poll to Riding</a></li>
+
+{% endblock %}
 
 {% block content %}
 <table>
 <tr>
-<th>Riding</th>
+{% for poll in polls %}
+{% if forloop.first %}
+<th>{{ poll.riding }}</th>
+{% endif %}
+{% endfor %}
 <th>Active</th>
 <th>Polling Station</th>
 </tr>
 {% for poll in polls %}
 <tr>
-<td><a href="{% url ridings.views.modify_poll riding.id poll.id %}">{{poll.riding}}</a></td>
+<td><a href="{% url ridings.views.modify_poll riding.id poll.id %}">Modify</a></td>
 <td>{{poll.active}}</td>
 <td>{{poll.polling_stn}}</td>
 </tr>
 {% endfor %}
 </table>
-<p><a href="{% url ridings.views.add_poll riding.id %}">Add Poll</a></p>
 
 {% endblock %}
 
