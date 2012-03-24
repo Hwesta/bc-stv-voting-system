@@ -58,7 +58,9 @@ class PoliticianKeywordListForm(ModelForm):
 class RidingKeywordValueForm(ModelForm):
     class Meta:
         model = RidingKeywordValue
+        exclude = ('keyword','riding')
         
 class PoliticianKeywordValueForm(ModelForm):
     class Meta:
         model = PoliticianKeywordValue
+        exclude = ('keyword','politician')
