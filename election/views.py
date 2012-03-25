@@ -1,4 +1,6 @@
 import urlparse
+import json
+from itertools import chain
 # Django
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -19,6 +21,7 @@ from ridings.models import Riding, Poll
 from ballots.models import Ballot
 from django.db.models import Count
 from politicians.models import Politician
+
 
 # TODO Add decorators limiting access
 
@@ -143,16 +146,23 @@ def calc_winners(request, r_id):
     p = Poll.objects.filter(riding=r) 
     b = Ballot.objects.filter(poll__in=p.values("id"))
     c = Politician.objects.filter(candidate_riding=r)
-    for poll in p:
-        temp = Ballot.objects.filter(poll=poll)
-	b = b | temp
-    b = b.values("vote").annotate(cnt=Count('vote'))
-    data = str(c.count()) + " " + str(r.num_seats)
-    for ballot in b:
+    b2 = b.values("vote").annotate(cnt=Count('vote'))
+    #c2 = dict((i+1,v) for i,v in enumerate(set(chain.from_iterable([json.loads(v['vote']).values() for v in b2]))))
+    c2 = dict((i+1,v.name) for i, v in enumerate(list(c)))
+    c2b = dict((v,k) for k,v in c2.iteritems())
+    print c
+    print c2
+    print c2b
+    data = str(c.count()) + " " + str(r.num_seats) + "\n"
+    for ballot in b2:
 	data = data + " " + str(ballot['cnt']) + " " 
-	for vote in ballot['vote']:
-	    data = data + str(vote) + " "
-	data = data + "0"
-    data = data + "0"
-     
+	vote_line = json.loads(ballot['vote'])
+	for _i, _c in vote_line.iteritems():
+	    data = data + str(c2b[_c]) + " "
+	data = data + "0\n"
+    data = data + "0\n"
+
+    for key, candidate in c2.iteritems():
+	data = data + candidate + "\n"
+    data = data + r.name + " Results"
     return render_to_response('election/winners.html', {'num_candidates':c.count(), 'ballots':data})
