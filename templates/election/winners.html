@@ -3,7 +3,19 @@
 {% block h1 %}{{riding.name}} Results{% endblock %}
 
 {% block content %}
+<p>Number of Seats: {{riding.num_seats}}</p>
+<p>Number of Eligable Voters: {{riding.num_voters}}</p>
+<p>Number of Ballots Cast: {{numVotes}}</p>
+<p>Number of Spoiled Ballots: {{numSpoiled}}</p>
+<table>
+<tr>
+<th>Winner</th>
+<th>Number of First Choice Votes</th>
+<th>Number of Second Choice Votes</th>
+<th>Number of Votes Transfered</th>
+</tr>
 
+</table>
 <p>{{results}}</p>
 
 {% endblock %}

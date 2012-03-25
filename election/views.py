@@ -151,7 +151,7 @@ def start_recount(request):
 def calc_winners(request, r_id):
     r = Riding.objects.get(id=r_id)
     p = Poll.objects.filter(riding=r) 
-    b = Ballot.objects.filter(poll__in=p.values("id"))
+    b = Ballot.objects.filter(poll__in=p.values("id")).filter(valid=True).filter(verified=True).filter(spoiled=False)
     c = Politician.objects.filter(candidate_riding=r)
     b2 = b.values("vote").annotate(cnt=Count('vote'))
     #c2 = dict((i+1,v) for i,v in enumerate(set(chain.from_iterable([json.loads(v['vote']).values() for v in b2]))))
@@ -180,5 +180,6 @@ def calc_winners(request, r_id):
     E.options.setopt('precision', default=6,force=True)
     E.count()
     print E.report()
-
-    return render_to_response('election/winners.html', {'riding':r ,'candidates':c, 'results':E.record()})
+    result = E.record()
+    return render_to_response('election/winners.html', {'riding':r ,'candidates':c, 'results':result, 'numVotes':result['nballots'],
+		'numSpoiled':Ballot.objects.filter(poll__in=p.values("id")).filter(verified=True).filter(spoiled=True).count()})
