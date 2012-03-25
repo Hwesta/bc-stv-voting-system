@@ -111,13 +111,13 @@ def view_election(request):
 def change_election_status(request):
    elec_list = Election.objects.all()
    if request.method == 'POST':
-       form = ElectionForm(request.Post,instance = elec_list)
+       form = ElectionForm(request.POST)
        if form.is_valid():
            form.save()
-           return HttpResponseRedirect(reverse(admin_home))
+           return HttpResponseRedirect(reverse(index))
    else:
        form = ElectionForm()
-   return render_to_response('election/change_election_status.html', {'election':elec_list})
+   return render(request, 'election/change_election_status.html', {'election':elec_list, 'form' : form})
 
 def set_location(request):
    return render_to_response('election/set_location.html', {})

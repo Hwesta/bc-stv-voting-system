@@ -11,7 +11,7 @@ STATUS_CHOICES = (
 class Election(models.Model):
     status = models.CharField(max_length=3, choices=STATUS_CHOICES)
     description = models.CharField(max_length=128)
-    start = models.DateField(help_text="Date the polls open")
+    start = models.DateField(help_text="YYYY-MM-DD")
     #archive = 
     
     def __unicode__(self):
@@ -19,7 +19,12 @@ class Election(models.Model):
     
     def changeStatus(self):
         """ Move the election to the next status. """
-        pass
+        if self.status == 'BEF':
+            self.status = 'DUR'
+        elif self.status == 'DUR':
+            self.status = 'AFT'
+        else:
+            self.status = 'BEF'
     
     def archive(self):
         """ Archive an election """

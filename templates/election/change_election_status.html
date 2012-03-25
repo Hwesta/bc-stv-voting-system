@@ -4,8 +4,13 @@
 {% block subbreadcrumbs %}{% endblock %}
 
 {% block content %}
-Current Status:
-Do you wish to change elections status to
+<form action="{% url election.views.change_election_status %}" method="post">{% csrf_token %}
+{{ form.as_p }}
+<input type="submit" value= "Submit">
+
+</form>
+
+
 
 {% endblock %}
 
