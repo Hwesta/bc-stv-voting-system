@@ -10,7 +10,8 @@ class Ballot(models.Model):
     poll = models.ForeignKey(Poll)
     verified = models.BooleanField(default=False)
     valid = models.BooleanField(default=True)
-    # Vote will store a list of candidate : ranking pairs or a spoiled : true flag
+    # Vote will store a list of ranking: candidate pairs
+    spoiled = models.BooleanField(default=False)
     vote = JSONField()
 
     def __unicode__(self):
