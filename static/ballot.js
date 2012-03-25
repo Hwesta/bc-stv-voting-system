@@ -23,16 +23,18 @@ function enforceBallotValidity()
 		
 function onSubmit()
 {
-	var formVals = $(this).serializeArray();
+	var formVals = $("form input:radio").serializeArray();
 	var jsonObj = {};
 				
 	//Inspired by a comment on the jquery documentation at http://api.jquery.com/serializeArray/
 	for (i in formVals)
-		jsonObj[formVals[i].name] = formVals[i].value;
+		jsonObj[formVals[i].value]=formVals[i].name;
 				
-	console.log(jsonObj);
   	var submitVals = JSON.stringify(jsonObj);
 				
-	console.log(submitVals);
-	return false;
+	//console.log(submitVals);
+	//return false;
+	$('input#id_vote').val(submitVals);
+	console.log($('input#id_vote'));
+	return true;
 }

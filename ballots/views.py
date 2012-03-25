@@ -54,7 +54,11 @@ def input_ballot(request, poll_id):
             return HttpResponseRedirect(reverse(view_ballots))
     else:
         form = BallotForm()
-    return render(request, 'ballots/add.html', {'form':form, 'poll_id':poll_id})
+    return render(request, 'ballots/add.html',
+                  {'form':form,
+                   'candidates':candidates,
+                   'poll_id':poll_id,
+                  })
 
 def view_conflict_list(request):
     auto_ballots = Ballot.objects.filter(verified=False).values('ballot_num','vote').annotate(cnt=Count('ballot_num')).filter(cnt__gt=1)
