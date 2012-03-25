@@ -109,10 +109,12 @@ def login(request, redirect_field_name=REDIRECT_FIELD_NAME, **kwargs):
 
 def view_election(request):
    elec_list = Election.objects.all()
-   return render_to_response('election/view.html', {'election':elec_list})
+   elec_list = elec_list[(elec_list.count()-1)]
+   return render_to_response('election/view.html', {'election': (elec_list) })
 
 def change_election_status(request):
    elec_list = Election.objects.all()
+   elec_list = elec_list[(elec_list.count()-1)]
    if request.method == 'POST':
        form = ElectionForm(request.POST)
        if form.is_valid():
