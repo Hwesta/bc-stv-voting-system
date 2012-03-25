@@ -1,6 +1,8 @@
 import urlparse
 import json
 from itertools import chain
+from droop.election import Election as DroopElection
+from droop.profile import ElectionProfile as DroopElectionProfile
 # Django
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -21,6 +23,7 @@ from ridings.models import Riding, Poll
 from ballots.models import Ballot
 from django.db.models import Count
 from politicians.models import Politician
+
 
 
 # TODO Add decorators limiting access
@@ -157,7 +160,7 @@ def calc_winners(request, r_id):
     print c2b
     data = str(c.count()) + " " + str(r.num_seats) + "\n"
     for ballot in b2:
-	data = data + " " + str(ballot['cnt']) + " " 
+	data = data + str(ballot['cnt']) + " " 
 	vote_line = json.loads(ballot['vote'])
 	for _i, _c in vote_line.iteritems():
 	    data = data + str(c2b[_c]) + " "
@@ -165,6 +168,15 @@ def calc_winners(request, r_id):
     data = data + "0\n"
 
     for key, candidate in c2.iteritems():
-	data = data + candidate + "\n"
-    data = data + r.name + " Results"
-    return render_to_response('election/winners.html', {'num_candidates':c.count(), 'ballots':data})
+	data = data + "\"k" + str(key) + "\"\n"
+    data = data + "\"" + r.name + " Results\""
+
+    print "====="
+    print data
+    print "====="
+    E = DroopElection(DroopElectionProfile(data=data.encode('ascii', 'ignore')), dict(rule='scotland'))
+    E.options.setopt('precision', default=6,force=True)
+    E.count()
+    print E.report()
+
+    return render_to_response('election/winners.html', {'num_candidates':c.count(), 'ballots':E.report()})
