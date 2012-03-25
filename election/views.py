@@ -3,6 +3,8 @@ import json
 from itertools import chain
 from droop.election import Election as DroopElection
 from droop.profile import ElectionProfile as DroopElectionProfile
+# This is our BCSTV rules for Droop
+from election.rules import BCSTVRule
 # Django
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -174,7 +176,7 @@ def calc_winners(request, r_id):
     print "====="
     print data
     print "====="
-    E = DroopElection(DroopElectionProfile(data=data.encode('ascii', 'ignore')), dict(rule='scotland'))
+    E = DroopElection(DroopElectionProfile(data=data.encode('ascii', 'ignore')), dict(rule='bcstv'))
     E.options.setopt('precision', default=6,force=True)
     E.count()
     print E.report()
