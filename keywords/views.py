@@ -1,4 +1,4 @@
-from django.shortcuts import render_to_response, render
+from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from politicians.models import Politician
@@ -17,7 +17,7 @@ def index(request):
     politician_keyword_values = PoliticianKeywordValue.objects.all()
     riding_keywords = RidingKeywordList.objects.filter(delete=False)
     politician_keywords = PoliticianKeywordList.objects.filter(delete=False)
-    return render_to_response('keywords/view.html',
+    return render(request, 'keywords/view.html',
         {'riding_keyword_values': riding_keyword_values,
          'politician_keyword_values': politician_keyword_values,
          'riding_keywords': riding_keywords,
@@ -114,11 +114,11 @@ def modifyPoliticianKeywordValue(request, k_id):
 def restoreRidingKeyword(request):
 	title = "Riding"
 	list = RidingKeywordList.objects.filter(delete=True)
-	return render_to_response('keywords/restoreridingkeyword.html', {'list':list})
+	return render(request, 'keywords/restoreridingkeyword.html', {'list':list})
 
 def restorePoliticianKeyword(request):
 	title = "Politician"
 	list = PoliticianKeywordList.objects.filter(delete=True)
-	return render_to_response('keywords/restorepoliticiankeyword.html', {'list':list})
+	return render(request, 'keywords/restorepoliticiankeyword.html', {'list':list})
 
 

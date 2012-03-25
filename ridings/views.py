@@ -1,4 +1,4 @@
-from django.shortcuts import render_to_response, render
+from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from ridings.models import Riding, Poll, RidingForm, PollForm
@@ -12,12 +12,12 @@ from keywords.models import RidingKeywordValue, PoliticianKeywordValue
 def view_all_ridings(request):
     #""" View list of all the ridings. """
     ridings = Riding.objects.filter(delete=False)
-    return render_to_response('ridings/ridings.html',{'ridings': ridings, 'type': str('ridings')})
+    return render(request, 'ridings/ridings.html',{'ridings': ridings, 'type': str('ridings')})
 
 def view_deleted_ridings(request):
     #""" View list of deleted ridings. """
     ridings = Riding.objects.filter(delete=True)
-    return render_to_response('ridings/deleted_ridings.html',{'ridings': ridings, 'type': str('ridings')})
+    return render(request, 'ridings/deleted_ridings.html',{'ridings': ridings, 'type': str('ridings')})
 
 def view_riding(request, r_id):
     #""" View all the details about a riding on one page. """
@@ -26,7 +26,7 @@ def view_riding(request, r_id):
     incumbents = riding.incumbents()
     candidates =riding.candidates()
     keywords = RidingKeywordValue.objects.filter(riding=riding)
-    return render_to_response('ridings/riding.html',
+    return render(request, 'ridings/riding.html',
         {'riding': riding,
          'polls': polls,
          'candidates': candidates,
@@ -61,7 +61,7 @@ def add_riding(request):
 def view_polls(request, riding_id):
     riding = Riding.objects.get(id=riding_id)
     p = Poll.objects.filter(riding=riding)
-    return render_to_response('ridings/polls.html',
+    return render(request, 'ridings/polls.html',
         {'polls': p,
          'type': str('Polls'),
          'riding': riding,

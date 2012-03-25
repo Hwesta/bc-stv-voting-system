@@ -1,4 +1,4 @@
-from django.shortcuts import render_to_response, redirect, render
+from django.shortcuts import redirect, render
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from users.models import CreateUserForm
@@ -14,7 +14,7 @@ def index(request):
 
 def view_user(request, user_id):
     """ View detailed information about one user. """
-    return render_to_response('users/view_user.html',
+    return render(request, 'users/view_user.html',
         {  })
 
 def add_user(request):
@@ -50,12 +50,12 @@ def modify_user(request, user_id):
 
 def delete_user(request, user_id):
     """ Delete a user. """
-    return render_to_response('users/delete_user.html',
+    return render(request, 'users/delete_user.html',
         {  })
 
 
 def ban_user(request, user_id):
     """ Leave the user intact, but prevent them from logging in. """
-    return render_to_response('users/ban_user.html',
+    return render(request, 'users/ban_user.html',
         {  })
 

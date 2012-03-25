@@ -10,7 +10,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response, render
+from django.shortcuts import render
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 # django-auth
@@ -35,31 +35,31 @@ from politicians.models import Politician
 @login_required
 def index(request):
     """ Display the index page. """
-    return render_to_response('index.html', 
+    return render(request, 'index.html', 
         {  })
 
 @login_required
 def ro_homepage(request):
     """ Display the index page. """
-    return render_to_response('election/ro_homepage.html', 
+    return render(request, 'election/ro_homepage.html', 
         {  })
 
 @login_required
 def eo_homepage(request):
     """ Display the index page. """
-    return render_to_response('election/eo_homepage.html',
+    return render(request, 'election/eo_homepage.html',
         {  })
 
 @login_required
 def reporter_homepage(request):
     """ Display the index page. """
-    return render_to_response('election/reporter_homepage.html',
+    return render(request, 'election/reporter_homepage.html',
         {  })
 
 @login_required
 def admin_homepage(request):
     """ Display the index page. """
-    return render_to_response('election/admin_homepage.html',
+    return render(request, 'election/admin_homepage.html',
         {  })
 
 # Login Management
@@ -115,7 +115,7 @@ def login(request, redirect_field_name=REDIRECT_FIELD_NAME, **kwargs):
 def view_election(request):
    elec_list = Election.objects.all()
    elec_list = elec_list[(elec_list.count()-1)]
-   return render_to_response('election/view.html', {'election': (elec_list) })
+   return render(request, 'election/view.html', {'election': (elec_list) })
 
 def change_election_status(request):
    elec_list = Election.objects.all()
@@ -130,7 +130,7 @@ def change_election_status(request):
    return render(request, 'election/change_election_status.html', {'election':elec_list, 'form' : form})
 
 def set_location(request):
-   return render_to_response('election/set_location.html', {})
+   return render(request, 'election/set_location.html', {})
 
 def start_recount(request):
     # TODO Add message in redirect saying recount has been started.
@@ -181,5 +181,5 @@ def calc_winners(request, r_id):
     E.count()
     print E.report()
     result = E.record()
-    return render_to_response('election/winners.html', {'riding':r ,'candidates':c, 'results':result, 'numVotes':result['nballots'],
+    return render(request, 'election/winners.html', {'riding':r ,'candidates':c, 'results':result, 'numVotes':result['nballots'],
 		'numSpoiled':Ballot.objects.filter(poll__in=p.values("id")).filter(verified=True).filter(spoiled=True).count()})

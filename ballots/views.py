@@ -1,4 +1,4 @@
-from django.shortcuts import render_to_response, render
+from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.db.models import Count
@@ -25,7 +25,7 @@ def choose_poll(request):
 def compare_ballot(request, b_id):
     ballot = Ballot.objects.get(id=b_id)
     ballot_list = Ballot.objects.filter(ballot_num=ballot.ballot_num)
-    return render_to_response('ballots/compare.html', {'ballots':ballot_list})
+    return render(request, 'ballots/compare.html', {'ballots':ballot_list})
 
 def close_poll():
     """ Close the poll and check all inputted ballots.
@@ -38,11 +38,11 @@ def close_poll():
 
 def view_ballots(request):
     ballot_list = Ballot.objects.all()
-    return render_to_response('ballots/view.html', {'ballots':ballot_list})
+    return render(request, 'ballots/view.html', {'ballots':ballot_list})
 
 def view_ballot(request, b_id):
     ballot = Ballot.objects.get(id=b_id)
-    return render_to_response('ballots/view_single.html', {'ballot':ballot, 'ballot_num':b_id})
+    return render(request, 'ballots/view_single.html', {'ballot':ballot, 'ballot_num':b_id})
 
 def input_ballot(request, poll_id):
     poll = Poll.objects.get(id=poll_id)
@@ -80,4 +80,4 @@ def view_conflict_list(request):
                 break
         if added == False:
             single_ballots.append(ballot)
-    return render_to_response('ballots/view_conflicts.html', {'ballots':wrong_ballots})
+    return render(request, 'ballots/view_conflicts.html', {'ballots':wrong_ballots})
