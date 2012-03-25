@@ -179,4 +179,4 @@ def calc_winners(request, r_id):
     E.count()
     print E.report()
 
-    return render_to_response('election/winners.html', {'num_candidates':c.count(), 'ballots':E.report()})
+    return render_to_response('election/winners.html', {'riding':r ,'candidates':c, 'results':E.topCand()})
