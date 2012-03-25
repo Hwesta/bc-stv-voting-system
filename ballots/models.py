@@ -14,7 +14,7 @@ class Ballot(models.Model):
     vote = JSONField()
 
     def __unicode__(self):
-        return str(self.ballot_num)+", "+str(self.verified)
+        return str(self.ballot_num)+", "+str(self.verified)+", "+str(self.vote)
 
 class BallotForm(ModelForm):
     class Meta:

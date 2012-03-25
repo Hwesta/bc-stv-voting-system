@@ -15,6 +15,10 @@ from django.contrib.auth.views import login as base_login_view
 from django.contrib import messages
 # Election
 from election.models import Election, RecountForm, ElectionForm
+from ridings.models import Riding, Poll
+from ballots.models import Ballot
+from django.db.models import Count
+from politicians.models import Politician
 
 # TODO Add decorators limiting access
 
@@ -133,3 +137,22 @@ def start_recount(request):
     return render(request, 'election/start_recount.html',
         {'form': form,
         })
+
+def calc_winners(request, r_id):
+    r = Riding.objects.get(id=r_id)
+    p = Poll.objects.filter(riding=r) 
+    b = Ballot.objects.filter(poll__in=p.values("id"))
+    c = Politician.objects.filter(candidate_riding=r)
+    for poll in p:
+        temp = Ballot.objects.filter(poll=poll)
+	b = b | temp
+    b = b.values("vote").annotate(cnt=Count('vote'))
+    data = str(c.count()) + " " + str(r.num_seats)
+    for ballot in b:
+	data = data + " " + str(ballot['cnt']) + " " 
+	for vote in ballot['vote']:
+	    data = data + str(vote) + " "
+	data = data + "0"
+    data = data + "0"
+     
+    return render_to_response('election/winners.html', {'num_candidates':c.count(), 'ballots':data})
