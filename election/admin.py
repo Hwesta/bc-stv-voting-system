@@ -3,7 +3,6 @@ from ballots.models import Ballot
 from keywords.models import RidingKeywordList, RidingKeywordValue, PoliticianKeywordList, PoliticianKeywordValue
 from politicians.models import Politician
 from ridings.models import Riding, Poll
-from users.models import User
 from django.contrib import admin
 
 admin.site.register(Ballot)
@@ -15,5 +14,4 @@ admin.site.register(Poll)
 admin.site.register(Riding)
 admin.site.register(RidingKeywordList)
 admin.site.register(RidingKeywordValue)
-admin.site.register(User)
 

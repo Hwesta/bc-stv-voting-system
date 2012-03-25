@@ -1,14 +1,16 @@
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, redirect, render
 from django.contrib.auth.forms import UserCreationForm
-from users.models import User
+from django.contrib.auth.models import User
+from users.models import CreateUserForm
 
 # User Management
 # TODO Add decorators limiting access
 
 def index(request):
     """ View summary information about all users. """
-    return render_to_response('users/view_all_users.html',
-        {  })
+    users = User.objects.filter(is_staff=False)
+    return render(request, 'users/view_all_users.html',
+        { 'users': users })
 
 def view_user(request, user_id):
     """ View detailed information about one user. """
@@ -17,15 +19,33 @@ def view_user(request, user_id):
 
 def add_user(request):
     """ Create a new user. """
-    form = UserCreationForm()
-    return render_to_response('users/add_user.html',
-        {'form': form,
-        })
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            new_user = User.objects.create_user(form.cleaned_data['username'], form.cleaned_data['password1'])
+            return redirect(index)
+    else:
+        form = CreateUserForm() 
+    return render(request, 'users/add_user.html', {
+        'form': form,
+    })
+
 
 def modify_user(request, user_id):
     """ Edit a user's information. """
-    return render_to_response('users/modify_user.html',
-        {  })
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            print "form clean", form.cleaned_data
+            new_user = User.objects.create_user(form.cleaned_data['username'], form.cleaned_data['password1'])
+            print "new user", new_user
+            return redirect(index)
+    else:
+        form = CreateUserForm(instance=request.user)
+
+    return render(request, 'users/modify_user.html', {
+        'form': form,
+    })
 
 
 def delete_user(request, user_id):
