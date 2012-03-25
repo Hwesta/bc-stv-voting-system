@@ -11,6 +11,7 @@
 
 <form action="{% url ballots.views.input_ballot poll_id %}" method="post" id="myform">
 {% csrf_token %}
+{{form.ballot_num.label}}:{{form.ballot_num}}
 
 <table>
 	<tr>
@@ -43,7 +44,6 @@
         
         <script>
 		  $("input[type=radio]").click(enforceBallotValidity);
-
 		  $('#myform').submit(onSubmit);
 		</script>
 
