@@ -12,7 +12,8 @@ class Ballot(models.Model):
     valid = models.BooleanField(default=True)
     # Vote will store a list of ranking: candidate pairs
     spoiled = models.BooleanField(default=False)
-    vote = JSONField()
+    # JSONField will not load back properly, and we are decoding the contents anyway
+    vote = models.TextField()
 
     def __unicode__(self):
         return str(self.ballot_num)+", "+str(self.verified)+", "+str(self.vote)
