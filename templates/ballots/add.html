@@ -2,7 +2,7 @@
 
 {% block h1 %}Add Ballot{% endblock %}
 
-{% block subbreadcrumbs %}<li><a href="">Enter ballots for poll 42</a></li>
+{% block subbreadcrumbs %}<li><a href="">Enter ballots for poll {{ poll_id }}</a></li>
 <li>Enter Ballot</li>{% endblock %}
 {% block content %}
 	    <script src="../static/jquery.js"></script>
@@ -47,8 +47,7 @@
         </form>-->
 
 <form 
-action="{% url ballots.views.input_ballot %}" 
-method="post">
+action="{% url ballots.views.input_ballot poll_id %}" method="post">
 {% csrf_token %}
 {{ form.as_p }}
 <input type="submit" value="Submit" />
