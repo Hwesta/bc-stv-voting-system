@@ -1,4 +1,6 @@
 # from http://djangosnippets.org/snippets/1478/ and CourSys by Greg Baker et al
+# The strict version will fail on load/save repeat of rows
+# the older sloppy version completes it fine
 
 from django.db import models
 from django.core.serializers.json import DjangoJSONEncoder
@@ -12,7 +14,7 @@ class JSONField(models.TextField):
     # Used so to_python() is called
     __metaclass__ = models.SubfieldBase
 
-    def to_python(self, value):
+    def to_python_broken_strict(self, value):
         """Convert our string value to JSON after we load it from the DB
         
         Stricter version to fail faster.
@@ -25,7 +27,7 @@ class JSONField(models.TextField):
             # already converted
             return value
 
-    def to_python_sloppy(self, value):
+    def to_python(self, value):
         """Convert our string value to JSON after we load it from the DB"""
 
         if value == "":
