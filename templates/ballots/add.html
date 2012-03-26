@@ -31,7 +31,7 @@
 	<tr>
 		<td>{{ person.name }}</td>
         {%for _ in candidates %}
-        	<td><input type="radio" name="{{ person.name }}" class="data-column-{{forloop.counter}}" value="{{forloop.counter}}" /></td>
+        	<td><input type="radio" name="{{ person.id }}" class="data-column-{{forloop.counter}}" value="{{forloop.counter}}" /></td>
         {%endfor%}
 
 	</tr>
