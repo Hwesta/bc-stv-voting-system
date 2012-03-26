@@ -21,7 +21,7 @@ class Ballot(models.Model):
 class BallotForm(ModelForm):
     class Meta:
         model = Ballot
-        fields = ('ballot_num', 'vote', 'spoiled')
+        fields = ('poll', 'ballot_num', 'vote', 'spoiled')
         hidden = ('vote')
 
 class ChoosePollForm(forms.Form):
