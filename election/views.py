@@ -162,31 +162,42 @@ def calc_winners(request, r_id):
     c = Politician.objects.filter(candidate_riding=r)
     # Get distinct ballot contents and how many times they occured
     b2 = calculation_ballots.values("vote").annotate(cnt=Count('vote'))
-    #c2 = dict((i+1,v) for i,v in enumerate(set(chain.from_iterable([json.loads(v['vote']).values() for v in b2]))))
-    c2 = dict((i+1,v.name) for i, v in enumerate(list(c)))
+    # Dictionary of (key=droop candidate ID, value=politician.id)
+    c2 = dict((i+1,v.id) for i, v in enumerate(list(c)))
+    # Dictionary of (key=politician.id, value=droop candidate ID)
     c2b = dict((v,k) for k,v in c2.iteritems())
+    # Debug
     print c
     print c2
     print c2b
+    # Start of BLT generation
+    # Number of candidates, Number of seats
     data = str(c.count()) + " " + str(r.num_seats) + "\n"
+    # For each distinct ballot content
     for ballot in b2:
+        # Count of times
         data = data + str(ballot['cnt']) + " "
+        # Content of ballot
         vote_line = json.loads(ballot['vote'])
-        print 'vote ',repr(vote_line)
         for _i, _c in vote_line.iteritems():
-            data = data + str(c2b[_c]) + " "
+            # Of the droop ID numbers for the candidate
+            data = data + str(c2b[int(_c)]) + " "
+        # 0 to say no more candidates on ballot
         data = data + "0\n"
+    # 0 to say no more ballots
     data = data + "0\n"
 
+    # candidates in droop order
     for key, candidate in c2.iteritems():
         data = data + "\"k" + str(key) + "\"\n"
+    # Name of election
     data = data + "\"" + r.name + " Results\""
+    # End of BLT generation
 
-    print "====="
+    print "===== BLT"
     print data
     print "====="
     E = DroopElection(DroopElectionProfile(data=data.encode('ascii', 'ignore')), dict(rule='bcstv'))
-    E.options.setopt('precision', default=6,force=True)
     E.count()
     print E.report()
     result = E.record()
