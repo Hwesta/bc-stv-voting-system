@@ -76,7 +76,7 @@ def login(request, redirect_field_name=REDIRECT_FIELD_NAME, **kwargs):
     redirect_to = request.REQUEST.get(redirect_field_name, '')
     username = request.POST['username']
     password = request.POST['password']
-	# START Block from ipauth.views
+    # START Block from ipauth.views
     ip = None
     if 'ipauth_meta_key' in kwargs:
         ip = request.META.get(kwargs.pop('ipauth_meta_key'), None)
@@ -84,14 +84,14 @@ def login(request, redirect_field_name=REDIRECT_FIELD_NAME, **kwargs):
         ip = request.META.get(settings.IPAUTH_IP_META_KEY, None)
     if ip is None:
         ip = request.META['REMOTE_ADDR']
-	# FIN Block from ipauth.views
+    # FIN Block from ipauth.views
     user = authenticate(username=username, password=password, ip=ip)
     if user is None or not user.is_active:
         return base_login_view(request, redirect_field_name=redirect_field_name, 
                                **kwargs)
-	auth_login(request, user)
+    auth_login(request, user)
     
-	messages.add_message(request, messages.INFO,
+    messages.add_message(request, messages.INFO,
                         'You are now logged in as %s on %s' % (user.get_full_name(), ip))
     
     netloc = urlparse.urlparse(redirect_to)[1]
@@ -150,10 +150,18 @@ def start_recount(request):
 
 def calc_winners(request, r_id):
     r = Riding.objects.get(id=r_id)
-    p = Poll.objects.filter(riding=r) 
-    b = Ballot.objects.filter(poll__in=p.values("id")).filter(valid=True).filter(verified=True).filter(spoiled=False)
+    # All ballots for a riding
+    all_ballots = r.ballots()
+    # All ballots for the calculation
+    # TODO: Should this filtering move to the Riding class or Ballot class?
+    calculation_ballots = all_ballots.filter(valid=True).filter(verified=True).filter(spoiled=False)
+    # All spoiled ballots
+    # TODO: Should this filtering move to the Riding class or Ballot class?
+    spoiled_ballots = all_ballots.filter(verified=True).filter(spoiled=True)
+    # All candidates for the riding
     c = Politician.objects.filter(candidate_riding=r)
-    b2 = b.values("vote").annotate(cnt=Count('vote'))
+    # Get distinct ballot contents and how many times they occured
+    b2 = calculation_ballots.values("vote").annotate(cnt=Count('vote'))
     #c2 = dict((i+1,v) for i,v in enumerate(set(chain.from_iterable([json.loads(v['vote']).values() for v in b2]))))
     c2 = dict((i+1,v.name) for i, v in enumerate(list(c)))
     c2b = dict((v,k) for k,v in c2.iteritems())
@@ -162,15 +170,16 @@ def calc_winners(request, r_id):
     print c2b
     data = str(c.count()) + " " + str(r.num_seats) + "\n"
     for ballot in b2:
-	data = data + str(ballot['cnt']) + " " 
-	vote_line = json.loads(ballot['vote'])
-	for _i, _c in vote_line.iteritems():
-	    data = data + str(c2b[_c]) + " "
-	data = data + "0\n"
+        data = data + str(ballot['cnt']) + " "
+        vote_line = json.loads(ballot['vote'])
+        print 'vote ',repr(vote_line)
+        for _i, _c in vote_line.iteritems():
+            data = data + str(c2b[_c]) + " "
+        data = data + "0\n"
     data = data + "0\n"
 
     for key, candidate in c2.iteritems():
-	data = data + "\"k" + str(key) + "\"\n"
+        data = data + "\"k" + str(key) + "\"\n"
     data = data + "\"" + r.name + " Results\""
 
     print "====="
@@ -181,5 +190,10 @@ def calc_winners(request, r_id):
     E.count()
     print E.report()
     result = E.record()
-    return render(request, 'election/winners.html', {'riding':r ,'candidates':c, 'results':result, 'numVotes':result['nballots'],
-		'numSpoiled':Ballot.objects.filter(poll__in=p.values("id")).filter(verified=True).filter(spoiled=True).count()})
+    return render(request, 'election/winners.html', {
+        'riding': r ,
+        'candidates': c, 
+        'results': result, 
+        'numVotes': result['nballots'],
+        'numSpoiled': spoiled_ballots.count(),
+        })
