@@ -8,12 +8,6 @@ class Riding(models.Model):
     num_voters = models.IntegerField(help_text="Number of eligible voters.")
     num_seats = models.IntegerField(help_text="Number of seats available.")
     active = models.BooleanField(help_text="Whether an election is accepting ballots.")
-
-    # These could be functions??
-    num_ballots = models.IntegerField(help_text="Number of ballots cast.",
-        default=0)
-    num_ballots_spoiled = models.IntegerField(help_text="Number of ballots spoiled.",
-        default=0)
     delete = models.BooleanField(default=False)
 
     def __unicode__(self):
@@ -39,7 +33,22 @@ class Riding(models.Model):
     def num_polls(self):
         """ Return the number of polls in the riding. """
         return self.poll_set.count()
-   
+
+    def ballots(self):
+        """ Return all of the ballots in all polls in the riding. """
+        # Do not put this import at the toplevel!
+        # It will break because ballots/models.py imports this file!
+        from ballots.models import Ballot
+        return Ballot.objects.filter(poll__in=self.polls())
+
+    def num_ballots(self):
+        """ Number of ballots cast in all polls in the riding. """
+        return self.ballots().count()
+
+    def num_spoiled_ballots(self):
+        """ Number of spoiled ballots cast in all polls in the riding. """
+        return self.ballots().filter(spoiled=True).count()
+
     def calculate_results(self):
         """ Determine who gets elected. """
         pass
@@ -48,7 +57,7 @@ class Poll(models.Model):
     riding = models.ForeignKey(Riding)
     active = models.BooleanField(help_text="Whether the poll is still accepting ballots.")
     polling_stn = models.CharField(max_length=128)
-    
+
     def __unicode__(self):
         return str(self.riding)+", "+str(self.id)
 
