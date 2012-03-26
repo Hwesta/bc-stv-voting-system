@@ -9,8 +9,6 @@ ROLE_CHOICES = (
 )
 class CreateUserForm(UserCreationForm):
     role = forms.ChoiceField(choices=ROLE_CHOICES)
-    #class Meta:
-        #permissions = ROLE_CHOICES
 
 
     
