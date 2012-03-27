@@ -16,7 +16,8 @@
 </tr>
 
 </table>
-<p>{{results}}</p>
-
+{% for key,value in winners.items %}
+<p>{{value.state}}</p>
+{% endfor %}
 {% endblock %}
 
