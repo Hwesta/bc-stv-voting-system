@@ -1,7 +1,8 @@
 #!/bin/bash
 i=0
+dumpcmd='python manage.py dumpdata --format=json --indent=2'
 grep -v '^#' models-deptree.txt | while read line ; do 
-	python manage.py dumpdata $line >test_data_`printf %03d $i`.json
+	$dumpcmd $line >test_data_`printf %03d $i`.json
 	i=$(( $i + 1 ))
 done
 # loaddata will complain about files that are just "[]"
