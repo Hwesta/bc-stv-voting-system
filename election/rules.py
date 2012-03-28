@@ -42,3 +42,72 @@ class BCSTVRule(ScotlandRule):
 #with BCSTVRule as rule:
 droop.ruleClasses.append(BCSTVRule)
 droop.ruleByName[BCSTVRule.name] = BCSTVRule
+
+from droop.rules.electionrule import ElectionRule
+
+class SNTVRule(ElectionRule):
+    name = method = 'sntv'
+
+    @classmethod
+    def ruleNames(cls):
+        "return supported rule name or names"
+        return cls.name
+
+    @classmethod
+    def helps(cls, helps, name):
+        "provide help string for SNTV"
+        h = "SNTV is the classic most votes rule.\n"
+        h += "\nThere are no options.\n"
+        helps[name] = h
+
+    def __init__(self, E):
+        "initialize rule"
+        self.E = E
+
+    def options(self):
+        "initialize election parameters"
+        self.E.options.setopt('arithmetic', default='rational', force=True)
+        self.E.options.setopt('precision', default=0, force=True)
+        self.E.options.setopt('display', default=0, force=True)
+
+    def info(self):
+        "return an info string for the election report"
+        return "SNTV"
+
+    def tag(self):
+        "return a tag string for unit tests"
+        return self.name
+
+    #########################
+    #
+    #   Main Election Counter
+    #
+    #########################
+    def count(self):
+        E = self.E  # election object
+        C = E.C     # candidates
+
+        E.logAction('begin', 'Begin Count')
+
+        # Take the leading candidate from each ballot
+        for b in E.ballots:
+            b.topCand.vote += b.vote
+
+        # Fill any remaining seats
+        while E.seatsLeftToFill():
+            ordered_candidates = C.hopeful(order='vote', reverse=True)
+            #print "Cands=",len(ordered_candidates)
+            if len(ordered_candidates) > 0:
+                ordered_candidates[0].elect()
+            else:
+                break
+
+        # Defeat remaining hopeful candidates for reporting purposes
+        for c in C.hopeful():
+            c.defeat(msg='Defeat remaining candidates')
+
+# This is important to register this rule with Droop!
+#droop.ruleClasses.append(SNTVRule)
+#droop.ruleByName[SNTVRule.name] = SNTVRule
+
+# vim: et ft=python:
