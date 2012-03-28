@@ -209,3 +209,80 @@ def calc_winners(request, r_id):
         'numSpoiled': spoiled_ballots.count(),
 		'winners': result['actions'][-1]['cstate']
         })
+
+def calc_all_winners(request):
+    #lists for attributes for each riding
+    ridings = []
+    candidates = []
+    results = []
+    numVotes = []
+    numSpoiled = []
+    winners = []
+    for r in Riding.objects.all():
+        # All ballots for a riding
+        all_ballots = r.ballots()
+        # All ballots for the calculation
+        # TODO: Should this filtering move to the Riding class or Ballot class?
+        calculation_ballots = all_ballots.filter(valid=True).filter(verified=True).filter(spoiled=False)
+        # All spoiled ballots
+        # TODO: Should this filtering move to the Riding class or Ballot class?
+        spoiled_ballots = all_ballots.filter(verified=True).filter(spoiled=True)
+        # All candidates for the riding
+        c = Politician.objects.filter(candidate_riding=r)
+        # Get distinct ballot contents and how many times they occured
+        b2 = calculation_ballots.values("vote").annotate(cnt=Count('vote'))
+        # Dictionary of (key=droop candidate ID, value=politician.id)
+        c2 = dict((i+1,v.id) for i, v in enumerate(list(c)))
+        # Dictionary of (key=politician.id, value=droop candidate ID)
+        c2b = dict((v,k) for k,v in c2.iteritems())
+        # Debug
+        print c
+        print c2
+        print c2b
+        # Start of BLT generation
+        # Number of candidates, Number of seats
+        data = str(c.count()) + " " + str(r.num_seats) + "\n"
+        # For each distinct ballot content
+        for ballot in b2:
+            # Count of times
+            data = data + str(ballot['cnt']) + " "
+            # Content of ballot
+            vote_line = json.loads(ballot['vote'])
+            for _i, _c in vote_line.iteritems():
+                # Of the droop ID numbers for the candidate
+                data = data + str(c2b[int(_c)]) + " "
+            # 0 to say no more candidates on ballot
+            data = data + "0\n"
+        # 0 to say no more ballots
+        data = data + "0\n"
+
+        # candidates in droop order
+        for key, candidate in c2.iteritems():
+            data = data + "\"k" + str(key) + "\"\n"
+        # Name of election
+        data = data + "\"" + r.name + " Results\""
+        # End of BLT generation
+
+        print "===== BLT"
+        print data
+        print "====="
+        E = DroopElection(DroopElectionProfile(data=data.encode('ascii', 'ignore')), dict(rule='bcstv'))
+        E.count()
+        print E.report()
+        result = E.record()
+        ridings.append(r)
+        candidates.append(c)
+        results.append(result)
+        numVotes.append(result['nballots'])
+        numSpoiled.append(spoiled_ballots.count())
+        winners.append(result['actions'][-1]['cstate'])
+        
+        
+    return render(request, 'election/all_winners.html', {
+        'ridings': ridings ,
+        'candidates': candidates , 
+        'results': results , 
+        'numVotes': numVotes,
+        'numSpoiled': numSpoiled,
+	'winners': winners
+        })

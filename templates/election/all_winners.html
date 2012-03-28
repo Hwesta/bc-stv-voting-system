@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block h1 %}Election Results{% endblock %}
+
+{% block content %}
+
+{% for riding in ridings %}
+
+<h2>{{riding.name}}</h2>
+<p>Number of Seats: {{riding.num_seats}}</p>
+<p>Number of Eligable Voters: {{riding.num_voters}}</p>
+<p>Number of Ballots Cast: {{numVotes.0}}</p>
+<p>Number of Spoiled Ballots: {{numSpoiled.0}}</p>
+
+{% for key,value in winners.items %}
+<p>{{value.state}}</p>
+{% endfor %}
+
+
+{% endfor %}
+{% endblock %}
+

@@ -32,6 +32,7 @@ urlpatterns = patterns('',
     url(r'^election/status/$', 'election.views.change_election_status'),
     url(r'^election/location/$', 'election.views.set_location'),
     url(r'^election/winners/(\d+)/$', 'election.views.calc_winners'),
+    url(r'^election/all_winners/$', 'election.views.calc_all_winners'),
 
     url(r'^ballots/$', 'ballots.views.view_ballots'),
     url(r'^ballots/add/poll/$', 'ballots.views.choose_poll'),
