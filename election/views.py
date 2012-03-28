@@ -166,10 +166,7 @@ def calc_winners(request, r_id):
     c2 = dict((i+1,v.id) for i, v in enumerate(list(c)))
     # Dictionary of (key=politician.id, value=droop candidate ID)
     c2b = dict((v,k) for k,v in c2.iteritems())
-    # Debug
-    print c
-    print c2
-    print c2b
+
     # Start of BLT generation
     # Number of candidates, Number of seats
     data = str(c.count()) + " " + str(r.num_seats) + "\n"
@@ -194,9 +191,6 @@ def calc_winners(request, r_id):
     data = data + "\"" + r.name + " Results\""
     # End of BLT generation
 
-    print "===== BLT"
-    print data
-    print "====="
     E = DroopElection(DroopElectionProfile(data=data.encode('ascii', 'ignore')), dict(rule='bcstv'))
     E.count()
     print E.report()
@@ -218,6 +212,7 @@ def calc_all_winners(request):
     numVotes = []
     numSpoiled = []
     winners = []
+    x = []
     for r in Riding.objects.all():
         # All ballots for a riding
         all_ballots = r.ballots()
@@ -235,10 +230,9 @@ def calc_all_winners(request):
         c2 = dict((i+1,v.id) for i, v in enumerate(list(c)))
         # Dictionary of (key=politician.id, value=droop candidate ID)
         c2b = dict((v,k) for k,v in c2.iteritems())
-        # Debug
-        print c
-        print c2
-        print c2b
+        # List of all the required Data
+        info = []
+        
         # Start of BLT generation
         # Number of candidates, Number of seats
         data = str(c.count()) + " " + str(r.num_seats) + "\n"
@@ -258,31 +252,27 @@ def calc_all_winners(request):
 
         # candidates in droop order
         for key, candidate in c2.iteritems():
-            data = data + "\"k" + str(key) + "\"\n"
+            data = data + "\"k" + str(candidate) + "\"\n"
         # Name of election
         data = data + "\"" + r.name + " Results\""
         # End of BLT generation
 
-        print "===== BLT"
-        print data
-        print "====="
         E = DroopElection(DroopElectionProfile(data=data.encode('ascii', 'ignore')), dict(rule='bcstv'))
         E.count()
-        print E.report()
         result = E.record()
-        ridings.append(r)
-        candidates.append(c)
-        results.append(result)
-        numVotes.append(result['nballots'])
-        numSpoiled.append(spoiled_ballots.count())
-        winners.append(result['actions'][-1]['cstate'])
+        
+        #places all information in a list
+        
+        info.append(r)
+        info.append(c)
+        info.append(result)
+        info.append(result['nballots'])
+        info.append(spoiled_ballots.count())
+        info.append(result['actions'][-1]['cstate'])
+        
+        x.append(info)
         
         
     return render(request, 'election/all_winners.html', {
-        'ridings': ridings ,
-        'candidates': candidates , 
-        'results': results , 
-        'numVotes': numVotes,
-        'numSpoiled': numSpoiled,
-	'winners': winners
-        })
+        'results':x
+        })      

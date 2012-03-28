@@ -4,19 +4,21 @@
 
 {% block content %}
 
-{% for riding in ridings %}
+{% for data in results %}
 
-<h2>{{riding.name}}</h2>
-<p>Number of Seats: {{riding.num_seats}}</p>
-<p>Number of Eligable Voters: {{riding.num_voters}}</p>
-<p>Number of Ballots Cast: {{numVotes.0}}</p>
-<p>Number of Spoiled Ballots: {{numSpoiled.0}}</p>
+<h2>{{data.0.name}}</h2>
+<p>Number of Seats: {{data.0.num_seats}}</p>
+<p>Number of Eligable Voters: {{data.0.num_voters}}</p>
+<p>Number of Ballots Cast: {{data.3}}</p>
+<p>Number of Spoiled Ballots: {{data.4}}</p>
 
-{% for key,value in winners.items %}
+{% for key,value in data.5.items%}
 <p>{{value.state}}</p>
-{% endfor %}
-
 
 {% endfor %}
+<hr/>
+
+{% endfor %}
+
 {% endblock %}
 
