@@ -12,6 +12,7 @@
 <form action="{% url ballots.views.input_ballot form.poll.value %}" method="post" id="myform">
 {% csrf_token %}
 {{form.non_field_errors}}
+{{form.vote.errors}}
 {{form.ballot_num.errors}}
 {{form.ballot_num.label}}:{{form.ballot_num}}
 
