@@ -2,10 +2,10 @@
 
 {% block h1 %}List of {{type}}{% endblock %}
 
-{% block subbreadcrumbs %}<li>Politician Management</li>{% endblock %}
+{% block subbreadcrumbs %}{% endblock %}
 
 {% block actions %}
-<li><a href="{% url politicians.views.view_deleted_politicians r_id %}">View Deleted Politicians</a></li>
+<li><a href="{% url politicians.views.view_politicians r_id %}">Return to Politicians</a></li>
 {% endblock %}
 
 {% block content %}
@@ -17,7 +17,7 @@
 <th>Candidate in</th>
 </tr>
 {% for politician in politicians %}
-{% if not politician.delete %}
+{% if politician.delete %}
 <tr>
 <td><a href="{% url politicians.views.view_politician r_id, politician.id %}">{{politician.name}}</a></td>
 <td>{{politician.party}}</td>

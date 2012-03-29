@@ -8,10 +8,13 @@
 {% endblock %}
 
 {% block actions %}
-<li><a href="{% url politicians.views.modify_politician politician.id %}">Edit Information</a></li>
+<li><a href="{% url politicians.views.modify_politician r_id, politician.id %}">Edit Information</a></li>
 {% endblock %}
 
 {% block content %}
+{% if politician.delete %}
+<p><b>Deleted</b> {{politician.deleted}}</p>
+{% endif %}
 <p>Name: {{politician.name}}</p>
 <p>Party: {{politician.party}}</p>
 <p>Incumbant in: {{politician.incumbent_riding}}</p>
