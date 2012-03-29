@@ -6,23 +6,30 @@ from django.forms import ModelForm
 from django.contrib.auth.models import User
 import json
 
+BALLOT_STATE_CHOICES = (
+    ('U', 'Unverified'),
+    ('C', 'Correct'),
+    ('I', 'Incorrect'),
+    ('R', 'Recount'),
+)
 
 class Ballot(models.Model):
     
-    ballot_num = models.IntegerField()
+    ballot_num = models.IntegerField(db_index=True)
     poll = models.ForeignKey(Poll)
-    verified = models.BooleanField(default=False)
-    valid = models.BooleanField(default=True)
+    # State of ballot for verification
+    state = models.CharField(max_length=1, choices=BALLOT_STATE_CHOICES, default='U', null=False, db_index=True)
+    # Was the ballot spoiled/rejected?
+    spoiled = models.BooleanField(default=False, db_index=True)
     # Vote will store a list of ranking: candidate pairs
-    spoiled = models.BooleanField(default=False)
     # JSONField will not load back properly, and we are decoding the contents anyway
     vote = models.TextField(blank=True)
-    entered_by = models.ForeignKey(User, null=True, blank=True)
+    entered_by = models.ForeignKey(User, null=True, blank=True, db_index=True)
     ballot_hash = models.CharField(max_length=128, null=True, blank=True)
     
 
     def __unicode__(self):
-        return str(self.ballot_num)+", "+str(self.verified)+", "+str(self.vote)
+        return str(self.ballot_num)+", "+str(self.state)+", "+str(self.vote)
 
 def ids_sequential_and_start_at_1(lst):
     return set(lst) == set(range(1,len(lst)+1))
