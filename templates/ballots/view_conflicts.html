@@ -12,7 +12,7 @@
 
 {% for ballot in ballots %}
 <tr>
-<td><a href="{% url ballots.views.compare_ballots ballot.id %}">{{ballot.ballot_num}}</a></td>
+<td><a href="{% url ballots.views.compare_ballot ballot.id %}">{{ballot.ballot_num}}</a></td>
 <td>{{ballot.poll}}</td>
 <td>{{ballot.id}}</td>
 </tr>
