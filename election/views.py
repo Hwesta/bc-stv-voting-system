@@ -166,6 +166,7 @@ def calc_winners(request, r_id):
     c2 = dict((i+1,v.id) for i, v in enumerate(list(c)))
     # Dictionary of (key=politician.id, value=droop candidate ID)
     c2b = dict((v,k) for k,v in c2.iteritems())
+    winners = []
 
     # Start of BLT generation
     # Number of candidates, Number of seats
@@ -186,32 +187,33 @@ def calc_winners(request, r_id):
 
     # candidates in droop order
     for key, candidate in c2.iteritems():
-        data = data + "\"k" + str(key) + "\"\n"
+        data = data + "\"" + str(candidate) + "\"\n"
     # Name of election
     data = data + "\"" + r.name + " Results\""
     # End of BLT generation
 
     E = DroopElection(DroopElectionProfile(data=data.encode('ascii', 'ignore')), dict(rule='bcstv'))
     E.count()
-    print E.report()
     result = E.record()
+    for i in range(len(result['actions'][-1]['cstate'])):
+        temp = []
+        k = result['cdict'][i+1]['name']
+        temp.append(Politician.objects.get(id = k))
+        temp.append(result['actions'][-1]['cstate'][i+1])
+        winners.append(temp)
+        
     return render(request, 'election/winners.html', {
         'riding': r ,
         'candidates': c, 
         'results': result, 
         'numVotes': result['nballots'],
         'numSpoiled': spoiled_ballots.count(),
-		'winners': result['actions'][-1]['cstate']
+		'winners': winners
         })
 
 def calc_all_winners(request):
     #lists for attributes for each riding
-    ridings = []
-    candidates = []
-    results = []
-    numVotes = []
-    numSpoiled = []
-    winners = []
+
     x = []
     for r in Riding.objects.all():
         # All ballots for a riding
@@ -232,6 +234,7 @@ def calc_all_winners(request):
         c2b = dict((v,k) for k,v in c2.iteritems())
         # List of all the required Data
         info = []
+        winners = []
         
         # Start of BLT generation
         # Number of candidates, Number of seats
@@ -252,7 +255,7 @@ def calc_all_winners(request):
 
         # candidates in droop order
         for key, candidate in c2.iteritems():
-            data = data + "\"k" + str(candidate) + "\"\n"
+            data = data + "\"" + str(candidate) + "\"\n"
         # Name of election
         data = data + "\"" + r.name + " Results\""
         # End of BLT generation
@@ -268,7 +271,15 @@ def calc_all_winners(request):
         info.append(result)
         info.append(result['nballots'])
         info.append(spoiled_ballots.count())
-        info.append(result['actions'][-1]['cstate'])
+        
+        for i in range(len(result['actions'][-1]['cstate'])):
+            temp = []
+            k = result['cdict'][i+1]['name']
+            temp.append(Politician.objects.get(id = k))
+            temp.append(result['actions'][-1]['cstate'][i+1])
+            winners.append(temp)
+        
+        info.append(winners)
         
         x.append(info)
         

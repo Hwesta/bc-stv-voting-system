@@ -7,7 +7,7 @@
 <p>Number of Eligable Voters: {{riding.num_voters}}</p>
 <p>Number of Ballots Cast: {{numVotes}}</p>
 <p>Number of Spoiled Ballots: {{numSpoiled}}</p>
-<table>
+{% comment %}<table>
 <tr>
 <th>Winner</th>
 <th>Number of First Choice Votes</th>
@@ -15,9 +15,9 @@
 <th>Number of Votes Transfered</th>
 </tr>
 
-</table>
-{% for key,value in winners.items %}
-<p>{{value.state}}</p>
+</table>{% endcomment %}
+{% for vote in winners %}
+<p>{{vote.0.name}} has been {{vote.1.state}}</p>
 {% endfor %}
 {% endblock %}
 

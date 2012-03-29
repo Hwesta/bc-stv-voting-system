@@ -12,12 +12,11 @@
 <p>Number of Ballots Cast: {{data.3}}</p>
 <p>Number of Spoiled Ballots: {{data.4}}</p>
 
-{% for key,value in data.5.items%}
-<p>{{value.state}}</p>
+{% for winner in data.5%}
+<p>{{winner.0.name}} has been {{winner.1.state}}</p>
 
 {% endfor %}
 <hr/>
-
 {% endfor %}
 
 {% endblock %}
