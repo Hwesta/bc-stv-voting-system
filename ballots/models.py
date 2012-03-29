@@ -57,10 +57,12 @@ class BallotForm(ModelForm):
 
     def clean(self):
         cleaned_data = super(BallotForm, self).clean()
+        got_vote = True
         # This is still messy
         if 'vote' not in cleaned_data:
-            raise forms.ValidationError("(clean) vote missing from form input: ")
-        if isinstance(cleaned_data['vote'], dict):
+            got_vote = False
+            pass
+        elif isinstance(cleaned_data['vote'], dict):
             vote_data = cleaned_data['vote']
         elif isinstance(cleaned_data['vote'], basestring):
             try:
@@ -70,15 +72,12 @@ class BallotForm(ModelForm):
                 raise e
             except Exception as e:
                 raise forms.ValidationError("(clean) Could not parse vote data: "+ str(e))
-        if len(vote_data.keys()) == 0 and not cleaned_data['spoiled']:
+        if got_vote and (len(vote_data.keys()) == 0 and not cleaned_data['spoiled']):
             raise forms.ValidationError("Invalid ballot: Empty but not spoiled?")
         if cleaned_data['spoiled']:
             cleaned_data['vote'] = {}
-        """super(BallotForm, self).clean()
-        print self._errors
-        if self.cleaned_data.get('spoiled') and 'vote' in self._errors:
-            del self._errors['vote']"""
-        return self.cleaned_data
+
+        return cleaned_data
 
     """
     This function should ensure that a ballot can't be entered twice by the same RO.
