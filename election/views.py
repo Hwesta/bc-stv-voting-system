@@ -154,10 +154,10 @@ def calc_winners(request, r_id):
     all_ballots = r.ballots()
     # All ballots for the calculation
     # TODO: Should this filtering move to the Riding class or Ballot class?
-    calculation_ballots = all_ballots.filter(valid=True).filter(verified=True).filter(spoiled=False)
+    calculation_ballots = all_ballots.filter(state='C').filter(spoiled=False)
     # All spoiled ballots
     # TODO: Should this filtering move to the Riding class or Ballot class?
-    spoiled_ballots = all_ballots.filter(verified=True).filter(spoiled=True)
+    spoiled_ballots = all_ballots.filter(state='C').filter(spoiled=True)
     # All candidates for the riding
     c = Politician.objects.filter(candidate_riding=r)
     # Get distinct ballot contents and how many times they occured
@@ -220,10 +220,10 @@ def calc_all_winners(request):
         all_ballots = r.ballots()
         # All ballots for the calculation
         # TODO: Should this filtering move to the Riding class or Ballot class?
-        calculation_ballots = all_ballots.filter(valid=True).filter(verified=True).filter(spoiled=False)
+        calculation_ballots = all_ballots.filter(state='C').filter(spoiled=False)
         # All spoiled ballots
         # TODO: Should this filtering move to the Riding class or Ballot class?
-        spoiled_ballots = all_ballots.filter(verified=True).filter(spoiled=True)
+        spoiled_ballots = all_ballots.filter(state='C').filter(spoiled=True)
         # All candidates for the riding
         c = Politician.objects.filter(candidate_riding=r)
         # Get distinct ballot contents and how many times they occured

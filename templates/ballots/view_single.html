@@ -4,8 +4,7 @@
 
 {% block content %}
 <p>Poll: {{ballot.poll}}</p>
-<p>Verified: {{ballot.verified}}</p>
-<p>Valid: {{ballot.valid}}</p>
+<p>State: {{ballot.get_state_display}}</p>
 <p>Vote: {{ballot.vote}}</p>
 {% endblock %}
 

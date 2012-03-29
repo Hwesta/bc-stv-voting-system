@@ -60,23 +60,153 @@ def input_ballot(request, poll_id):
             })
 
 def view_conflict_list(request):
-    auto_ballots = Ballot.objects.filter(verified=False).values('ballot_num','vote').annotate(cnt=Count('ballot_num')).filter(cnt__gt=1)
-    for b in auto_ballots:
-        ballots = Ballot.objects.filter(ballot_num=b['ballot_num'])
-        for ballot in ballots:
-            ballot.verified = True
-            ballot.save()
-    manual_ballots = Ballot.objects.filter(verified=False).values('ballot_num','vote').annotate(cnt=Count('ballot_num')).filter(cnt=1)
-    wrong_ballots = []
-    single_ballots = []
-    for b_1 in manual_ballots:
-        added = False
-        ballot = Ballot.objects.get(ballot_num=b_1['ballot_num'], vote=b_1['vote'])
-        for b_2 in manual_ballots:
-            if b_1['ballot_num'] == b_2['ballot_num'] and b_1['vote'] != b_2['vote']:
-                wrong_ballots.append(ballot)
-                added = True
-                break
-        if added == False:
-            single_ballots.append(ballot)
-    return render(request, 'ballots/view_conflicts.html', {'ballots':wrong_ballots})
+    # General notes:
+    # IMPORTANT:
+    # All ballot fetches MUST contain exactly one of the following
+    # - exclude(state='R')
+    # - filter(state='x') where x != R
+    # Otherwise you will get old recount ballots as well!
+    # It needs to be inside the Raw SQL as well for correct processing
+
+    # Pass 1: All ballots with state NOT 'recount', that exist only once
+    ballots_entered_only_once = Ballot.objects.raw(" \
+        SELECT id FROM ballots_ballot \
+        JOIN ( \
+            SELECT \
+                ballot_num, \
+                COUNT(ballot_num) AS cnt \
+            FROM ballots_ballot \
+            WHERE state != 'R' \
+            GROUP BY ballot_num \
+            HAVING cnt < 2 \
+        ) q1 USING (ballot_num) \
+    ")
+    ids = map(lambda b: b.id, ballots_entered_only_once)
+    ballots_entered_only_once = Ballot.objects.exclude(state='R').filter(id__in=ids)
+
+    # Pass 2: Exclude pass 1, No mix of unverified/correct, unverified/correct
+    ballot_invalid_state_mix = Ballot.objects.raw(" \
+        SELECT id FROM ballots_ballot \
+        JOIN ( \
+            SELECT \
+                ballot_num, \
+                COUNT(ballot_num) AS cnt \
+            FROM ballots_ballot \
+            WHERE state != 'R' \
+            GROUP BY ballot_num, state \
+            HAVING cnt=1 AND state='U' \
+        ) q1 USING (ballot_num) \
+    ")
+    ids = map(lambda b: b.id,ballot_invalid_state_mix)
+    ballot_invalid_state_mix = Ballot.objects.exclude(state='R').exclude(id__in=ballots_entered_only_once).filter(id__in=ids)
+
+    # Pass 3: Completion check
+    # If this AND the above lists are empty
+    # We have completed all validation!
+    # SELECT COUNT(*) AS cnt
+    # FROM ballots_ballot
+    # WHERE state = 'unverifed';
+    unverified_count = Ballot.objects.filter(state='U').count()
+
+    bad_ballots = list(ballots_entered_only_once) + list(ballot_invalid_state_mix)
+
+    # Shortcut processing here
+    if unverified_count == 0:
+        return render(request, 'ballots/view_conflicts.html', {
+            'bad': {
+                'Single entry': ballots_entered_only_once,
+                'Invalid state mix': ballot_invalid_state_mix,
+            }
+        })
+
+    # Pass 4: Double-entry check
+    # Each unverified ballot should exist twice by different RO
+    # Yes, the docs say NOT to use string replacement,
+    # But .raw params does not support lists!
+    bad_ballot_nums = set(map(lambda b: b.ballot_num, bad_ballots))
+    bad_ballot_nums_str = ','.join(map(str,bad_ballot_nums))
+    ballots_no_different_ro = Ballot.objects.raw(" \
+        SELECT id FROM ballots_ballot \
+        JOIN ( \
+            SELECT \
+                ballot_num, \
+                COUNT(DISTINCT entered_by_id) AS cnt \
+            FROM ballots_ballot \
+            WHERE state != 'R' \
+            AND ballot_num NOT IN (%s) \
+            GROUP BY ballot_num \
+            HAVING cnt < 2 \
+        ) q1 USING (ballot_num) \
+    " % (bad_ballot_nums_str ,))
+    ids = map(lambda b: b.id, ballots_no_different_ro)
+    #ballots_no_different_ro_ballot_num = map(lambda b: b.ballot_num, ballots_no_different_ro)
+    ballots_no_different_ro = Ballot.objects.exclude(state='R').filter(id__in=ids)
+
+    bad_ballots = bad_ballots + list(ballots_no_different_ro)
+   
+    # Pass 5: Conflict resolution - Automatic 
+    # If we grab unverified ballots not caught so far
+    # And they have matching (ballot_num, spoiled) or (ballot_num, vote)
+    # We can auto-verify them
+    bad_ballot_nums = set(map(lambda b: b.ballot_num, bad_ballots))
+    bad_ballot_nums_str = ','.join(map(str,bad_ballot_nums))
+    ballots_spoiled_auto_approve = Ballot.objects.raw(" \
+        SELECT id FROM ballots_ballot \
+        JOIN ( \
+            SELECT \
+                ballot_num, \
+                COUNT(spoiled) AS cnt, \
+                COUNT(DISTINCT spoiled) AS cnt_d \
+            FROM ballots_ballot \
+            WHERE state='U' AND spoiled=1 AND ballot_num NOT IN (%s) \
+            GROUP BY ballot_num, spoiled \
+            HAVING cnt=2 AND cnt_d=1 \
+        ) q1 USING (ballot_num) \
+    " % (bad_ballot_nums_str ,))
+    ballots_vote_auto_approve = Ballot.objects.raw(" \
+        SELECT id FROM ballots_ballot \
+        JOIN ( \
+            SELECT \
+                ballot_num, \
+                COUNT(vote) AS cnt, \
+                COUNT(DISTINCT vote) AS cnt_d \
+            FROM ballots_ballot \
+            WHERE state='U' AND spoiled=0 AND ballot_num NOT IN (%s) \
+            GROUP BY ballot_num, vote \
+            HAVING cnt=2 AND cnt_d=1 \
+        ) q1 USING (ballot_num) \
+    " % (bad_ballot_nums_str ,))
+    ids = map(lambda b: b.id, ballots_spoiled_auto_approve) + map(lambda b: b.id, ballots_vote_auto_approve)
+    ballots_auto_approve = Ballot.objects.filter(state='U').filter(id__in=ids)
+
+    # Pass 6: Conflict resolution - Manual
+    # Remaining unverified items
+    # - 2 unique ROs
+    # - (2 unique votes) OR (2 uniques spoiled)
+    # - Exclude ballots_auto_approve
+    ballots_manual_approve = Ballot.objects.raw(" \
+        SELECT id FROM ballots_ballot \
+        JOIN ( \
+            SELECT \
+                ballot_num, \
+                COUNT(DISTINCT entered_by_id) AS cnt_ro, \
+                COUNT(DISTINCT vote) as cnt_v, \
+                COUNT(DISTINCT spoiled) as cnt_s \
+            FROM ballots_ballot \
+            WHERE state = 'U' \
+            GROUP BY ballot_num \
+            HAVING cnt_ro = 2 AND (cnt_v = 2 OR cnt_s = 2) \
+        ) q1 USING (ballot_num) \
+    ")
+    ids = map(lambda b: b.id, ballots_manual_approve)
+    ballots_manual_approve = Ballot.objects.exclude(id__in=ballots_auto_approve).filter(state='U').filter(id__in=ids)
+
+    return render(request, 'ballots/view_conflicts.html', {
+        'bad': {
+            'Single entry': ballots_entered_only_once,
+            'Invalid state mix': ballot_invalid_state_mix,
+            'Single RO only': ballots_no_different_ro,
+        },
+        'auto_ballots': ballots_auto_approve, 
+        'manual_ballots': ballots_manual_approve
+    })

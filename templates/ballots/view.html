@@ -7,16 +7,14 @@
 <tr>
 <th>Ballot Number</th>
 <th>Poll</th>
-<th>Verified</th>
-<th>Valid</th>
+<th>State</th>
 </tr>
 
 {% for ballot in ballots %}
 <tr>
 <td><a href="{% url ballots.views.view_ballot ballot.id %}">{{ballot.ballot_num}}</a></td>
 <td>{{ballot.poll}}</td>
-<td>{{ballot.verified}}</td>
-<td>{{ballot.valid}}</td>
+<td>{{ballot.get_state_display}}</td>
 </tr>
 {% endfor %}
 </table>

@@ -7,14 +7,22 @@ from django.contrib.auth.models import User
 import json
 
 
+BALLOT_STATE_CHOICES = (
+    ('U', 'Unverified'),
+    ('C', 'Correct'),
+    ('I', 'Incorrect'),
+    ('R', 'Recount'),
+)
+
 class Ballot(models.Model):
     
     ballot_num = models.IntegerField()
     poll = models.ForeignKey(Poll)
-    verified = models.BooleanField(default=False)
-    valid = models.BooleanField(default=True)
-    # Vote will store a list of ranking: candidate pairs
+    # State of ballot for verification
+    state = models.CharField(max_length=1, choices=BALLOT_STATE_CHOICES, default='U', null=False)
+    # Was the ballot spoiled/rejected?
     spoiled = models.BooleanField(default=False)
+    # Vote will store a list of ranking: candidate pairs
     # JSONField will not load back properly, and we are decoding the contents anyway
     vote = models.TextField()
     entered_by = models.ForeignKey(User, null=True, blank=True)
@@ -22,7 +30,7 @@ class Ballot(models.Model):
     
 
     def __unicode__(self):
-        return str(self.ballot_num)+", "+str(self.verified)+", "+str(self.vote)
+        return str(self.ballot_num)+", "+str(self.state)+", "+str(self.vote)
 
 def ids_sequential_and_start_at_1(lst):
     return set(lst) == set(range(1,len(lst)+1))

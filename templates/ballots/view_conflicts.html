@@ -7,15 +7,52 @@
 <tr>
 <th>Ballot Number</th>
 <th>Poll</th>
+<th>State</th>
+<th>Spoiled</th>
+<th>Vote</th>
 <th>Id</th>
 </tr>
 
-{% for ballot in ballots %}
+{% for bad_type, bad_list in bad.items %}
+<tr><th colspan='6'>Ballots with problems: {{ bad_type }}</th></tr>
+{% for ballot in bad_list %}
 <tr>
-<td><a href="{% url ballots.views.compare_ballot ballot.id %}">{{ballot.ballot_num}}</a></td>
+<td><a href="{% url ballots.views.view_ballot ballot.id %}">{{ballot.ballot_num}}</a></td>
 <td>{{ballot.poll}}</td>
+<td>{{ballot.get_state_display}}</td>
+<td>{{ballot.spoiled}}</td>
+<td>{{ballot.vote}}</td>
 <td>{{ballot.id}}</td>
 </tr>
 {% endfor %}
+<tr><td colspan=6><hr /></td></tr>
+{% endfor %}
+
+<tr><th colspan='6'>Ballots eligable for automatic verification</th></tr>
+{% for ballot in auto_ballots %}
+<tr>
+<td><a href="{% url ballots.views.view_ballot ballot.id %}">{{ballot.ballot_num}}</a></td>
+<td>{{ballot.poll}}</td>
+<td>{{ballot.get_state_display}}</td>
+<td>{{ballot.spoiled}}</td>
+<td>{{ballot.vote}}</td>
+<td>{{ballot.id}}</td>
+</tr>
+{% endfor %}
+<tr><td colspan=6><hr /></td></tr>
+
+<tr><th colspan='6'>Ballots requiring manual verification</th></tr>
+{% for ballot in manual_ballots %}
+<tr>
+<td><a href="{% url ballots.views.view_ballot ballot.id %}">{{ballot.ballot_num}}</a></td>
+<td>{{ballot.poll}}</td>
+<td>{{ballot.get_state_display}}</td>
+<td>{{ballot.spoiled}}</td>
+<td>{{ballot.vote}}</td>
+<td>{{ballot.id}}</td>
+</tr>
+{% endfor %}
+<tr><td colspan=6><hr /></td></tr>
+
 </table>
 {% endblock %}
