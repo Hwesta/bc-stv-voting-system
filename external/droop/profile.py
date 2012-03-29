@@ -358,7 +358,11 @@ class ElectionProfile(object):
                 if bid in ballotIDs:
                     raise ElectionProfileError('duplicate ballot ID %s' % bid)
                 ballotIDs.add(bid)
-                multiplier = 1
+                # CMPT275 Consultant Fix
+                multiplier = int(blt.next()) 
+                if multiplier != 1:
+                    raise ElectionProfileError('ballot multiplier must be "1" when used with a ballot ID, line %d' % \
+                            (self.lineNumber))
             elif digits.match(tok):
                 multiplier = int(tok)
             else:
