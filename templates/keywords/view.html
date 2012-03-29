@@ -29,7 +29,7 @@
 {% for keyword in politician_keywords %}
 <tr>
     <td>{{keyword.name}}</td>
-    <td><a href="{% url keywords.views.modifyPoliticianKeywordList keyword.id %}">Modify Keyword</a></td>
+    <td><a href="{% url keywords.views.edit_politician_keyword keyword.id %}">Modify Keyword</a></td>
 </tr>
 {% endfor %}
 </table>

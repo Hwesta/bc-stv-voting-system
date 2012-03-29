@@ -3,9 +3,9 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from politicians.models import Politician
 from keywords.models import RidingKeywordList, RidingKeywordValue, \
-    RidingKeywordListForm, RidingKeywordValueForm
+    addRidingKeywordListForm, editRidingKeywordListForm, addRidingKeywordValueForm, editRidingKeywordValueForm
 from keywords.models import PoliticianKeywordList, PoliticianKeywordValue, \
-    PoliticianKeywordListForm, PoliticianKeywordValueForm
+    addPoliticianKeywordListForm, editPoliticianKeywordListForm, addPoliticianKeywordValueForm, editPoliticianKeywordValueForm
 
 
 # TODO Add decorators limiting access
@@ -26,89 +26,89 @@ def index(request):
 
 def new_riding_keyword(request):
     if request.method == 'POST':
-        form = RidingKeywordListForm(request.POST)
+        form = addRidingKeywordListForm(request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse(index))
     else:
-        form = RidingKeywordListForm()
+        form = addRidingKeywordListForm()
     return render(request,'keywords/addridingkeywords.html',{'form':form})
 
 def new_riding_keyword_value(request):
     if request.method == 'POST':
-        form = RidingKeywordValueForm(request.POST)
+        form = addRidingKeywordValueForm(request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse(index))
     else:
-        form = RidingKeywordValueForm()
+        form = addRidingKeywordValueForm()
 
     return render(request,'keywords/addridingkeywordvalue.html',{'form':form})
 
 def new_politician_keyword(request):
     if request.method == 'POST':
-        form = PoliticianKeywordListForm(request.POST)
+        form = addPoliticianKeywordListForm(request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse(index))
     else:
-        form = PoliticianKeywordListForm()
+        form = addPoliticianKeywordListForm()
 
     return render(request,'keywords/addpoliticiankeywords.html',{'form':form})
 
 def new_politician_keyword_value(request):
     if request.method == 'POST':
-        form = PoliticianKeywordValueForm(request.POST)
+        form = addPoliticianKeywordValueForm(request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse(index))
     else:
-        form = PoliticianKeywordValueForm()
+        form = addPoliticianKeywordValueForm()
 
     return render(request,'keywords/addpoliticiankeywordvalue.html',{'form':form})
 
 def edit_riding_keyword(request, k_id):
     keyword = RidingKeywordList.objects.get(id=k_id)
     if request.method == 'POST':
-        form = RidingKeywordListForm(request.POST,instance=keyword)
+        form = editRidingKeywordListForm(request.POST,instance=keyword)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse(index))
     else:
-        form = RidingKeywordListForm(instance=keyword)
+        form = editRidingKeywordListForm(instance=keyword)
     return render(request, 'keywords/modifyridingkeywordlist.html', {'form':form,'keyword':keyword})
 
-def modifyRidingKeywordValue(request, k_id):
+def edit_riding_keyword_value(request, k_id):
     keyword = RidingKeywordValue.objects.get(id=k_id)
     if request.method == 'POST':
-        form = RidingKeywordValueForm(request.POST,instance=keyword)
+        form = editRidingKeywordValueForm(request.POST,instance=keyword)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse(index))
     else:
-        form = RidingKeywordValueForm(instance=keyword)
+        form = editRidingKeywordValueForm(instance=keyword)
     return render(request, 'keywords/modifyridingkeywordvalue.html', {'form':form,'keyword':keyword})
 
-def modifyPoliticianKeywordList(request, k_id):
+def edit_politician_keyword(request, k_id):
     keyword = PoliticianKeywordList.objects.get(id=k_id)
     if request.method == 'POST':
-        form = PoliticianKeywordListForm(request.POST,instance=keyword)
+        form = editPoliticianKeywordListForm(request.POST,instance=keyword)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse(index))
     else:
-        form = PoliticianKeywordListForm(instance=keyword)
+        form = editPoliticianKeywordListForm(instance=keyword)
     return render(request, 'keywords/modifypoliticiankeywordlist.html', {'form':form,'keyword':keyword})
 
-def modifyPoliticianKeywordValue(request, k_id):
+def edit_politician_keyword_value(request, k_id):
     keyword = PoliticianKeywordValue.objects.get(id=k_id)
     if request.method == 'POST':
-        form = PoliticianKeywordValueForm(request.POST,instance=keyword)
+        form = editPoliticianKeywordValueForm(request.POST,instance=keyword)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse(index))
     else:
-        form = PoliticianKeywordValueForm(instance=keyword)
+        form = editPoliticianKeywordValueForm(instance=keyword)
     return render(request, 'keywords/modifypoliticiankeywordvalue.html', {'form':form,'keyword':keyword})
 
 def restoreRidingKeyword(request):

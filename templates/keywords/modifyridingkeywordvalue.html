@@ -3,7 +3,7 @@
 {% block h1 %}Modify Riding Keyword Value{% endblock %}
 
 {% block content %}
-<form action ={% url keywords.views.modifyRidingKeywordValue keyword.id%} method ="post">{% csrf_token %}
+<form action ={% url keywords.views.edit_riding_keyword_value keyword.id%} method ="post">{% csrf_token %}
 {{form.as_p}}
 <input type="submit" value="Submit"/>
 </form> 

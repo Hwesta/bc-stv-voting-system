@@ -47,20 +47,40 @@ class PoliticianKeywordValue(models.Model):
     class Meta:
         unique_together = (('politician','keyword'))
 
-class RidingKeywordListForm(ModelForm):
+class editRidingKeywordListForm(ModelForm):
     class Meta:
         model = RidingKeywordList
 
-class PoliticianKeywordListForm(ModelForm):
+
+class addRidingKeywordListForm(ModelForm):
+    class Meta:
+        model = RidingKeywordList
+	exclude = ('delete')
+
+class editPoliticianKeywordListForm(ModelForm):
     class Meta:
         model = PoliticianKeywordList
 
-class RidingKeywordValueForm(ModelForm):
+
+class addPoliticianKeywordListForm(ModelForm):
+    class Meta:
+        model = PoliticianKeywordList
+	exclude = ('delete')
+
+class editRidingKeywordValueForm(ModelForm):
     class Meta:
         model = RidingKeywordValue
-        #exclude = ('keyword','riding')
+        exclude = ('keyword','riding')
         
-class PoliticianKeywordValueForm(ModelForm):
+class editPoliticianKeywordValueForm(ModelForm):
     class Meta:
         model = PoliticianKeywordValue
-        #exclude = ('keyword','politician')
+        exclude = ('keyword','politician')
+
+class addRidingKeywordValueForm(ModelForm):
+    class Meta:
+        model = RidingKeywordValue
+
+class addPoliticianKeywordValueForm(ModelForm):
+    class Meta:
+        model = PoliticianKeywordValue
