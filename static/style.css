@@ -41,6 +41,9 @@ h2 {
     margin: auto
 }
 
+#header a {
+    color: #ffffff;
+}
 
 /* Breadcrumbs styling based on http://css.maxdesign.com.au/listamatic/horizontal33.htm */
 #breadcrumbs {
