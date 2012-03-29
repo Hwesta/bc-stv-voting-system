@@ -3,7 +3,7 @@
 {% block h1 %}Add Riding Keywords {% endblock %}
 
 {% block content %}
-<form action ="{% url keywords.views.submitPoliticianKeywordValue %}" method ="post">{% csrf_token %}
+<form action ="{% url keywords.views.new_politician_keyword_value %}" method ="post">{% csrf_token %}
 {{form.as_p}}
 <input type="submit" value="Submit"/>
 </form> 
