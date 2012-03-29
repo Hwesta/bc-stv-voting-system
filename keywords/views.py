@@ -112,13 +112,13 @@ def modifyPoliticianKeywordValue(request, k_id):
     return render(request, 'keywords/modifypoliticiankeywordvalue.html', {'form':form,'keyword':keyword})
 
 def restoreRidingKeyword(request):
-	title = "Riding"
-	list = RidingKeywordList.objects.filter(delete=True)
-	return render(request, 'keywords/restoreridingkeyword.html', {'list':list})
+    title = "Riding"
+    list = RidingKeywordList.objects.filter(delete=True)
+    return render(request, 'keywords/restoreridingkeyword.html', {'list':list})
 
 def restorePoliticianKeyword(request):
-	title = "Politician"
-	list = PoliticianKeywordList.objects.filter(delete=True)
-	return render(request, 'keywords/restorepoliticiankeyword.html', {'list':list})
+    title = "Politician"
+    list = PoliticianKeywordList.objects.filter(delete=True)
+    return render(request, 'keywords/restorepoliticiankeyword.html', {'list':list})
 
 

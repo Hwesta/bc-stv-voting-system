@@ -15,7 +15,7 @@ def view_politician(request, p_id):
     p = Politician.objects.get(id=p_id)
     k = PoliticianKeywordValue.objects.filter(politician=p)
     return render(request, 'politicians/politician.html',{'politician': p, 'keywords': k})
-	
+
 def view_candidates(request):
     p = Politician.objects.filter(candidate_riding__isnull=False)
     return render(request, 'politicians/politicians.html',
@@ -45,7 +45,7 @@ def add_politician(request):
             return HttpResponseRedirect(reverse(view_politicians))
     else:
         form = PoliticianForm()
-    return render(request, 'politicians/add_politician.html', 		{ 'form':form,})
+    return render(request, 'politicians/add_politician.html', { 'form':form,})
 
 def modify_politician(request, p_id):
     politician = Politician.objects.get(id=p_id)
@@ -56,6 +56,6 @@ def modify_politician(request, p_id):
             return HttpResponseRedirect(reverse(view_politicians))
     else:
         form = PoliticianForm(instance=politician)
-    return render(request, 'politicians/modify_politician.html', 		{ 'form':form, 'politician':politician})
+    return render(request, 'politicians/modify_politician.html', { 'form':form, 'politician':politician})
 
 

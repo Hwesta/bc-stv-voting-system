@@ -208,7 +208,7 @@ def calc_winners(request, r_id):
         'results': result, 
         'numVotes': result['nballots'],
         'numSpoiled': spoiled_ballots.count(),
-		'winners': winners
+        'winners': winners
         })
 
 def calc_all_winners(request):

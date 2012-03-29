@@ -109,7 +109,7 @@ MIDDLEWARE_CLASSES = (
 )
 
 AUTHENTICATION_BACKENDS = (
-	'election.backend.ElectionAuthBackend',
+    'election.backend.ElectionAuthBackend',
 )
 
 LOGIN_REDIRECT_URL = ('/')
