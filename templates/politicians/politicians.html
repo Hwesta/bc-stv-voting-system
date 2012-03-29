@@ -2,7 +2,10 @@
 
 {% block h1 %}List of {{type}}{% endblock %}
 
-{% block subbreadcrumbs %}<li>Politician Management</li>{% endblock %}
+{% block subbreadcrumbs %}
+<li><a href="{% url election.views.view_all_ridings %}">Riding Management</a></li>
+<li>Politician Management</li>
+{% endblock %}
 
 {% block actions %}
 <li><a href="{% url politicians.views.view_deleted_politicians r_id %}">View Deleted Politicians</a></li>
