@@ -7,7 +7,7 @@ class RidingKeywordList(models.Model):
     """ The name of the keyword.
 
     For example, area, population,  This is the 'title on the column'."""
-    name = models.CharField(max_length=128)
+    name = models.CharField(max_length=128, db_index=True)
     delete = models.BooleanField()
     delete.default = False
 
@@ -29,7 +29,7 @@ class PoliticianKeywordList(models.Model):
     """ The name of the keyword.
 
     For example, age, gender,  This is the 'title on the column'."""
-    name = models.CharField(max_length=128)
+    name = models.CharField(max_length=128, db_index=True)
     delete = models.BooleanField()
     delete.default = False
 

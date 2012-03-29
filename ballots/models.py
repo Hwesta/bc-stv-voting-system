@@ -16,16 +16,16 @@ BALLOT_STATE_CHOICES = (
 
 class Ballot(models.Model):
     
-    ballot_num = models.IntegerField()
+    ballot_num = models.IntegerField(db_index=True)
     poll = models.ForeignKey(Poll)
     # State of ballot for verification
-    state = models.CharField(max_length=1, choices=BALLOT_STATE_CHOICES, default='U', null=False)
+    state = models.CharField(max_length=1, choices=BALLOT_STATE_CHOICES, default='U', null=False, db_index=True)
     # Was the ballot spoiled/rejected?
-    spoiled = models.BooleanField(default=False)
+    spoiled = models.BooleanField(default=False, db_index=True)
     # Vote will store a list of ranking: candidate pairs
     # JSONField will not load back properly, and we are decoding the contents anyway
     vote = models.TextField()
-    entered_by = models.ForeignKey(User, null=True, blank=True)
+    entered_by = models.ForeignKey(User, null=True, blank=True, db_index=True)
     ballot_hash = models.CharField(max_length=128, null=True, blank=True)
     
 
