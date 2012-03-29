@@ -1,8 +1,12 @@
 {% extends "base-subsection.html" %}
 
-{% block h1 %}List of {{type}}{% endblock %}
+{% block h1 %}List of Deleted {{type}}{% endblock %}
 
-{% block subbreadcrumbs %}<li>Riding Management</li>{% endblock %}
+{% block subbreadcrumbs %}
+<li><a href="{% url election.views.eo_homepage %}">EO Home Page</a></li>
+<li><a href="{% url ridings.views.view_all_ridings %}">Riding Management</a></li>
+<li>View Deleted Ridings</li>
+{% endblock %}
 
 {% block actions %}
 <li><a href="{% url ridings.views.view_all_ridings %}">Return to Ridings</a></li>

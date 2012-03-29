@@ -2,6 +2,10 @@
 
 {% block h1 %}List of Conflicted Ballots{% endblock %}
 
+{% block subbreadcrumbs %}
+<li><a href="{% url election.views.ro_homepage%}">RO Home Page</a></li>
+<li>Conflicted Ballots</li>
+{% endblock%}
 {% block content %}
 <table>
 <tr>

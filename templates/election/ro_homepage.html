@@ -2,6 +2,10 @@
 
 {% block h1 %}Returning Officer Homepage{% endblock %}
 
+	{% block subbreadcrumbs %}
+	<li>RO Home Page</li>
+	{% endblock subbreadcrumbs%}
+
 {% block content %}
 <ul>
 <li><a href="{% url ballots.views.choose_poll %}">Enter Ballots</a></li>

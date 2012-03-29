@@ -2,6 +2,13 @@
 
 {% block h1 %}Add Politician{% endblock %}
 
+{% block subbreadcrumbs %}
+<li><a href="{% url election.views.eo_homepage %}">EO Home Page</a></li>
+<li><a href="{% url ridings.views.view_all_ridings %}">Riding Management</a></li>
+<li><a href="{% url ridings.views.view_riding r_id%}">Riding Management</a></li>
+<li>Add Politician</li>
+{% endblock %}
+
 {% block content %}
 <form action="{% url politicians.views.add_politician r_id %}" method="post">{% csrf_token %}
 {{ form.as_p }}

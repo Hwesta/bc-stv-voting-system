@@ -2,7 +2,10 @@
 
 {% block h1 %}List of {{type}}{% endblock %}
 
-{% block subbreadcrumbs %}<li>Riding Management</li>{% endblock %}
+{% block subbreadcrumbs %}
+<li><a href="{% url election.views.eo_homepage %}">EO Home Page</a></li>
+<li>Riding Management</li>
+{% endblock %}
 
 {% block actions %}
 <li><a href="{% url ridings.views.add_riding %}">Add New Riding</a></li>
