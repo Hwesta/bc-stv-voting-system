@@ -43,11 +43,12 @@ class Riding(models.Model):
 
     def num_ballots(self):
         """ Number of ballots cast in all polls in the riding. """
-        return self.ballots().count()
+        # Be careful to distinguish it from rows
+        return self.ballots().filter(state='C').values('ballot_num').distinct().count()
 
     def num_spoiled_ballots(self):
-        """ Number of spoiled ballots cast in all polls in the riding. """
-        return self.ballots().filter(spoiled=True).count()
+        """ Number of verified correct spoiled ballots cast in all polls in the riding. """
+        return self.ballots().filter(spoiled=True,state='C').values('ballot_num').distinct().count()
 
     def calculate_results(self):
         """ Determine who gets elected. """

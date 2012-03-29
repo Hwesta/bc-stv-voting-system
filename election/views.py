@@ -157,7 +157,7 @@ def calc_winners(request, r_id):
     calculation_ballots = all_ballots.filter(state='C').filter(spoiled=False)
     # All spoiled ballots
     # TODO: Should this filtering move to the Riding class or Ballot class?
-    spoiled_ballots = all_ballots.filter(state='C').filter(spoiled=True)
+    num_spoiled_ballots = r.num_spoiled_ballots()
     # All candidates for the riding
     c = Politician.objects.filter(candidate_riding=r)
     # Get distinct ballot contents and how many times they occured
@@ -207,7 +207,7 @@ def calc_winners(request, r_id):
         'candidates': c, 
         'results': result, 
         'numVotes': result['nballots'],
-        'numSpoiled': spoiled_ballots.count(),
+        'numSpoiled': num_spoiled_ballots,
         'winners': winners
         })
 
@@ -223,7 +223,7 @@ def calc_all_winners(request):
         calculation_ballots = all_ballots.filter(state='C').filter(spoiled=False)
         # All spoiled ballots
         # TODO: Should this filtering move to the Riding class or Ballot class?
-        spoiled_ballots = all_ballots.filter(state='C').filter(spoiled=True)
+        num_spoiled_ballots = r.num_spoiled_ballots()
         # All candidates for the riding
         c = Politician.objects.filter(candidate_riding=r)
         # Get distinct ballot contents and how many times they occured
@@ -270,7 +270,7 @@ def calc_all_winners(request):
         info.append(c)
         info.append(result)
         info.append(result['nballots'])
-        info.append(spoiled_ballots.count())
+        info.append(num_spoiled_ballots)
         
         for i in range(len(result['actions'][-1]['cstate'])):
             temp = []
