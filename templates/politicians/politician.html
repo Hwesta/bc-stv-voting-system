@@ -23,7 +23,7 @@
 <h2>Keywords</h2>
 {% for PoliticianKeywordValue in keywords %}
 {% if not PoliticianKeywordValue.keyword.delete %}
-<p>{{PoliticianKeywordValue.keyword.name}}: {{PoliticianKeywordValue.value}}&nbsp<a href="{% url keywords.views.modifyPoliticianKeywordValue PoliticianKeywordValue.id %}">Modify</a></p>
+<p>{{PoliticianKeywordValue.keyword.name}}: {{PoliticianKeywordValue.value}}&nbsp<a href="{% url keywords.views.edit_politician_keyword_value PoliticianKeywordValue.id %}">Modify</a></p>
 {% endif %}
 {% endfor %}
 {% endblock %}
