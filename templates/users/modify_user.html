@@ -6,7 +6,7 @@
 <li>Modify User</li>{% endblock %}
 
 {% block content %}
-<form action="{% url users.views.modify_user %}" method="post">{% csrf_token %}
+<form action="{% url users.views.modify_user user.id %}" method="post">{% csrf_token %}
 {{ form.as_p }}
 <input type="submit" value="Create User" />
 </form>

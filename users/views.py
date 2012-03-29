@@ -41,7 +41,8 @@ def modify_user(request, user_id):
             print "new user", new_user
             return redirect(index)
     else:
-        form = CreateUserForm(instance=request.user)
+        user = User.objects.get(id=user_id)
+        form = CreateUserForm(instance=user)
 
     return render(request, 'users/modify_user.html', {
         'form': form,
