@@ -65,7 +65,7 @@ class Poll(models.Model):
 class RidingForm(ModelForm):
     class Meta:
         model = Riding
-        exclude = ('active','num_ballots','num_ballots_spoiled')
+        exclude = ('active','num_ballots','num_ballots_spoiled', 'delete')
 
 class PollForm(ModelForm):
     class Meta:
