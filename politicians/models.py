@@ -21,4 +21,5 @@ class Politician(models.Model):
 class PoliticianForm(ModelForm):
     class Meta:
         model = Politician
+        exclude = ('delete',)
 
