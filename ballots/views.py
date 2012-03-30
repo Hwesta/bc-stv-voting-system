@@ -124,7 +124,10 @@ def view_conflict_list(request):
     # Yes, the docs say NOT to use string replacement,
     # But .raw params does not support lists!
     bad_ballot_nums = set(map(lambda b: b.ballot_num, bad_ballots))
-    bad_ballot_nums_str = ','.join(map(str,bad_ballot_nums))
+    bad_ballot_nums_str_clause = ''
+    if len(bad_ballots_nums) > 0:
+        bad_ballot_nums_str = ','.join(map(str,bad_ballot_nums))
+        bad_ballot_nums_str_clause = 'AND ballot_num NOT IN (%s)' %  (bad_ballot_nums_str ,))
     ballots_no_different_ro = Ballot.objects.raw(" \
         SELECT id FROM ballots_ballot \
         INNER JOIN ( \
@@ -132,12 +135,11 @@ def view_conflict_list(request):
                 ballot_num, \
                 COUNT(DISTINCT entered_by_id) AS cnt \
             FROM ballots_ballot \
-            WHERE state != 'R' \
-            AND ballot_num NOT IN (%s) \
+            WHERE state != 'R' %s \
             GROUP BY ballot_num \
             HAVING COUNT(DISTINCT entered_by_id) < 2 \
         ) q1 ON q1.ballot_num=ballots_ballot.ballot_num \
-    " % (bad_ballot_nums_str ,))
+    " % (bad_ballot_nums_str_clause ,))
     ids = map(lambda b: b.id, ballots_no_different_ro)
     #ballots_no_different_ro_ballot_num = map(lambda b: b.ballot_num, ballots_no_different_ro)
     ballots_no_different_ro = Ballot.objects.exclude(state='R').filter(id__in=ids)
@@ -149,7 +151,10 @@ def view_conflict_list(request):
     # And they have matching (ballot_num, spoiled) or (ballot_num, vote)
     # We can auto-verify them
     bad_ballot_nums = set(map(lambda b: b.ballot_num, bad_ballots))
-    bad_ballot_nums_str = ','.join(map(str,bad_ballot_nums))
+    bad_ballot_nums_str_clause = ''
+    if len(bad_ballots_nums) > 0:
+        bad_ballot_nums_str = ','.join(map(str,bad_ballot_nums))
+        bad_ballot_nums_str_clause = 'AND ballot_num NOT IN (%s)' %  (bad_ballot_nums_str ,))
     ballots_spoiled_auto_approve = Ballot.objects.raw(" \
         SELECT id FROM ballots_ballot \
         INNER JOIN ( \
@@ -158,11 +163,11 @@ def view_conflict_list(request):
                 COUNT(spoiled) AS cnt, \
                 COUNT(DISTINCT spoiled) AS cnt_d \
             FROM ballots_ballot \
-            WHERE state='U' AND spoiled=1 AND ballot_num NOT IN (%s) \
+            WHERE state='U' AND spoiled=1 %s \
             GROUP BY ballot_num, spoiled \
             HAVING COUNT(spoiled)=2 AND COUNT(DISTINCT spoiled)=1 \
         ) q1 ON q1.ballot_num=ballots_ballot.ballot_num \
-    " % (bad_ballot_nums_str ,))
+    " % (bad_ballot_nums_str_clause ,))
     ballots_vote_auto_approve = Ballot.objects.raw(" \
         SELECT id FROM ballots_ballot \
         INNER JOIN ( \
@@ -171,11 +176,11 @@ def view_conflict_list(request):
                 COUNT(vote) AS cnt, \
                 COUNT(DISTINCT vote) AS cnt_d \
             FROM ballots_ballot \
-            WHERE state='U' AND spoiled=0 AND ballot_num NOT IN (%s) \
+            WHERE state='U' AND spoiled=0 %s \
             GROUP BY ballot_num, vote \
             HAVING COUNT(vote)=2 AND COUNT(DISTINCT vote)=1 \
         ) q1 ON q1.ballot_num=ballots_ballot.ballot_num \
-    " % (bad_ballot_nums_str ,))
+    " % (bad_ballot_nums_str_clause ,))
     ids = map(lambda b: b.id, ballots_spoiled_auto_approve) + map(lambda b: b.id, ballots_vote_auto_approve)
     ballots_auto_approve = Ballot.objects.filter(state='U').filter(id__in=ids)
 
