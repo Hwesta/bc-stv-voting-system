@@ -71,15 +71,15 @@ def view_conflict_list(request):
     # Pass 1: All ballots with state NOT 'recount', that exist only once
     ballots_entered_only_once = Ballot.objects.raw(" \
         SELECT id FROM ballots_ballot \
-        JOIN ( \
+        INNER JOIN ( \
             SELECT \
                 ballot_num, \
                 COUNT(ballot_num) AS cnt \
             FROM ballots_ballot \
             WHERE state != 'R' \
             GROUP BY ballot_num \
-            HAVING cnt < 2 \
-        ) q1 USING (ballot_num) \
+            HAVING COUNT(ballot_num) < 2 \
+        ) q1 ON q1.ballot_num=ballots_ballot.ballot_num \
     ")
     ids = map(lambda b: b.id, ballots_entered_only_once)
     ballots_entered_only_once = Ballot.objects.exclude(state='R').filter(id__in=ids)
@@ -87,15 +87,15 @@ def view_conflict_list(request):
     # Pass 2: Exclude pass 1, No mix of unverified/correct, unverified/correct
     ballot_invalid_state_mix = Ballot.objects.raw(" \
         SELECT id FROM ballots_ballot \
-        JOIN ( \
+        INNER JOIN ( \
             SELECT \
                 ballot_num, \
                 COUNT(ballot_num) AS cnt \
             FROM ballots_ballot \
             WHERE state != 'R' \
             GROUP BY ballot_num, state \
-            HAVING cnt=1 AND state='U' \
-        ) q1 USING (ballot_num) \
+            HAVING COUNT(ballot_num)=1 AND state='U' \
+        ) q1 ON q1.ballot_num=ballots_ballot.ballot_num \
     ")
     ids = map(lambda b: b.id,ballot_invalid_state_mix)
     ballot_invalid_state_mix = Ballot.objects.exclude(state='R').exclude(id__in=ballots_entered_only_once).filter(id__in=ids)
@@ -127,7 +127,7 @@ def view_conflict_list(request):
     bad_ballot_nums_str = ','.join(map(str,bad_ballot_nums))
     ballots_no_different_ro = Ballot.objects.raw(" \
         SELECT id FROM ballots_ballot \
-        JOIN ( \
+        INNER JOIN ( \
             SELECT \
                 ballot_num, \
                 COUNT(DISTINCT entered_by_id) AS cnt \
@@ -135,8 +135,8 @@ def view_conflict_list(request):
             WHERE state != 'R' \
             AND ballot_num NOT IN (%s) \
             GROUP BY ballot_num \
-            HAVING cnt < 2 \
-        ) q1 USING (ballot_num) \
+            HAVING COUNT(DISTINCT entered_by_id) < 2 \
+        ) q1 ON q1.ballot_num=ballots_ballot.ballot_num \
     " % (bad_ballot_nums_str ,))
     ids = map(lambda b: b.id, ballots_no_different_ro)
     #ballots_no_different_ro_ballot_num = map(lambda b: b.ballot_num, ballots_no_different_ro)
@@ -152,7 +152,7 @@ def view_conflict_list(request):
     bad_ballot_nums_str = ','.join(map(str,bad_ballot_nums))
     ballots_spoiled_auto_approve = Ballot.objects.raw(" \
         SELECT id FROM ballots_ballot \
-        JOIN ( \
+        INNER JOIN ( \
             SELECT \
                 ballot_num, \
                 COUNT(spoiled) AS cnt, \
@@ -160,12 +160,12 @@ def view_conflict_list(request):
             FROM ballots_ballot \
             WHERE state='U' AND spoiled=1 AND ballot_num NOT IN (%s) \
             GROUP BY ballot_num, spoiled \
-            HAVING cnt=2 AND cnt_d=1 \
-        ) q1 USING (ballot_num) \
+            HAVING COUNT(spoiled)=2 AND COUNT(DISTINCT spoiled)=1 \
+        ) q1 ON q1.ballot_num=ballots_ballot.ballot_num \
     " % (bad_ballot_nums_str ,))
     ballots_vote_auto_approve = Ballot.objects.raw(" \
         SELECT id FROM ballots_ballot \
-        JOIN ( \
+        INNER JOIN ( \
             SELECT \
                 ballot_num, \
                 COUNT(vote) AS cnt, \
@@ -173,8 +173,8 @@ def view_conflict_list(request):
             FROM ballots_ballot \
             WHERE state='U' AND spoiled=0 AND ballot_num NOT IN (%s) \
             GROUP BY ballot_num, vote \
-            HAVING cnt=2 AND cnt_d=1 \
-        ) q1 USING (ballot_num) \
+            HAVING COUNT(vote)=2 AND COUNT(DISTINCT vote)=1 \
+        ) q1 ON q1.ballot_num=ballots_ballot.ballot_num \
     " % (bad_ballot_nums_str ,))
     ids = map(lambda b: b.id, ballots_spoiled_auto_approve) + map(lambda b: b.id, ballots_vote_auto_approve)
     ballots_auto_approve = Ballot.objects.filter(state='U').filter(id__in=ids)
@@ -186,7 +186,7 @@ def view_conflict_list(request):
     # - Exclude ballots_auto_approve
     ballots_manual_approve = Ballot.objects.raw(" \
         SELECT id FROM ballots_ballot \
-        JOIN ( \
+        INNER JOIN ( \
             SELECT \
                 ballot_num, \
                 COUNT(DISTINCT entered_by_id) AS cnt_ro, \
@@ -195,8 +195,8 @@ def view_conflict_list(request):
             FROM ballots_ballot \
             WHERE state = 'U' \
             GROUP BY ballot_num \
-            HAVING cnt_ro = 2 AND (cnt_v = 2 OR cnt_s = 2) \
-        ) q1 USING (ballot_num) \
+            HAVING COUNT(DISTINCT entered_by_id)= 2 AND (COUNT(DISTINCT vote) = 2 OR COUNT(DISTINCT spoiled) = 2) \
+        ) q1 ON q1.ballot_num=ballots_ballot.ballot_num \
     ")
     ids = map(lambda b: b.id, ballots_manual_approve)
     ballots_manual_approve = Ballot.objects.exclude(id__in=ballots_auto_approve).filter(state='U').filter(id__in=ids)
