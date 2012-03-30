@@ -125,9 +125,9 @@ def view_conflict_list(request):
     # But .raw params does not support lists!
     bad_ballot_nums = set(map(lambda b: b.ballot_num, bad_ballots))
     bad_ballot_nums_str_clause = ''
-    if len(bad_ballots_nums) > 0:
+    if len(bad_ballot_nums) > 0:
         bad_ballot_nums_str = ','.join(map(str,bad_ballot_nums))
-        bad_ballot_nums_str_clause = 'AND ballot_num NOT IN (%s)' %  (bad_ballot_nums_str ,))
+        bad_ballot_nums_str_clause = 'AND ballot_num NOT IN (%s)' %  (bad_ballot_nums_str ,)
     ballots_no_different_ro = Ballot.objects.raw(" \
         SELECT id FROM ballots_ballot \
         INNER JOIN ( \
@@ -152,9 +152,9 @@ def view_conflict_list(request):
     # We can auto-verify them
     bad_ballot_nums = set(map(lambda b: b.ballot_num, bad_ballots))
     bad_ballot_nums_str_clause = ''
-    if len(bad_ballots_nums) > 0:
+    if len(bad_ballot_nums) > 0:
         bad_ballot_nums_str = ','.join(map(str,bad_ballot_nums))
-        bad_ballot_nums_str_clause = 'AND ballot_num NOT IN (%s)' %  (bad_ballot_nums_str ,))
+        bad_ballot_nums_str_clause = 'AND ballot_num NOT IN (%s)' %  (bad_ballot_nums_str ,)
     ballots_spoiled_auto_approve = Ballot.objects.raw(" \
         SELECT id FROM ballots_ballot \
         INNER JOIN ( \
