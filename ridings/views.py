@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from ridings.models import Riding, Poll, RidingForm, PollForm
+from ridings.models import Riding, Poll, Riding_Add_Form, Riding_Modify_Form, PollForm
 from politicians.models import Politician
 from keywords.models import RidingKeywordValue, PoliticianKeywordValue
 
@@ -34,26 +34,34 @@ def view_riding(request, r_id):
          'keywords': keywords,
         })
 
-def modify_riding(request, _id):
-    riding = Riding.objects.get(id=_id)
-    if request.method == 'POST':
-        form = RidingForm(request.POST, instance=riding)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse(view_all_ridings))
-    else:
-        form = RidingForm(instance=riding)
-    return render(request, 'ridings/modify_riding.html', {'form': form, 'riding': riding, })
+def all_ridings_report(request):
+    #""" View all the details about a riding on one page. """
+    ridings = Riding.objects.all()
+    return render(request, 'ridings/all_ridings.html',
+        {'ridings': ridings,
+         'type': str('Ridings'),
+        })
 
 def add_riding(request):
     if request.method == 'POST':
-        form = RidingForm(request.POST)
+        form = Riding_Add_Form(request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse(view_all_ridings))
     else:
-        form = RidingForm()
+        form = Riding_Add_Form()
     return render(request, 'ridings/add_riding.html', {'form': form, })
+
+def modify_riding(request, _id):
+    riding = Riding.objects.get(id=_id)
+    if request.method == 'POST':
+        form = Riding_Modify_Form(request.POST, instance=riding)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse(view_all_ridings))
+    else:
+        form = Riding_Modify_Form(instance=riding)
+    return render(request, 'ridings/modify_riding.html', {'form': form, 'riding': riding, })
 
 
 # Poll Management

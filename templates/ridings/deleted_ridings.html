@@ -20,6 +20,7 @@
 {% for riding in ridings %}
 <tr>
 <td><a href="{% url ridings.views.view_riding riding.id %}">{{riding.name}}</a></td>
+<td><a href="{% url ridings.views.modify_riding riding.id %}">Restore</a></td>
 </tr>
 {% endfor %}
 </table>

@@ -62,10 +62,15 @@ class Poll(models.Model):
     def __unicode__(self):
         return str(self.riding)+", "+str(self.id)
 
-class RidingForm(ModelForm):
+class Riding_Add_Form(ModelForm):
     class Meta:
         model = Riding
-        exclude = ('active','num_ballots','num_ballots_spoiled', 'delete')
+        exclude = ('active','num_ballots','num_ballots_spoiled', 'delete',)
+
+class Riding_Modify_Form(ModelForm):
+    class Meta:
+        model = Riding
+        exclude = ('active','num_ballots','num_ballots_spoiled',)
 
 class PollForm(ModelForm):
     class Meta:
