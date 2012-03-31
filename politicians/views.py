@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from ridings.models import Riding
-from politicians.models import Politician, PoliticianForm
+from politicians.models import Politician, Politician_Add_Form, Politician_Modify_Form
 from keywords.models import PoliticianKeywordValue, PoliticianKeywordList
 
 # TODO Add decorators limiting access
@@ -52,23 +52,21 @@ def view_deleted_politicians(request, r_id):
 
 def add_politician(request, r_id):
     if request.method == 'POST':
-        form = PoliticianForm(request.POST)
+        form = Politician_Add_Form(request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse(view_politicians, args=(r_id)))
     else:
-        form = PoliticianForm()
+        form = Politician_Add_Form()
     return render(request, 'politicians/add_politician.html', { 'form':form, 'r_id': r_id})
 
 def modify_politician(request, r_id, p_id):
     politician = Politician.objects.get(id=p_id)
     if request.method == 'POST':
-        form = PoliticianForm(request.POST,instance=politician)
+        form = Politician_Modify_Form(request.POST,instance=politician)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse(view_politicians, args=(r_id)))
     else:
-        form = PoliticianForm(instance=politician)
+        form = Politician_Modify_Form(instance=politician)
     return render(request, 'politicians/modify_politician.html', { 'form':form, 'politician':politician, 'r_id': r_id})
-
-

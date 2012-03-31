@@ -18,8 +18,12 @@ class Politician(models.Model):
         return self.name+", "+self.party+" candidate in "+str(self.candidate_riding)+" incumbent in "+str(self.incumbent_riding)
 
 
-class PoliticianForm(ModelForm):
+class Politician_Add_Form(ModelForm):
     class Meta:
         model = Politician
         exclude = ('delete',)
+
+class Politician_Modify_Form(ModelForm):
+    class Meta:
+        model = Politician
 
