@@ -52,7 +52,7 @@ class BallotForm(ModelForm):
             raise e
         except Exception as e:
             raise forms.ValidationError("(clean_vote) Could not parse vote data: "+ str(e))
-        return vote_data
+        return json.dumps(vote_data)
 
 
     def clean(self):
@@ -76,7 +76,8 @@ class BallotForm(ModelForm):
             raise forms.ValidationError("Invalid ballot: Empty but not spoiled?")
         if cleaned_data['spoiled']:
             cleaned_data['vote'] = {}
-
+        if isinstance(cleaned_data['vote'], dict):
+            cleaned_data['vote'] = json.dumps(cleaned_data['vote'])
         return cleaned_data
 
     """
