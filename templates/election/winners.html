@@ -7,6 +7,10 @@
 <p>Number of Eligable Voters: {{riding.num_voters}}</p>
 <p>Number of Ballots Cast: {{numVotes}}</p>
 <p>Number of Spoiled Ballots: {{numSpoiled}}</p>
+<p>Voter Turnout: <script type="text/javascript">
+var v_t = ({{numVotes}}/{{riding.num_voters}} * 100);
+document.write((v_t.toFixed(2)+"%"));
+</script></p>
 {% comment %}<table>
 <tr>
 <th>Winner</th>
@@ -17,7 +21,7 @@
 
 </table>{% endcomment %}
 {% for vote in winners %}
-<p>{{vote.0.name}} has been {{vote.1.state}}</p>
+<p>{{vote.0.name}} of the {{vote.0.party}} has been {{vote.1.state}}</p>
 {% endfor %}
 {% endblock %}
 

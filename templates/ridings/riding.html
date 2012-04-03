@@ -12,6 +12,7 @@
 <li><a href="{% url ridings.views.modify_riding riding.id %}">Edit General Information</a></li>
 <li><a href="{% url politicians.views.add_politician riding.id %}">Add Politician</a></li>
 <li><a href="{% url ridings.views.view_polls riding.id %}">View Polls</a></li>
+<li><a href="{% url election.views.calc_winners riding.id %}">View Election Results</a></li>
 {% endblock %}
 
 {% block content %}
