@@ -14,9 +14,11 @@
 <th>Candidate</th>
 <th>Party</th>
 <th>Status</th>
+<th>#First Choice Votes</th>
 </tr>
+
 {% for data in results %}
-{% for winner in data.5%}
+{% for winner in data.5 %}
 <tr>
 <td>{{data.0.name}}</h2>
 <td align="center">{{data.0.num_seats}}</td>
@@ -30,9 +32,14 @@ document.write((v_t.toFixed(2)+"%"));
 <td>{{winner.0.name}}</td>
 <td>{{winner.0.party}}</td>
 <td>{{winner.1.state}}</td>
+<td align="center"><script type="text/javascript">
+var fc_v = {{winner.1.vote}};
+document.write(fc_v.toFixed(0));
+</script></td>
 </tr>
 {% endfor %}
 {% endfor %}
 </table>
+
 {% endblock %}
 
