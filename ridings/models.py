@@ -62,16 +62,19 @@ class Poll(models.Model):
     def __unicode__(self):
         return str(self.riding)+", "+str(self.id)
 
+# Form for adding a riding excludes delete flag (default = false)
 class Riding_Add_Form(ModelForm):
     class Meta:
         model = Riding
         exclude = ('active','num_ballots','num_ballots_spoiled', 'delete',)
 
+# Form for modifying a riding includeds delete flag
 class Riding_Modify_Form(ModelForm):
     class Meta:
         model = Riding
         exclude = ('active','num_ballots','num_ballots_spoiled',)
 
+# Form for adding/modifying a poll excludes choosing associated riding
 class PollForm(ModelForm):
     class Meta:
         model = Poll

@@ -85,5 +85,37 @@
       "incumbent_riding": 1,
       "candidate_riding": 2
     }
+  },
+  {
+    "pk": 4,
+    "model": "politicians.politician",
+    "fields": {
+      "party": "Liberal",
+      "delete": false,
+      "name": "Mary",
+      "incumbent_riding": null,
+      "candidate_riding": 1
+    }
+  },  {
+    "pk": 5,
+    "model": "politicians.politician",
+    "fields": {
+      "party": "Liberal",
+      "delete": false,
+      "name": "Ted",
+      "incumbent_riding": 1,
+      "candidate_riding": 2
+    }
+  },
+  {
+    "pk": 6,
+    "model": "politicians.politician",
+    "fields": {
+      "party": "Liberal",
+      "delete": false,
+      "name": "Lorynne",
+      "incumbent_riding": 2,
+      "candidate_riding": 1
+    }
   }
 ]

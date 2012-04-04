@@ -16,7 +16,7 @@
       "name": "Burnaby-New West",
       "created": "2012-03-16",
       "active": false,
-      "num_seats": 4,
+      "num_seats": 2,
       "delete": false
     }
   },
@@ -28,7 +28,7 @@
       "name": "Vancouver",
       "created": "2012-03-16",
       "active": false,
-      "num_seats": 5,
+      "num_seats": 1,
       "delete": false
     }
   },
