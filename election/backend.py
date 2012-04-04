@@ -25,7 +25,7 @@ class ElectionAuthBackend(object):
         #print 'model_user', repr(model_user)
         #print 'model_user groups', repr(model_user.groups.all())
         #print 'ip_user', repr(ip_user)
-        admin_group = Group.objects.filter(name='admin').all()
+        admin_group = Group.objects.filter(name='ADMIN').all()
         if admin_group.count() > 0:
           admin_group = admin_group[0]
         else:
@@ -35,11 +35,11 @@ class ElectionAuthBackend(object):
             return None
         if model_user.is_superuser or model_user.is_staff: # Super admin
             return model_user
-        if model_user.groups.count() > 0 and admin_group in model_user.groups: # Election admin
+        if model_user.groups.count() > 0 and admin_group in model_user.groups.all(): # Election admin
             return model_user
-        if ip_user is None:
-            print 'Your IP=%s is not in the IPAuth' % (ip, )
-            return None
+        #if ip_user is None:
+            #print 'Your IP=%s is not in the IPAuth' % (ip, )
+            #return None
         return model_user
 
     def get_group_permissions(self, user_obj):
