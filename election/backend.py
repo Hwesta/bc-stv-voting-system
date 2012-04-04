@@ -1,5 +1,6 @@
 from django.contrib.auth.backends import ModelBackend
 from ipauth.backend import RangeBackend
+from django.contrib.auth.models import User, Group
 
 class ElectionAuthBackend(object):
     """
@@ -21,12 +22,25 @@ class ElectionAuthBackend(object):
         """
         model_user = self.model_backend.authenticate(username=username, password=password)
         ip_user = self.ipauth_backend.authenticate(ip=ip)        
+        #print 'model_user', repr(model_user)
+        #print 'model_user groups', repr(model_user.groups.all())
+        #print 'ip_user', repr(ip_user)
+        admin_group = Group.objects.filter(name='admin').all()
+        if admin_group.count() > 0:
+          admin_group = admin_group[0]
+        else:
+          admin_group = None
+
         if not model_user:
             return None
-        if model_user.is_superuser: # TODO: Election admin
+        if model_user.is_superuser or model_user.is_staff: # Super admin
             return model_user
-        if not ip_user:
+        if model_user.groups.count() > 0 and admin_group in model_user.groups: # Election admin
+            return model_user
+        if ip_user is None:
+            print 'Your IP=%s is not in the IPAuth' % (ip, )
             return None
+        return model_user
 
     def get_group_permissions(self, user_obj):
         """
