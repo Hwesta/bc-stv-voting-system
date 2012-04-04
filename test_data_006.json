@@ -1,5 +1,70 @@
 [
-{"pk": "0b4a0e2b4548e1bb1f7940cc77507bdd", "model": "sessions.session", "fields": {"expire_date": "2012-03-30 02:25:44", "session_data": "OTU3NjI0YjFjOTI2ODM5ZmIxYjdjMjg1YzgzZTY0YTQ2MDliN2E2OTqAAn1xAShVEl9hdXRoX3Vz\nZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHED\nVQ1fYXV0aF91c2VyX2lkcQRLAXUu\n"}}, 
-{"pk": "beb910fc5713e266c18d82888cb1c0b4", "model": "sessions.session", "fields": {"expire_date": "2012-03-30 02:12:47", "session_data": "OTU3NjI0YjFjOTI2ODM5ZmIxYjdjMjg1YzgzZTY0YTQ2MDliN2E2OTqAAn1xAShVEl9hdXRoX3Vz\nZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHED\nVQ1fYXV0aF91c2VyX2lkcQRLAXUu\n"}}, 
-{"pk": 1, "model": "sites.site", "fields": {"domain": "example.com", "name": "example.com"}}
+  {
+    "pk": 1,
+    "model": "auth.user",
+    "fields": {
+      "username": "root",
+      "first_name": "",
+      "last_name": "",
+      "is_active": true,
+      "is_superuser": true,
+      "is_staff": true,
+      "last_login": "2012-03-16 02:12:46",
+      "groups": [],
+      "user_permissions": [],
+      "password": "sha1$2fd75$7dd4332367c95eb0c16ae095a38abe7b29a2e980",
+      "email": "h@b.ca",
+      "date_joined": "2012-03-16 02:12:29"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "auth.user",
+    "fields": {
+      "username": "ro",
+      "first_name": "",
+      "last_name": "",
+      "is_active": true,
+      "is_superuser": false,
+      "is_staff": false,
+      "last_login": "2012-04-03 21:09:20",
+      "groups": [],
+      "user_permissions": [],
+      "password": "!",
+      "email": "ro",
+      "date_joined": "2012-04-03 21:09:20"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "auth.group",
+    "fields": {
+      "name": "ADMIN",
+      "permissions": []
+    }
+  },
+  {
+    "pk": 2,
+    "model": "auth.group",
+    "fields": {
+      "name": "RO",
+      "permissions": []
+    }
+  },
+  {
+    "pk": 3,
+    "model": "auth.group",
+    "fields": {
+      "name": "EO",
+      "permissions": []
+    }
+  },
+  {
+    "pk": 4,
+    "model": "auth.group",
+    "fields": {
+      "name": "REP",
+      "permissions": []
+    }
+  }
 ]
