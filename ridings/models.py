@@ -18,14 +18,14 @@ class Riding(models.Model):
         return self.candidate_riding.filter(candidate_riding__isnull=False)
     def num_candidates(self):
         """ Return the number of candidates in the riding. """
-        return self.candidates().count()
+        return self.candidates().filter(delete=False).count()
 
     def incumbents(self):
         """ Return all the incumbents in the riding. """
         return self.incumbent_riding.filter(incumbent_riding__isnull=False)
     def num_incumbents(self):
         """ Return the number of incumbents in the riding. """
-        return self.incumbents().count()
+        return self.incumbents().filter(delete=False).count()
 
     def polls(self):
         """ Return all the polls in the riding. """
