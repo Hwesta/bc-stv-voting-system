@@ -1,7 +1,9 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
+from django.contrib.auth.decorators import user_passes_test
 from users.models import CreateUserForm
+from election.models import define_view_permissions
 
 # User Management
 # TODO Add decorators limiting access
@@ -12,24 +14,28 @@ def index(request):
     return render(request, 'users/view_all_users.html',
         { 'users': users })
 
+@user_passes_test(define_view_permissions(set(['ADMIN']),set(['BEF','DUR','AFT'])))
 def view_user(request, user_id):
     """ View detailed information about one user. """
     return render(request, 'users/view_user.html',
         {  })
 
+@user_passes_test(define_view_permissions(['ADMIN'],['BEF','DUR','AFT']))
 def add_user(request):
     """ Create a new user. """
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
         if form.is_valid():
-            new_user = User.objects.create_user(form.cleaned_data['username'], form.cleaned_data['password1'])
+            new_user = User.objects.create_user(form.cleaned_data['username'], "user@invalid.com", form.cleaned_data['password1'])
+            role = form.cleaned_data['role']
+            group = Group.objects.get(name=role)
+            new_user.groups.add(group)
             return redirect(index)
     else:
         form = CreateUserForm() 
     return render(request, 'users/add_user.html', {
         'form': form,
     })
-
 
 def modify_user(request, user_id):
     """ Edit a user's information. """
