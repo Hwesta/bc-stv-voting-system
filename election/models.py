@@ -41,3 +41,19 @@ class ElectionForm(ModelForm):
 
 
 
+def define_view_permissions(groups, status):
+    ''' Defines the permissions for a view.
+
+    groups is a set
+    status is a STATUS_CHOICES'''
+    groups = set(groups)
+    status = set(status)
+    def func(user):
+        election = Election.objects.all()
+        if (user.groups.all()[0] in groups) and (election[0].status in status):
+            return True
+        else:
+            return False
+    return func
+
+
