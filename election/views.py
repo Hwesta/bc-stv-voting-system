@@ -112,14 +112,23 @@ def login(request, redirect_field_name=REDIRECT_FIELD_NAME, **kwargs):
 
 # Election Management
 
+######################################
 def view_election(request):
-   elec_list = Election.objects.all()
-   elec_list = elec_list[(elec_list.count()-1)]
+   #elec_list = Election.objects.all()
+   #elec_list = elec_list[(elec_list.count()-1)]
    return render(request, 'election/view.html', {'election': (elec_list) })
+######################################
+
+def get_status_display(request):
+##   elec = Election.objects.get(id=Election.objects.count())
+##   print "-----------------------"
+##   print elec['status']
+##   return elec['status']
+   elec = Election.objects.all()
+   return elec
 
 def change_election_status(request):
    elec_list = Election.objects.all()
-   elec_list = elec_list[(elec_list.count()-1)]
    if request.method == 'POST':
        form = ElectionForm(request.POST)
        if form.is_valid():
