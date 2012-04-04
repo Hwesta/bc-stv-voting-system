@@ -8,7 +8,7 @@
 <p>Number of Ballots Cast: {{numVotes}}</p>
 <p>Number of Spoiled Ballots: {{numSpoiled}}</p>
 <p>Voter Turnout: <script type="text/javascript">
-var v_t = ({{numVotes}}/{{riding.num_voters}} * 100);
+var v_t = ({{numVotes}}/{{riding.num_voters}} * 100.0);
 document.write((v_t.toFixed(2)+"%"));
 </script></p>
 {% comment %}<table>
