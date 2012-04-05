@@ -67,13 +67,13 @@ class Poll(models.Model):
 class Riding_Add_Form(ModelForm):
     class Meta:
         model = Riding
-        exclude = ('active','num_ballots','num_ballots_spoiled', 'delete',)
+        exclude = ('active','num_ballots','num_ballots_spoiled', 'delete', 'recount_needed',)
 
 # Form for modifying a riding includeds delete flag
 class Riding_Modify_Form(ModelForm):
     class Meta:
         model = Riding
-        exclude = ('active','num_ballots','num_ballots_spoiled',)
+        exclude = ('active','num_ballots','num_ballots_spoiled', 'recount_needed',)
 
 # Form for adding/modifying a poll excludes choosing associated riding
 class PollForm(ModelForm):
