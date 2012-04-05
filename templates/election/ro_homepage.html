@@ -10,7 +10,9 @@
 <ul>
 {% if election == 'DUR' or election == 'AFT' %}
     <li><a href="{% url ballots.views.choose_poll %}">Enter Ballots</a></li>
-    <li><a href="{% url ballots.views.choose_riding_to_verify %}">Verify Ballots</a></li>
+	<li><a href="{% url ballots.views.choose_riding_to_verify %}">Verify Ballots</a></li>
+{% else %}
+    <li>Election has not yet started, cannot enter or verify ballots.</li>
 {% endif %}
 </ul>
 {% endblock %}
