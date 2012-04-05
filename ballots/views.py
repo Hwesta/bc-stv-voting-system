@@ -77,11 +77,17 @@ def view_ballot(request, b_id):
 def input_ballot(request, poll_id, *args, **kwargs):
     poll = Poll.objects.get(id=poll_id)
     candidates = Politician.objects.filter(candidate_riding=poll.riding)
+
+    # Shortcut processing here
+    flash = []
+    if 'flash' in kwargs:
+        flash = flash + kwargs['flash']
+        
     if request.method == 'POST':
         form = BallotForm(request.POST)
         if form.is_valid():
             new_ballot = form.save()
-            msg = "Ballot input sucessful."
+            msg = "Ballot input successful."
             modified_request=request
             modified_request.method="GET"
             #return HttpResponseRedirect(reverse(input_ballot, args=(poll.id,)))
@@ -91,6 +97,7 @@ def input_ballot(request, poll_id, *args, **kwargs):
     return render(request, 'ballots/add.html', {
                 'form':form,
                 'candidates':candidates,
+                'flash':flash,
             })
 
 def input_ballot_tiebreaker(request, old_ballot_num):
