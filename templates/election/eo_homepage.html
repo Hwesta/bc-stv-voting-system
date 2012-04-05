@@ -9,11 +9,11 @@
 {% block content %}
 <ul>
 
-{% if election.display_election_status = 'DUR' or election.display_election_status = 'BEF' %}
+{% if election == 'DUR' or election == 'BEF' %}
 	<li><a href="{% url ridings.views.view_all_ridings %}">	Riding Management </a></li>
 {% endif %}
 
-{% if election.display_election_status = 'BEF' %}
+{% if election == 'BEF' %}
 	<li><a href="{% url keywords.views.index %}">Keyword 	Management</a></li>
 {% endif %}
 </ul>

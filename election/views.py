@@ -41,26 +41,30 @@ def index(request):
 @login_required
 def ro_homepage(request):
     """ Display the index page. """
+    elec = get_status_display(request)
     return render(request, 'election/ro_homepage.html', 
-        {  })
+        {'election': elec, })
 
 @login_required
 def eo_homepage(request):
     """ Display the index page. """
+    elec = get_status_display(request)
     return render(request, 'election/eo_homepage.html',
-        {  })
+        {'election': elec, })
 
 @login_required
 def reporter_homepage(request):
     """ Display the index page. """
+    elec = get_status_display(request)
     return render(request, 'election/reporter_homepage.html',
-        {  })
+        {'election': elec, })
 
 @login_required
 def admin_homepage(request):
     """ Display the index page. """
+    elec = get_status_display(request)
     return render(request, 'election/admin_homepage.html',
-        {  })
+        {'election': elec, })
 
 # Login Management
 
