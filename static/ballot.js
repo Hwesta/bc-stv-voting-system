@@ -48,7 +48,7 @@ function onSubmit()
 	return true;
 }
 
-//Function will generate
+//Function will fill in the disabled radio buttons to show ballots already entered.
 function display(ballot_id, vote_json, is_spoiled)
 {
 	if (!is_spoiled)
