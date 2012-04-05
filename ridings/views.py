@@ -4,11 +4,14 @@ from django.core.urlresolvers import reverse
 from ridings.models import Riding, Poll, Riding_Add_Form, Riding_Modify_Form, PollForm
 from politicians.models import Politician
 from keywords.models import RidingKeywordValue, PoliticianKeywordValue
+from django.contrib.auth.decorators import user_passes_test
+from election.models import define_view_permissions
 
 # TODO Add decorators limiting access
 
 # Riding Information
 
+@user_passes_test(define_view_permissions(['EO']))
 def view_all_ridings(request):
     #""" View list of all the ridings. """
     # exlude deleted ridings from list

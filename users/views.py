@@ -13,13 +13,13 @@ def index(request):
     return render(request, 'users/view_all_users.html',
         { 'users': users })
 
-@user_passes_test(define_view_permissions(set(['ADMIN']),set(['BEF','DUR','AFT'])))
+@user_passes_test(define_view_permissions(set(['ADMIN'])))
 def view_user(request, user_id):
     """ View detailed information about one user. """
     return render(request, 'users/view_user.html',
         {  })
 
-@user_passes_test(define_view_permissions(['ADMIN'],['BEF','DUR','AFT']))
+@user_passes_test(define_view_permissions(['ADMIN']))
 def add_user(request):
     """ Create a new user. """
     if request.method == 'POST':
