@@ -119,18 +119,6 @@ def view_election(request):
    return render(request, 'election/view.html', {'election': (elec_list) })
 ######################################
 
-def is_bef(request):
-    elec = Election.objects.get(id=Election.objects.count())
-    return elec.status == 'before'
-
-def is_dur(request):
-    elec = Election.objects.get(id=Election.objects.count())
-    return elec.status == 'DUR'
-
-def is_aft(request):
-    elec = Election.objects.get(id=Election.objects.count())
-    return elec.status == 'AFT'
-
 def get_status_display(request):
    elec = Election.objects.get(id=Election.objects.count())
    return elec.status
