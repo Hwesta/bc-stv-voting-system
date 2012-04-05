@@ -25,10 +25,10 @@ from ridings.models import Riding, Poll
 from ballots.models import Ballot
 from django.db.models import Count
 from politicians.models import Politician
+from election.models import define_view_permissions, permissions_or, permissions_and
+from django.contrib.auth.decorators import user_passes_test
 
 
-
-# TODO Add decorators limiting access
 
 # General
 
@@ -39,6 +39,7 @@ def index(request):
         {  })
 
 @login_required
+@user_passes_test(define_view_permissions(['RO'],['DUR']))
 def ro_homepage(request):
     """ Display the index page. """
     elec = get_status_display(request)
@@ -46,6 +47,7 @@ def ro_homepage(request):
         {'election': elec, })
 
 @login_required
+@user_passes_test(define_view_permissions(['EO'],['BEF','DUR','AFT']))
 def eo_homepage(request):
     """ Display the index page. """
     elec = get_status_display(request)
@@ -53,6 +55,7 @@ def eo_homepage(request):
         {'election': elec, })
 
 @login_required
+@user_passes_test(define_view_permissions(['REP'],['DUR']))
 def reporter_homepage(request):
     """ Display the index page. """
     elec = get_status_display(request)
@@ -60,6 +63,7 @@ def reporter_homepage(request):
         {'election': elec, })
 
 @login_required
+@user_passes_test(define_view_permissions(['ADMIN'],['BEF','DUR','AFT','ARC']))
 def admin_homepage(request):
     """ Display the index page. """
     elec = get_status_display(request)
@@ -127,6 +131,7 @@ def get_status_display(request):
    elec = Election.objects.get(id=Election.objects.count())
    return elec.status
 
+@user_passes_test(define_view_permissions(['ADMIN'],['BEF','DUR','AFT','ARC']))
 def change_election_status(request):
 ##if status isn't initiated yet it can't be used
    if Election.objects.count() == 0:
@@ -143,9 +148,11 @@ def change_election_status(request):
        form = ElectionForm()
    return render(request, 'election/change_election_status.html', {'election':elec_list, 'form' : form})
 
+@user_passes_test(define_view_permissions(['ADMIN'],['BEF','DUR','AFT','ARC']))
 def set_location(request):
    return render(request, 'election/set_location.html', {})
 
+@user_passes_test(define_view_permissions(['ADMIN'],['BEF','DUR','AFT','ARC']))
 def start_recount(request):
     # TODO Add message in redirect saying recount has been started.
     if request.method == 'POST': 
@@ -162,6 +169,7 @@ def start_recount(request):
         {'form': form,
         })
 
+@user_passes_test(permissions_or(define_view_permissions(['EO'],['BEF','DUR','AFT']), define_view_permissions(['REP'],['DUR'])))
 def calc_winners(request, r_id):
     r = Riding.objects.get(id=r_id)
     # All ballots for a riding
@@ -236,6 +244,7 @@ def calc_winners(request, r_id):
         'winners': winners
         })
 
+@user_passes_test(permissions_or(define_view_permissions(['EO'],['BEF','DUR','AFT']), define_view_permissions(['REP'],['DUR'])))
 def calc_all_winners(request):
     #lists for attributes for each riding
 
