@@ -1,7 +1,7 @@
 #!/bin/bash
 i=0
 dumpcmd='python manage.py dumpdata --format=json --indent=2'
-grep -v '^#' models-deptree.txt | while read line ; do 
+egrep -v '^#|^$' models-deptree.txt | while read line ; do 
 	$dumpcmd $line >test_data_`printf %03d $i`.json
 	i=$(( $i + 1 ))
 done

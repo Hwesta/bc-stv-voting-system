@@ -1,67 +1,70 @@
 [
   {
     "pk": 1,
-    "model": "election.election",
+    "model": "auth.user",
     "fields": {
-      "status": "BEF",
-      "start": "2012-03-16",
-      "description": "Test Election"
-    }
-  },
-  {
-    "pk": 1,
-    "model": "ridings.riding",
-    "fields": {
-      "num_voters": 12345,
-      "name": "Burnaby-New West",
-      "created": "2012-03-16",
-      "active": false,
-      "num_seats": 2,
-      "delete": false
-    }
-  },
-  {
-    "pk": 2,
-    "model": "ridings.riding",
-    "fields": {
-      "num_voters": 2345,
-      "name": "Vancouver",
-      "created": "2012-03-16",
-      "active": false,
-      "num_seats": 1,
-      "delete": false
-    }
-  },
-  {
-    "pk": 1,
-    "model": "keywords.politiciankeywordlist",
-    "fields": {
-      "name": "Height",
-      "delete": false
+      "username": "root",
+      "first_name": "",
+      "last_name": "",
+      "is_active": true,
+      "is_superuser": true,
+      "is_staff": true,
+      "last_login": "2012-04-04 20:05:50",
+      "groups": [],
+      "user_permissions": [],
+      "password": "sha1$2fd75$7dd4332367c95eb0c16ae095a38abe7b29a2e980",
+      "email": "h@b.ca",
+      "date_joined": "2012-03-16 02:12:29"
     }
   },
   {
     "pk": 2,
-    "model": "keywords.politiciankeywordlist",
+    "model": "auth.user",
     "fields": {
-      "name": "Age",
-      "delete": false
+      "username": "ro",
+      "first_name": "",
+      "last_name": "",
+      "is_active": true,
+      "is_superuser": false,
+      "is_staff": false,
+      "last_login": "2012-04-03 21:09:20",
+      "groups": [],
+      "user_permissions": [],
+      "password": "!",
+      "email": "ro",
+      "date_joined": "2012-04-03 21:09:20"
     }
   },
   {
     "pk": 1,
-    "model": "keywords.ridingkeywordlist",
+    "model": "auth.group",
     "fields": {
-      "name": "Area",
-      "delete": false
+      "name": "ADMIN",
+      "permissions": []
     }
   },
   {
     "pk": 2,
-    "model": "keywords.ridingkeywordlist",
+    "model": "auth.group",
     "fields": {
-      "name": "Population",
-      "delete": false
+      "name": "RO",
+      "permissions": []
+    }
+  },
+  {
+    "pk": 3,
+    "model": "auth.group",
+    "fields": {
+      "name": "EO",
+      "permissions": []
+    }
+  },
+  {
+    "pk": 4,
+    "model": "auth.group",
+    "fields": {
+      "name": "REP",
+      "permissions": []
     }
   }
 ]

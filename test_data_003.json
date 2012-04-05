@@ -1,38 +1,69 @@
 [
   {
     "pk": 1,
-    "model": "keywords.ridingkeywordvalue",
+    "model": "election.election",
     "fields": {
-      "riding": 1,
-      "value": "1234",
-      "keyword": 1
+      "status": "BEF",
+      "start": "2012-03-16",
+      "description": "Test Election"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "ridings.riding",
+    "fields": {
+      "num_voters": 12345,
+      "name": "Burnaby-New West",
+      "created": "2012-03-16",
+      "active": false,
+      "num_seats": 2,
+      "recount_needed": false,
+      "delete": false
     }
   },
   {
     "pk": 2,
-    "model": "keywords.ridingkeywordvalue",
+    "model": "ridings.riding",
     "fields": {
-      "riding": 2,
-      "value": "1234",
-      "keyword": 1
+      "num_voters": 2345,
+      "name": "Vancouver",
+      "created": "2012-03-16",
+      "active": false,
+      "num_seats": 1,
+      "recount_needed": false,
+      "delete": false
     }
   },
   {
-    "pk": 3,
-    "model": "keywords.ridingkeywordvalue",
+    "pk": 1,
+    "model": "keywords.politiciankeywordlist",
     "fields": {
-      "riding": 1,
-      "value": "3245",
-      "keyword": 2
+      "name": "Height",
+      "delete": false
     }
   },
   {
-    "pk": 4,
-    "model": "keywords.ridingkeywordvalue",
+    "pk": 2,
+    "model": "keywords.politiciankeywordlist",
     "fields": {
-      "riding": 2,
-      "value": "4232",
-      "keyword": 2
+      "name": "Age",
+      "delete": false
+    }
+  },
+  {
+    "pk": 1,
+    "model": "keywords.ridingkeywordlist",
+    "fields": {
+      "name": "Area",
+      "delete": false
+    }
+  },
+  {
+    "pk": 2,
+    "model": "keywords.ridingkeywordlist",
+    "fields": {
+      "name": "Population",
+      "delete": false
     }
   }
 ]

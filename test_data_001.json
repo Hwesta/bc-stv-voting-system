@@ -1,121 +1,42 @@
 [
   {
-    "pk": 1,
-    "model": "ridings.poll",
+    "pk": "0b4a0e2b4548e1bb1f7940cc77507bdd",
+    "model": "sessions.session",
     "fields": {
-      "active": false,
-      "riding": 1,
-      "polling_stn": "1"
+      "expire_date": "2012-03-30 02:25:44",
+      "session_data": "OTU3NjI0YjFjOTI2ODM5ZmIxYjdjMjg1YzgzZTY0YTQ2MDliN2E2OTqAAn1xAShVEl9hdXRoX3Vz\nZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHED\nVQ1fYXV0aF91c2VyX2lkcQRLAXUu\n"
     }
   },
   {
-    "pk": 2,
-    "model": "ridings.poll",
+    "pk": "beb910fc5713e266c18d82888cb1c0b4",
+    "model": "sessions.session",
     "fields": {
-      "active": false,
-      "riding": 1,
-      "polling_stn": "2"
+      "expire_date": "2012-03-30 02:12:47",
+      "session_data": "OTU3NjI0YjFjOTI2ODM5ZmIxYjdjMjg1YzgzZTY0YTQ2MDliN2E2OTqAAn1xAShVEl9hdXRoX3Vz\nZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHED\nVQ1fYXV0aF91c2VyX2lkcQRLAXUu\n"
     }
   },
   {
-    "pk": 3,
-    "model": "ridings.poll",
+    "pk": "e2392dd829724e2747ce573ef4453370",
+    "model": "sessions.session",
     "fields": {
-      "active": false,
-      "riding": 1,
-      "polling_stn": "3"
+      "expire_date": "2012-04-17 21:08:49",
+      "session_data": "YWYzMWM4MzlhYWVhODc5MWM4MjEzYzBkZTJlMzY0MjVmYjcyOGIyOTqAAn1xAShVEl9hdXRoX3Vz\nZXJfYmFja2VuZHECVSRlbGVjdGlvbi5iYWNrZW5kLkVsZWN0aW9uQXV0aEJhY2tlbmRxA1UNX2F1\ndGhfdXNlcl9pZHEESwF1Lg==\n"
     }
   },
   {
-    "pk": 4,
-    "model": "ridings.poll",
+    "pk": "a44c9c5d57fe41dccee512bee3feb927",
+    "model": "sessions.session",
     "fields": {
-      "active": false,
-      "riding": 2,
-      "polling_stn": "4"
-    }
-  },
-  {
-    "pk": 5,
-    "model": "ridings.poll",
-    "fields": {
-      "active": false,
-      "riding": 2,
-      "polling_stn": "5"
-    }
-  },
-  {
-    "pk": 6,
-    "model": "ridings.poll",
-    "fields": {
-      "active": false,
-      "riding": 2,
-      "polling_stn": "6"
+      "expire_date": "2012-04-18 20:05:50",
+      "session_data": "YWYzMWM4MzlhYWVhODc5MWM4MjEzYzBkZTJlMzY0MjVmYjcyOGIyOTqAAn1xAShVEl9hdXRoX3Vz\nZXJfYmFja2VuZHECVSRlbGVjdGlvbi5iYWNrZW5kLkVsZWN0aW9uQXV0aEJhY2tlbmRxA1UNX2F1\ndGhfdXNlcl9pZHEESwF1Lg==\n"
     }
   },
   {
     "pk": 1,
-    "model": "politicians.politician",
+    "model": "sites.site",
     "fields": {
-      "party": "NDP",
-      "delete": false,
-      "name": "Bob",
-      "incumbent_riding": null,
-      "candidate_riding": 1
-    }
-  },
-  {
-    "pk": 2,
-    "model": "politicians.politician",
-    "fields": {
-      "party": "Conservative",
-      "delete": false,
-      "name": "Jane",
-      "incumbent_riding": 1,
-      "candidate_riding": null
-    }
-  },
-  {
-    "pk": 3,
-    "model": "politicians.politician",
-    "fields": {
-      "party": "Liberal",
-      "delete": false,
-      "name": "Alice",
-      "incumbent_riding": 1,
-      "candidate_riding": 2
-    }
-  },
-  {
-    "pk": 4,
-    "model": "politicians.politician",
-    "fields": {
-      "party": "Liberal",
-      "delete": false,
-      "name": "Mary",
-      "incumbent_riding": null,
-      "candidate_riding": 1
-    }
-  },  {
-    "pk": 5,
-    "model": "politicians.politician",
-    "fields": {
-      "party": "Liberal",
-      "delete": false,
-      "name": "Ted",
-      "incumbent_riding": 1,
-      "candidate_riding": 2
-    }
-  },
-  {
-    "pk": 6,
-    "model": "politicians.politician",
-    "fields": {
-      "party": "Liberal",
-      "delete": false,
-      "name": "Lorynne",
-      "incumbent_riding": 2,
-      "candidate_riding": 1
+      "domain": "example.com",
+      "name": "example.com"
     }
   }
 ]

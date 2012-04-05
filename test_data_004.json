@@ -1,56 +1,122 @@
 [
   {
     "pk": 1,
-    "model": "keywords.politiciankeywordvalue",
+    "model": "ridings.poll",
     "fields": {
-      "politician": 1,
-      "value": "5'2\"",
-      "keyword": 1
+      "active": false,
+      "riding": 1,
+      "polling_stn": "1"
     }
   },
   {
     "pk": 2,
-    "model": "keywords.politiciankeywordvalue",
+    "model": "ridings.poll",
     "fields": {
-      "politician": 2,
-      "value": "5'5\"",
-      "keyword": 1
+      "active": false,
+      "riding": 1,
+      "polling_stn": "2"
     }
   },
   {
     "pk": 3,
-    "model": "keywords.politiciankeywordvalue",
+    "model": "ridings.poll",
     "fields": {
-      "politician": 3,
-      "value": "6'1\"",
-      "keyword": 1
+      "active": false,
+      "riding": 1,
+      "polling_stn": "3"
     }
   },
   {
     "pk": 4,
-    "model": "keywords.politiciankeywordvalue",
+    "model": "ridings.poll",
     "fields": {
-      "politician": 1,
-      "value": "23",
-      "keyword": 2
+      "active": false,
+      "riding": 2,
+      "polling_stn": "4"
     }
   },
   {
     "pk": 5,
-    "model": "keywords.politiciankeywordvalue",
+    "model": "ridings.poll",
     "fields": {
-      "politician": 2,
-      "value": "24",
-      "keyword": 2
+      "active": false,
+      "riding": 2,
+      "polling_stn": "5"
     }
   },
   {
     "pk": 6,
-    "model": "keywords.politiciankeywordvalue",
+    "model": "ridings.poll",
     "fields": {
-      "politician": 3,
-      "value": "25",
-      "keyword": 2
+      "active": false,
+      "riding": 2,
+      "polling_stn": "6"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "politicians.politician",
+    "fields": {
+      "party": "NDP",
+      "delete": false,
+      "name": "Bob",
+      "incumbent_riding": null,
+      "candidate_riding": 1
+    }
+  },
+  {
+    "pk": 2,
+    "model": "politicians.politician",
+    "fields": {
+      "party": "Conservative",
+      "delete": false,
+      "name": "Jane",
+      "incumbent_riding": 1,
+      "candidate_riding": null
+    }
+  },
+  {
+    "pk": 3,
+    "model": "politicians.politician",
+    "fields": {
+      "party": "Liberal",
+      "delete": false,
+      "name": "Alice",
+      "incumbent_riding": 1,
+      "candidate_riding": 2
+    }
+  },
+  {
+    "pk": 4,
+    "model": "politicians.politician",
+    "fields": {
+      "party": "Liberal",
+      "delete": false,
+      "name": "Mary",
+      "incumbent_riding": null,
+      "candidate_riding": 1
+    }
+  },
+  {
+    "pk": 5,
+    "model": "politicians.politician",
+    "fields": {
+      "party": "Liberal",
+      "delete": false,
+      "name": "Ted",
+      "incumbent_riding": 1,
+      "candidate_riding": 2
+    }
+  },
+  {
+    "pk": 6,
+    "model": "politicians.politician",
+    "fields": {
+      "party": "Liberal",
+      "delete": false,
+      "name": "Lorynne",
+      "incumbent_riding": 2,
+      "candidate_riding": 1
     }
   }
 ]
