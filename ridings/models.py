@@ -7,8 +7,9 @@ class Riding(models.Model):
     created = models.DateField(help_text="YYYY-MM-DD")
     num_voters = models.IntegerField(help_text="Number of eligible voters.")
     num_seats = models.IntegerField(help_text="Number of seats available.")
-    active = models.BooleanField(help_text="Whether an election is accepting ballots.")
-    delete = models.BooleanField(default=False)
+    active = models.BooleanField(help_text="Whether a riding is accepting ballots.")
+    delete = models.BooleanField(default=False,help_text="Has the riding been deleted?")
+    recount_needed = models.BooleanField(help_text="Is a recount required in this riding.")
 
     def __unicode__(self):
         return self.name
@@ -57,7 +58,7 @@ class Riding(models.Model):
 class Poll(models.Model):
     riding = models.ForeignKey(Riding)
     active = models.BooleanField(help_text="Whether the poll is still accepting ballots.")
-    polling_stn = models.CharField(max_length=128)
+    polling_stn = models.CharField(max_length=128,help_text="Name of polling station.")
 
     def __unicode__(self):
         return str(self.riding)+", "+str(self.id)
