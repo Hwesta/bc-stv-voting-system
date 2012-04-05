@@ -59,7 +59,7 @@ def new_politician_keyword(request):
         form = addPoliticianKeywordListForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse(index))
+            return HttpResponseRedirect(reverse(new_politician_keyword_value,args=[PoliticianKeywordList.objects.all().count()]))
     else:
         form = addPoliticianKeywordListForm()
 
