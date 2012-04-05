@@ -74,14 +74,18 @@ def view_ballot(request, b_id):
     ballot = Ballot.objects.get(id=b_id)
     return render(request, 'ballots/view_single.html', {'ballot':ballot, 'ballot_num':b_id})
 
-def input_ballot(request, poll_id):
+def input_ballot(request, poll_id, *args, **kwargs):
     poll = Poll.objects.get(id=poll_id)
     candidates = Politician.objects.filter(candidate_riding=poll.riding)
     if request.method == 'POST':
         form = BallotForm(request.POST)
         if form.is_valid():
             new_ballot = form.save()
-            return HttpResponseRedirect(reverse(view_ballots))
+            msg = "Ballot input sucessful."
+            modified_request=request
+            modified_request.method="GET"
+            #return HttpResponseRedirect(reverse(input_ballot, args=(poll.id,)))
+            return input_ballot(modified_request, poll_id, flash=[msg])
     else:
         form = BallotForm(initial={'poll': poll_id, 'vote': 'invalid'})
     return render(request, 'ballots/add.html', {
