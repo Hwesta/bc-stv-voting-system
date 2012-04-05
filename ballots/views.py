@@ -49,6 +49,7 @@ def accept_ballot(request):
                 b.save()
             #b=ballot.object(form.ballot)
             riding_id = correct_ballot.poll.riding.id
+            return verify_riding(request, riding_id)
 
     if riding_id > 0:
         return HttpResponseRedirect(reverse(verify_riding, args=(riding_id,)))
@@ -104,8 +105,14 @@ def input_ballot_tiebreaker(request, old_ballot_num):
             new_ballot = form.save(commit=False)
             new_ballot.state='C'
             new_ballot.save()
-            return HttpResponseRedirect(reverse(verify_riding, args=(poll.riding.id,)))
-    # Fall through on failure
+            msg = "Added tie-break ballot for ballot number "+old_ballot_num
+            #return verify_riding(request, poll.riding.id, flash=[msg])
+            #return HttpResponseRedirect(reverse(verify_riding, args=(poll.riding.id,)))
+        else:
+            msg = "Failed to add tie-break ballot for ballot number "+old_ballot_num
+    else:
+        msg = "Invalid tie-break request for ballot number "+old_ballot_num
+    return verify_riding(request, poll.riding.id, flash=[msg])
 
 def choose_riding_to_verify(request):
     """ Enter the riding to verify ballots for."""
@@ -121,7 +128,7 @@ def choose_riding_to_verify(request):
         {'form': form,
         })
 
-def verify_riding(request, riding_id):
+def verify_riding(request, riding_id, *args, **kwargs):
     # General notes:
     # IMPORTANT:
     # All ballot fetches MUST contain exactly one of the following
@@ -175,12 +182,17 @@ def verify_riding(request, riding_id):
     bad_ballots = list(ballots_entered_only_once) + list(ballot_invalid_state_mix)
 
     # Shortcut processing here
+    flash = []
+    if 'flash' in kwargs:
+        flash = flash + kwargs['flash']
+
     if unverified_count == 0:
         return render(request, 'ballots/view_conflicts.html', {
             'bad': {
                 'Single entry': ballots_entered_only_once,
                 'Invalid state mix': ballot_invalid_state_mix,
-            }
+            },
+            'flash': flash,
         })
 
     # Pass 4: Double-entry check
@@ -277,5 +289,6 @@ def verify_riding(request, riding_id):
             'Single RO only': ballots_no_different_ro,
         },
         'auto_ballots': ballots_auto_approve, 
-        'manual_ballots': ballots_manual_approve
+        'manual_ballots': ballots_manual_approve,
+        'flash': flash,
     })
