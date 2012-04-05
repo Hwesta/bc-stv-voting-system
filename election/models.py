@@ -59,8 +59,13 @@ def define_view_permissions(groups, status):
     status = set(status)
     # TODO: Change to intersection of wanted groups and have groups.
     def func(user):
+        if user == None:
+            return False
+        if user.is_staff or user.is_superuser:
+            return True
         election = Election.objects.all()
-        if (user.groups.all()[0] in groups) and (election[0].status in status):
+        user_groups = user.groups.all()
+        if (user_groups.count() > 0 and user_groups[0] in groups) and (election[0].status in status):
             return True
         else:
             return False
