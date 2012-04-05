@@ -7,9 +7,12 @@ STATUS_CHOICES = (
     ('BEF', 'before'),
     ('DUR', 'during '),
     ('AFT', 'after '),
+    ('ARC', 'archived'),
 )
+# State machine:
+# BEF -> DUR -> AFT -> ARC
 class Election(models.Model):
-    status = models.CharField(max_length=3, choices=STATUS_CHOICES)
+    status = models.CharField(max_length=3, choices=STATUS_CHOICES, default='BEF')
     description = models.CharField(max_length=128)
     start = models.DateField(help_text="YYYY-MM-DD")
     #archive = 
@@ -23,12 +26,18 @@ class Election(models.Model):
             self.status = 'DUR'
         elif self.status == 'DUR':
             self.status = 'AFT'
+        elif self.status == 'AFT':
+            self.status = 'ARC'
+        elif self.status == 'ARC':
+            pass
         else:
             self.status = 'BEF'
     
     def archive(self):
         """ Archive an election """
+        # TODO
         pass
+
     class meta:
         unique_together = (('status', 'description'))
 
@@ -48,6 +57,7 @@ def define_view_permissions(groups, status):
     status is a STATUS_CHOICES'''
     groups = set(groups)
     status = set(status)
+    # TODO: Change to intersection of wanted groups and have groups.
     def func(user):
         election = Election.objects.all()
         if (user.groups.all()[0] in groups) and (election[0].status in status):
