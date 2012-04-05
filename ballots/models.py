@@ -28,7 +28,7 @@ class Ballot(models.Model):
     # Vote will store a list of ranking: candidate pairs
     # JSONField will not load back properly, and we are decoding the contents anyway
     vote = models.TextField(blank=True,help_text="Contents of ballot, JSON as a string")
-    entered_by = models.ForeignKey(User, null=True, blank=True, db_index=True,"Which RO entered the ballot")
+    entered_by = models.ForeignKey(User, null=True, blank=True, db_index=True,help_text="Which RO entered the ballot")
     ballot_hash = models.CharField(max_length=128, null=True, blank=True)
     
 
