@@ -6,14 +6,13 @@ from ridings.models import Riding, Poll, Riding_Add_Form, Riding_Modify_Form, Po
 from politicians.models import Politician
 from keywords.models import RidingKeywordValue, RidingKeywordList, PoliticianKeywordValue, addRidingKeywordValueForm
 from django.contrib.auth.decorators import user_passes_test
-from election.models import define_view_permissions
+from election.models import define_view_permissions, permissions_or, permissions_and
 from election.views import get_status_display
 
 # TODO Add decorators limiting access
 
 # Riding Information
-
-@user_passes_test(define_view_permissions(['EO'],['BEF','DUR','AFT']))
+@user_passes_test(permissions_or(define_view_permissions(['EO'],['BEF','DUR','AFT']), define_view_permissions(['REP'],['DUR'])))
 def view_all_ridings(request):
     #""" View list of all the ridings. """
     # exlude deleted ridings from list
@@ -34,7 +33,7 @@ def view_deleted_ridings(request):
     # render page
     return render(request, 'ridings/deleted_ridings.html',{'ridings': ridings, 'type': str('ridings')})
 
-@user_passes_test(define_view_permissions(['EO'],['BEF','DUR','AFT']))
+@user_passes_test(permissions_or(define_view_permissions(['EO'],['BEF','DUR','AFT']), define_view_permissions(['REP'],['DUR'])))
 def view_riding(request, r_id):
     #""" View all the details about a riding on one page. """
     # store all necessary information for a riding into variables to be added to the dictionary
@@ -106,7 +105,7 @@ def modify_riding(request, r_id):
 # Poll Management
 
 # all poll functions follow the same logic as riding functions
-@user_passes_test(define_view_permissions(['EO'],['BEF','DUR','AFT']))
+@user_passes_test(permissions_or(define_view_permissions(['EO'],['BEF','DUR','AFT']), define_view_permissions(['REP'],['DUR'])))
 def view_polls(request, riding_id):
     riding = Riding.objects.get(id=riding_id)
     p = Poll.objects.filter(riding=riding)
