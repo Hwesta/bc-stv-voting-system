@@ -12,6 +12,10 @@ BALLOT_STATE_CHOICES = (
     ('I', 'Incorrect'),
     ('R', 'Recount'),
 )
+# State machine:
+# U -> C
+# U -> I
+# (U,C,I) -> R
 
 class Ballot(models.Model):
     
@@ -23,8 +27,8 @@ class Ballot(models.Model):
     spoiled = models.BooleanField(default=False, db_index=True)
     # Vote will store a list of ranking: candidate pairs
     # JSONField will not load back properly, and we are decoding the contents anyway
-    vote = models.TextField(blank=True)
-    entered_by = models.ForeignKey(User, null=True, blank=True, db_index=True)
+    vote = models.TextField(blank=True,help_text="Contents of ballot, JSON as a string")
+    entered_by = models.ForeignKey(User, null=True, blank=True, db_index=True,"Which RO entered the ballot")
     ballot_hash = models.CharField(max_length=128, null=True, blank=True)
     
 
