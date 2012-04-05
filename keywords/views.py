@@ -1,7 +1,11 @@
+#Django
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.forms.formsets import formset_factory
+#System
 from politicians.models import Politician
+from ridings.models import Riding
 from keywords.models import RidingKeywordList, RidingKeywordValue, \
     addRidingKeywordListForm, editRidingKeywordListForm, addRidingKeywordValueForm, editRidingKeywordValueForm
 from keywords.models import PoliticianKeywordList, PoliticianKeywordValue, \
@@ -29,21 +33,26 @@ def new_riding_keyword(request):
         form = addRidingKeywordListForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse(index))
+            return HttpResponseRedirect(reverse(new_riding_keyword_value,args=[RidingKeywordList.objects.all().count()]))
     else:
         form = addRidingKeywordListForm()
     return render(request,'keywords/addridingkeywords.html',{'form':form})
 
-def new_riding_keyword_value(request):
+def new_riding_keyword_value(request, k_id):
+    RidingKeywordValueFormSet = formset_factory(addRidingKeywordValueForm, extra=0)
     if request.method == 'POST':
-        form = addRidingKeywordValueForm(request.POST)
-        if form.is_valid():
-            form.save()
+        formset = RidingKeywordValueFormSet(request.POST, request.FILES)
+        if formset.is_valid():
+            for form in formset:
+                form.save()
             return HttpResponseRedirect(reverse(index))
     else:
-        form = addRidingKeywordValueForm()
+        data = []
+        for i in range(Riding.objects.all().count()):
+            data.append({'riding':i+1,'keyword':k_id})
+        formset = RidingKeywordValueFormSet(initial=data)
 
-    return render(request,'keywords/addridingkeywordvalue.html',{'form':form})
+    return render(request,'keywords/addridingkeywordvalue.html',{'formset':formset,'id':k_id})
 
 def new_politician_keyword(request):
     if request.method == 'POST':
@@ -56,16 +65,21 @@ def new_politician_keyword(request):
 
     return render(request,'keywords/addpoliticiankeywords.html',{'form':form})
 
-def new_politician_keyword_value(request):
+def new_politician_keyword_value(request, p_id):
+    PoliticianKeywordValueFormSet = formset_factory(addPoliticianKeywordValueForm, extra = 0)
     if request.method == 'POST':
-        form = addPoliticianKeywordValueForm(request.POST)
-        if form.is_valid():
-            form.save()
+        formset = PoliticianKeywordValueFormSet(request.POST, request.FILES)
+        if formset.is_valid():
+            for form in formset:
+                form.save()
             return HttpResponseRedirect(reverse(index))
     else:
-        form = addPoliticianKeywordValueForm()
+        data = []
+        for i in range(Politician.objects.all().count()):
+            data.append({'politician':i+1,'keyword':p_id})
+        formset = PoliticianKeywordValueFormSet(initial=data)
 
-    return render(request,'keywords/addpoliticiankeywordvalue.html',{'form':form})
+    return render(request,'keywords/addpoliticiankeywordvalue.html',{'formset':formset,'id':p_id})
 
 def edit_riding_keyword(request, k_id):
     keyword = RidingKeywordList.objects.get(id=k_id)

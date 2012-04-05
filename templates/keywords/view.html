@@ -5,8 +5,8 @@
 {% block actions %}
 <li><a href="{% url keywords.views.new_riding_keyword %}">Add New Riding Keyword</a></li>
 <li><a href="{% url keywords.views.new_politician_keyword %}">Add New Politician Keyword</a></li>
-<li><a href="{% url keywords.views.new_riding_keyword_value %}">Assign Riding Keyword Value</a></li>
-<li><a href="{% url keywords.views.new_politician_keyword_value %}">Assign Politician Keyword Value</a></li>
+{% comment %}<li><a href="{% url keywords.views.new_riding_keyword_value %}">Assign Riding Keyword Value</a></li>
+<li><a href="{% url keywords.views.new_politician_keyword_value %}">Assign Politician Keyword Value</a></li>{% endcomment %}
 {% endblock %}
 
 {% block content %}
