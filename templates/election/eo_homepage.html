@@ -8,8 +8,14 @@
 
 {% block content %}
 <ul>
-<li><a href="{% url ridings.views.view_all_ridings %}">Riding Management</a></li>
-<li><a href="{% url keywords.views.index %}">Keyword Management</a></li>
+
+{% if "election.is_dur" or "election.is_bef" %}
+	<li><a href="{% url ridings.views.view_all_ridings %}">	Riding Management </a></li>
+{% endif %}
+
+{% if "election.is_bef" %}
+	<li><a href="{% url keywords.views.index %}">Keyword 	Management</a></li>
+{% endif %}
 </ul>
 
 {% endblock %}
