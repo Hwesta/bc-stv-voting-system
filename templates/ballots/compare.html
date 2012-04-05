@@ -54,8 +54,7 @@
 <form method="post" id="submit-ballot-{{ballot.id}}" action="{% url ballots.views.accept_ballot %}">
 {% csrf_token %}
 <input type="submit" value="Use This One" name="{{ballot.ballot_num}}" id="id-{{ballot.ballot_num}}" />
-<input type="hidden" name="ballot_num" value="{{ballot.ballot_num}}" />
-<input type="hidden" name="ballot_id" value="{{ballot.id}}" />
+<input type="hidden" name="ballot" value="{{ballot.id}}" />
 </form>
 </td>
 <script>

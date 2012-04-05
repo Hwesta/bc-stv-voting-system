@@ -32,20 +32,26 @@ def compare_ballot(request, b_id):
             })
 
 def accept_ballot(request):
+    riding_id = -1
     if request.method == 'POST':
         form = AcceptBallotForm(request.POST)
+        #print form.cleaned_data
         if form.is_valid():
-            for b in Ballot.objects.filter(state__ne='R').filter(ballot_num=form.cleaned_data['ballot_num']).all():
+            correct_ballot = form.cleaned_data['ballot']
+            #print "Saving ballot", correct_ballot
+            ballot_num = correct_ballot.ballot_num
+            correct_ballot.state='C'
+            correct_ballot.save()
+            for b in Ballot.objects.exclude(state='R').exclude(id=correct_ballot.id).filter(ballot_num=ballot_num).all():
                 b.state='I'
                 b.save()
             #b=ballot.object(form.ballot)
-        print form.cleaned_data
-        riding_id=0
+            riding_id = correct_ballot.poll.riding.id
+
+    if riding_id > 0:
         return HttpResponseRedirect(reverse(verify_riding, args=(riding_id,)))
     else:
-        return render(request, 'ballots/compare.html',
-        {'form': AcceptBallotForm(),
-        })
+        return HttpResponseRedirect(reverse(choose_riding_to_verify, args=()))
         
 
 def close_poll():

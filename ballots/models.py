@@ -105,5 +105,4 @@ class ChooseRidingToVerifyForm(forms.Form):
 
 class AcceptBallotForm(forms.Form):
     ballot = forms.ModelChoiceField(Ballot.objects.all())
-    ballot_number = forms.IntegerField()
     
