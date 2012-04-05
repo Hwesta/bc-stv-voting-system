@@ -28,7 +28,7 @@
 <td>{{ballot.spoiled}}</td>
 <td>{{ballot.vote}}</td>
 <td>{{ballot.id}}</td>
-<td>Fix</td>
+<td><a href="{% url ballots.views.compare_ballot ballot.id %}">Fix</a></td>
 </tr>
 {% endfor %}
 <tr><td colspan=7><hr /></td></tr>
@@ -43,7 +43,7 @@
 <td>{{ballot.spoiled}}</td>
 <td>{{ballot.vote}}</td>
 <td>{{ballot.id}}</td>
-<td>Fix</td>
+<td><a href="{% url ballots.views.compare_ballot ballot.id %}">Fix</a></td>
 </tr>
 {% endfor %}
 <tr><td colspan='7'><hr /></td></tr>
@@ -57,7 +57,7 @@
 <td>{{ballot.spoiled}}</td>
 <td>{{ballot.vote}}</td>
 <td>{{ballot.id}}</td>
-<td>Fix</td>
+<td><a href="{% url ballots.views.compare_ballot ballot.id %}">Fix</a></td>
 </tr>
 {% endfor %}
 <tr><td colspan='7'><hr /></td></tr>
