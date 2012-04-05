@@ -9,5 +9,6 @@ ROLE_CHOICES = (
     ('EO', 'Electoral Officer'),
     ('RO', 'Returning Officer'),
 )
+
 class CreateUserForm(UserCreationForm):
     role = forms.ChoiceField(choices=ROLE_CHOICES)
