@@ -158,13 +158,13 @@ def verify_riding(request, riding_id, *args, **kwargs):
                 ballot_num, \
                 COUNT(ballot_num) AS cnt \
             FROM ballots_ballot \
-            WHERE state != 'R' AND poll_id IN (%s) \
+            WHERE state = 'U' AND poll_id IN (%s) \
             GROUP BY ballot_num \
             HAVING COUNT(ballot_num) < 2 \
         ) q1 ON q1.ballot_num=ballots_ballot.ballot_num \
     " % (poll_ids_str, ) )
     ids = map(lambda b: b.id, ballots_entered_only_once)
-    ballots_entered_only_once = Ballot.objects.exclude(state='R').filter(id__in=ids).filter(poll__in=poll_ids)
+    ballots_entered_only_once = Ballot.objects.filter(state='U').filter(id__in=ids).filter(poll__in=poll_ids)
 
     # Pass 2: Exclude pass 1, No mix of unverified/correct, unverified/correct
     ballot_invalid_state_mix = Ballot.objects.raw(" \
@@ -222,14 +222,14 @@ def verify_riding(request, riding_id, *args, **kwargs):
                 ballot_num, \
                 COUNT(DISTINCT entered_by_id) AS cnt \
             FROM ballots_ballot \
-            WHERE state != 'R' AND poll_id IN (%s) %s\
+            WHERE state = 'U' AND poll_id IN (%s) %s\
             GROUP BY ballot_num \
             HAVING COUNT(DISTINCT entered_by_id) < 2 \
         ) q1 ON q1.ballot_num=ballots_ballot.ballot_num \
     " % (poll_ids_str, bad_ballot_nums_str_clause ,))
     ids = map(lambda b: b.id, ballots_no_different_ro)
     #ballots_no_different_ro_ballot_num = map(lambda b: b.ballot_num, ballots_no_different_ro)
-    ballots_no_different_ro = Ballot.objects.exclude(state='R').filter(id__in=ids).filter(poll__in=poll_ids)
+    ballots_no_different_ro = Ballot.objects.filter(state='U').filter(id__in=ids).filter(poll__in=poll_ids)
 
     bad_ballots = bad_ballots + list(ballots_no_different_ro)
    
