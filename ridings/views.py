@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.forms.formsets import formset_factory
 from ridings.models import Riding, Poll, Riding_Add_Form, Riding_Modify_Form, PollForm
 from politicians.models import Politician
-from keywords.models import RidingKeywordValue, PoliticianKeywordValue
+from keywords.models import RidingKeywordValue, RidingKeywordList, PoliticianKeywordValue, addRidingKeywordValueForm
 from django.contrib.auth.decorators import user_passes_test
 from election.models import define_view_permissions
 
@@ -53,13 +54,30 @@ def add_riding(request):
         if form.is_valid():
 	    # save information to database
             form.save()
-	    # go back to page rendered by view_all_ridings function
-            return HttpResponseRedirect(reverse(view_all_ridings))
+	    # go add riding keywords
+            return HttpResponseRedirect(reverse(add_riding_keyword, args=[Riding.objects.all().count()]))
     else:
 	# create a blank form instance
         form = Riding_Add_Form()
 	# render page
 	return render(request, 'ridings/add_riding.html', {'form': form, })
+
+def add_riding_keyword(request, r_id):
+    RidingKeywordValueFormSet = formset_factory(addRidingKeywordValueForm, extra=0)
+    if request.method == 'POST':
+        formset = RidingKeywordValueFormSet(request.POST, request.FILES)
+        if formset.is_valid():
+            for form in formset:
+                form.save()
+            return HttpResponseRedirect(reverse(view_all_ridings))
+    else:
+        data = []
+        for i in range(RidingKeywordList.objects.all().count()):
+            data.append({'riding':r_id,'keyword':i+1})
+        formset = RidingKeywordValueFormSet(initial=data)
+
+    return render(request,'keywords/addriding.html',{'formset':formset,'id':r_id})
+
 
 def modify_riding(request, r_id):
     #""" Modify existing riding. """
