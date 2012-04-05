@@ -120,15 +120,12 @@ def view_election(request):
 ######################################
 
 def get_status_display(request):
-##   elec = Election.objects.get(id=Election.objects.count())
-##   print "-----------------------"
-##   print elec['status']
-##   return elec['status']
+
    elec = Election.objects.all()
    return elec
 
 def change_election_status(request):
-   elec_list = Election.objects.all()
+   elec_list = Election.objects.get(id=Election.objects.count())
    if request.method == 'POST':
        form = ElectionForm(request.POST)
        if form.is_valid():
