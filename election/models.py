@@ -65,10 +65,10 @@ def define_view_permissions(groups, status):
             return True
         election = Election.objects.all()
         user_groups = user.groups.all()
-        for i in range(0, (len(groups) - 1)):
-            if (user_groups.count() > 0 and str(user_groups[i]) in groups) and (str(election[Election.objects.all().count() - 1].status) in status):
-                return True
-        return False
+        if (user_groups.count() > 0 and str(user_groups[0]) in groups) and (str(election[Election.objects.all().count() - 1].status) in status):
+            return True
+        else:
+            return False
     return func
 
 
