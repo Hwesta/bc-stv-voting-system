@@ -50,23 +50,25 @@ class ElectionForm(ModelForm):
 
 
 
-def define_view_permissions(groups):
+def define_view_permissions(groups, status):
     ''' Defines the permissions for a view.
 
     groups is a set
     status is a STATUS_CHOICES'''
     groups = set(groups)
+    status = set(status)
     # TODO: Change to intersection of wanted groups and have groups.
     def func(user):
         if user == None:
             return False
         if user.is_staff or user.is_superuser:
             return True
+        election = Election.objects.all()
         user_groups = user.groups.all()
-        if (user_groups.count() > 0 and str(user_groups[0]) in groups):
-            return True
-        else:
-            return False
+        for i in range(0, (len(groups) - 1)):
+            if (user_groups.count() > 0 and str(user_groups[i]) in groups) and (str(election[Election.objects.all().count() - 1].status) in status):
+                return True
+        return False
     return func
 
 

@@ -11,7 +11,7 @@ from election.models import define_view_permissions
 
 # Riding Information
 
-@user_passes_test(define_view_permissions(['EO']))
+@user_passes_test(define_view_permissions(['EO','REP'],['BEF','DUR']))
 def view_all_ridings(request):
     #""" View list of all the ridings. """
     # exlude deleted ridings from list
