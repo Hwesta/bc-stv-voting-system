@@ -99,3 +99,6 @@ class BallotForm(ModelForm):
 
 class ChoosePollForm(forms.Form):
     poll = forms.ModelChoiceField(Poll.objects.all())
+
+class ChooseRidingToVerifyForm(forms.Form):
+    riding = forms.ModelChoiceField(Riding.objects.all())

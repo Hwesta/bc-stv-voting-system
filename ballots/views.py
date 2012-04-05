@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.db.models import Count
 from ridings.models import Riding, Poll
-from ballots.models import Ballot, BallotForm, ChoosePollForm
+from ballots.models import Ballot, BallotForm, ChoosePollForm, ChooseRidingToVerifyForm
 from politicians.models import Politician
 
 # Entering Ballots
@@ -59,7 +59,21 @@ def input_ballot(request, poll_id):
                 'candidates':candidates,
             })
 
-def view_conflict_list(request, riding_id):
+def choose_riding_to_verify(request):
+    """ Enter the riding to verify ballots for."""
+    if request.method == 'POST':
+        form = ChooseRidingToVerifyForm(request.POST)
+        if form.is_valid():
+            riding = form.cleaned_data['riding']
+            return HttpResponseRedirect(reverse(verify_riding, args=(riding.id,)))
+    else:
+        form = ChooseRidingToVerifyForm()
+
+    return render(request, 'ballots/choose_riding_to_verify.html',
+        {'form': form,
+        })
+
+def verify_riding(request, riding_id):
     # General notes:
     # IMPORTANT:
     # All ballot fetches MUST contain exactly one of the following
