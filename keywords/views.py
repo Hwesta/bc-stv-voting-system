@@ -65,7 +65,7 @@ def new_politician_keyword(request):
 
     return render(request,'keywords/addpoliticiankeywords.html',{'form':form})
 
-def new_politician_keyword_value(request, p_id):
+def new_politician_keyword_value(request, k_id):
     PoliticianKeywordValueFormSet = formset_factory(addPoliticianKeywordValueForm, extra = 0)
     if request.method == 'POST':
         formset = PoliticianKeywordValueFormSet(request.POST, request.FILES)
@@ -76,7 +76,7 @@ def new_politician_keyword_value(request, p_id):
     else:
         data = []
         for i in range(Politician.objects.all().count()):
-            data.append({'politician':i+1,'keyword':p_id})
+            data.append({'politician':i+1,'keyword':k_id})
         formset = PoliticianKeywordValueFormSet(initial=data)
 
     return render(request,'keywords/addpoliticiankeywordvalue.html',{'formset':formset,'id':p_id})

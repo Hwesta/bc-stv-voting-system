@@ -54,6 +54,7 @@ urlpatterns = patterns('',
     url(r'^ridings/(\d+)/politicians/(\d+)/$', 'politicians.views.view_politician'),
     url(r'^ridings/(\d+)/politicians/(\d+)/modify/$', 'politicians.views.modify_politician'),
     url(r'^ridings/(\d+)/politicians/add/$', 'politicians.views.add_politician'),
+    url(r'^ridings/(\d+)/politicians/add/(\d+)/$', 'politicians.views.add_politician_keyword'),
     url(r'^ridings/(\d+)/politicians/deleted/$', 'politicians.views.view_deleted_politicians'),
 
     url(r'^keywords/$', 'keywords.views.index'),

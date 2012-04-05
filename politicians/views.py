@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.forms.formsets import formset_factory
 from ridings.models import Riding
 from politicians.models import Politician, Politician_Add_Form, Politician_Modify_Form
-from keywords.models import PoliticianKeywordValue, PoliticianKeywordList
+from keywords.models import PoliticianKeywordValue, PoliticianKeywordList,addPoliticianKeywordValueForm
 
 # TODO Add decorators limiting access
 
@@ -55,10 +56,26 @@ def add_politician(request, r_id):
         form = Politician_Add_Form(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse(view_politicians, args=(r_id)))
+            return HttpResponseRedirect(reverse(add_politician_keyword, args=[r_id,Politician.objects.all().count()]))
     else:
         form = Politician_Add_Form()
     return render(request, 'politicians/add_politician.html', { 'form':form, 'r_id': r_id})
+    
+def add_politician_keyword(request, r_id, p_id):
+    PoliticianKeywordValueFormSet = formset_factory(addPoliticianKeywordValueForm, extra = 0)
+    if request.method == 'POST':
+        formset = PoliticianKeywordValueFormSet(request.POST, request.FILES)
+        if formset.is_valid():
+            for form in formset:
+                form.save()
+            return HttpResponseRedirect(reverse(view_politicians, args=[r_id]))
+    else:
+        data = []
+        for i in range(PoliticianKeywordList.objects.all().count()):
+            data.append({'politician':p_id,'keyword':i+1})
+        formset = PoliticianKeywordValueFormSet(initial=data)
+
+    return render(request,'keywords/addpolitician.html',{'formset':formset,'p_id':p_id,'r_id':r_id})
 
 def modify_politician(request, r_id, p_id):
     politician = Politician.objects.get(id=p_id)
