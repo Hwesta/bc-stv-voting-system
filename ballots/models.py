@@ -1,6 +1,6 @@
 from django.db import models
 from django import forms
-from ridings.models import Poll
+from ridings.models import Poll, Riding
 from jsonfield import JSONField
 from django.forms import ModelForm
 from django.contrib.auth.models import User
