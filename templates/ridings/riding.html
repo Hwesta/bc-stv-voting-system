@@ -47,7 +47,7 @@
 <ul>
 {% for keyword in keywords %}
 {% if not keyword.keyword.delete %}
-<li>{{ keyword.keyword }}: {{keyword.value}}</li>
+<li><a href="{% url keywords.views.edit_riding_keyword_value keyword.id %}">{{ keyword.keyword }}</a>: {{keyword.value}}</li>
 {% endif %}
 {% endfor %}
 </ul>
