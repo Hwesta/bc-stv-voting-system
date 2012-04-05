@@ -205,7 +205,14 @@ def calc_winners(request, r_id):
     data = data + "\"" + r.name + " Results\""
     # End of BLT generation
 
-    E = DroopElection(DroopElectionProfile(data=data.encode('ascii', 'ignore')), dict(rule='bcstv'))
+    try:
+        E = DroopElection(DroopElectionProfile(data=data.encode('ascii', 'ignore')), dict(rule='bcstv'))
+    except ElectionProfileError as e:
+        # TODO: catch and send nice page for election
+        # "too few ballots" => did not meet droop quota to vote, must be more ballots than candidates
+        # "too few candidates" => seats > candidates
+        raise e
+
     E.count()
     result = E.record()
     for i in range(len(result['actions'][-1]['cstate'])):
