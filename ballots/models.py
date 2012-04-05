@@ -76,7 +76,7 @@ class BallotForm(ModelForm):
             raise forms.ValidationError("Invalid ballot: Empty but not spoiled?")
         if cleaned_data['spoiled']:
             cleaned_data['vote'] = {}
-        if isinstance(cleaned_data['vote'], dict):
+        if 'vote' in cleaned_data and isinstance(cleaned_data['vote'], dict):
             cleaned_data['vote'] = json.dumps(cleaned_data['vote'])
         return cleaned_data
 
