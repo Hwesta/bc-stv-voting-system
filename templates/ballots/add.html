@@ -50,8 +50,8 @@
 </form>
         
         <script>
-		  $("input[type=radio]").click(enforceBallotValidity);
-		  $('#myform').submit(onSubmit);
+			$("input[type=radio]").click(function(){ enforceBallotValidity(this, '#myform'); });
+			$('#myform').submit(onSubmit);
 		</script>
 
 {% endblock %}

@@ -63,11 +63,70 @@
 </script>
 {% endfor %}
 </tr>
-<td></td>
-<td></td>
-<td></td>
-<td><input type="button" value="Use This One" name="-1" id="-1" /></td>
+<!-- End of ballot selection menu -->
 
+<tr>
+<td colspan="3">Create new ballot as infaliable 3rd RO</td>
+<td>
+	<div id="new-ballot-placeholder">
+		<i>Select new ballot to display ballot form.</i>
+	</div>
+	<div id="new-ballot">
+<form action="{% url ballots.views.input_ballot_tiebreaker tiebreaker_form.ballot_num.value %}" method="post" id="new-ballot">
+{% csrf_token %}
+{{tiebreaker_form.non_field_errors}}
+{{tiebreaker_form.vote.errors}}
+{{tiebreaker_form.ballot_num.errors}}
+{{tiebreaker_form.ballot_num.label}}:{{tiebreaker_form.ballot_num}}
+
+<table>
+	<tr>
+		<th>Candidate</th>
+		<th colspan="3">Ranking</th>
+	</tr>
+	<tr>
+		<th></th>
+        {% for person in candidates %}
+	    	<th>{{forloop.counter}}</th>
+        {%endfor%}
+	</tr>
+
+	{% for person in candidates %}
+	<tr>
+		<td>{{ person.name }}</td>
+        {%for _ in candidates %}
+        	<td><input type="radio" name="{{ person.id }}" class="data-column-{{forloop.counter}}" value="{{forloop.counter}}" /></td>
+        {%endfor%}
+
+	</tr>
+	{% endfor %}
+
+</table>
+{{ tiebreaker_form.poll.as_hidden }}
+{{ tiebreaker_form.vote.as_hidden }}
+{{ tiebreaker_form.spoiled.errors }}
+{{ tiebreaker_form.spoiled.label }} :{{ tiebreaker_form.spoiled }}
+<br />
+<input type="submit" value="Submit" />
+<input type="reset" value="Clear" />
+        <script>
+			$("form#new-ballot input[type=radio]").click(function(){enforceBallotValidity(this, "form#new-ballot");});
+			$('form#new-ballot').submit(onSubmit);
+		</script>
+</form>
+</div>
+
+</td>
+<td><input type="button" value="Display New Ballot Form" name="-1" id="display-new-ballot-form" /></td>
+</tr>
+
+<script>
+	$('#new-ballot').hide();
+	$('#display-new-ballot-form').click(function(x){
+		$('#new-ballot-placeholder').hide();
+		$('#new-ballot').show();
+	});
+</script>
 
 
 </table>

@@ -105,4 +105,20 @@ class ChooseRidingToVerifyForm(forms.Form):
 
 class AcceptBallotForm(forms.Form):
     ballot = forms.ModelChoiceField(Ballot.objects.all())
-    
+
+# Very similar to a BallotForm
+# but ballot_num and poll are immutable!
+class LockedBallotForm(BallotForm):
+    def __init__(self,  *args, **kwargs):
+        super(LockedBallotForm, self).__init__(*args, **kwargs)
+        # Stop users from changing on form
+        self.fields['ballot_num'].widget.attrs['readonly'] = True
+        self.fields['poll'].widget.attrs['readonly'] = True
+
+    # if they inject it, ignore anyway
+    #def clean_poll(self):
+    #    return self.instance.poll
+
+    ## if they inject it, ignore anyway
+    #def clean_ballot_num(self):
+    #    return self.instance.ballot_num

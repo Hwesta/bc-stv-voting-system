@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.db.models import Count
 from ridings.models import Riding, Poll
-from ballots.models import Ballot, BallotForm, ChoosePollForm, ChooseRidingToVerifyForm, AcceptBallotForm
+from ballots.models import Ballot, BallotForm, ChoosePollForm, ChooseRidingToVerifyForm, AcceptBallotForm, LockedBallotForm
 from politicians.models import Politician
 
 # Entering Ballots
@@ -26,10 +26,12 @@ def compare_ballot(request, b_id):
     ballot = Ballot.objects.get(id=b_id)
     candidates = Politician.objects.filter(candidate_riding=ballot.poll.riding)
     ballot_list = Ballot.objects.filter(ballot_num=ballot.ballot_num)
-    return render(request, 'ballots/compare.html',
-                  {'ballots':ballot_list,
-                  'candidates':candidates,
-            })
+    tiebreaker_form = LockedBallotForm(initial={'poll': ballot.poll.id, 'ballot_num': ballot.ballot_num, 'vote': 'invalid'})
+    return render(request, 'ballots/compare.html', {
+        'ballots':ballot_list,
+        'candidates':candidates,
+        'tiebreaker_form': tiebreaker_form,
+        })
 
 def accept_ballot(request):
     riding_id = -1
@@ -85,6 +87,25 @@ def input_ballot(request, poll_id):
                 'form':form,
                 'candidates':candidates,
             })
+
+def input_ballot_tiebreaker(request, old_ballot_num):
+    # Get old ballots that are not for a recount
+    old_ballots = Ballot.objects.exclude(state='R').filter(ballot_num=old_ballot_num).all()
+    poll = old_ballots[0].poll
+    candidates = Politician.objects.filter(candidate_riding=poll.riding)
+    if request.method == 'POST':
+        form = LockedBallotForm(request.POST,initial={'poll': poll, 'ballot_num': old_ballot_num})
+        if form.is_valid():
+            # Invalidate old ballots
+            for b in old_ballots:
+                b.state='I'
+                b.save()
+            # Save new ballot
+            new_ballot = form.save(commit=False)
+            new_ballot.state='C'
+            new_ballot.save()
+            return HttpResponseRedirect(reverse(verify_riding, args=(poll.riding.id,)))
+    # Fall through on failure
 
 def choose_riding_to_verify(request):
     """ Enter the riding to verify ballots for."""

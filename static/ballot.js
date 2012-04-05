@@ -1,9 +1,10 @@
 //This is used to validate an array of radio buttons, keep from having more than one selected per row and column and then create a JSON object from it.
 
-function enforceBallotValidity()
+function enforceBallotValidity(obj, scope)
 {
 	var column, element, selector;
-	element=$(this);
+	//element=$(this);
+	element=$(obj);
 	// IE does not support grep/match functions natively.
 	column = element.attr("class").split(/ /); 
 	column = jQuery.grep(
@@ -15,17 +16,18 @@ function enforceBallotValidity()
 		column,
 		function(x){ return x.replace(/data-column-/,''); }
 	)[0];
-	
-	selector = "input[type=radio].data-column-"+column;
+    scope = '';	
+	selector = scope+" input[type=radio].data-column-"+column;
 	$(selector).prop("checked", false);
 	element.prop("checked", true);
 };
 		
 function onSubmit()
 {
-	var formVals = $("form input:radio").serializeArray();
+    //var formVals = $("form input:radio").serializeArray();
+	var formVals = $(this).find("input:radio").serializeArray();
 	var jsonObj = {};
-	var length=Math.sqrt($("form input:radio").length);
+	var length=Math.sqrt($(this).find("input:radio").length);
 	var i;
 	
 	//Initialize the votes to be blank.
@@ -41,8 +43,8 @@ function onSubmit()
 	//Inspired by a comment on the jquery documentation at http://api.jquery.com/serializeArray/			
   	var submitVals = JSON.stringify(jsonObj);
 				
-	$('input#id_vote').val(submitVals);
-	console.log($('input#id_vote'));
+	$(this).find('input#id_vote').val(submitVals);
+	console.log($(this).find('input#id_vote'));
 	return true;
 }
 
