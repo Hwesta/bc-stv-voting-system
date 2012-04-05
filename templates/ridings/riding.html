@@ -46,7 +46,9 @@
 <h2>Keywords</h2>
 <ul>
 {% for keyword in keywords %}
+{% if not keyword.keyword.delete %}
 <li>{{ keyword.keyword }}: {{keyword.value}}</li>
+{% endif %}
 {% endfor %}
 </ul>
 
