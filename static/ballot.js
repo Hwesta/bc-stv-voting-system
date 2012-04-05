@@ -28,8 +28,7 @@ function onSubmit()
 	var length=Math.sqrt($("form input:radio").length);
 	var i;
 	
-	console.log("length: "+length)
-
+	//Initialize the votes to be blank.
 	for (i=1; i<=length; i++)
 	{
 		jsonObj[i]="";
@@ -38,13 +37,10 @@ function onSubmit()
 	for (i in formVals)
 	{
 		jsonObj[formVals[i].value]=formVals[i].name;
-		console.log("value: "+formVals[i].value+" name: "+formVals[i].name);
 	}
 	//Inspired by a comment on the jquery documentation at http://api.jquery.com/serializeArray/			
   	var submitVals = JSON.stringify(jsonObj);
 				
-	//console.log(submitVals);
-	//return false;
 	$('input#id_vote').val(submitVals);
 	console.log($('input#id_vote'));
 	return true;
