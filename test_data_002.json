@@ -138,8 +138,8 @@
     "pk": 28,
     "model": "auth.permission",
     "fields": {
-      "codename": "add_election",
-      "name": "Can add election",
+      "codename": "add_ballot",
+      "name": "Can add ballot",
       "content_type": 10
     }
   },
@@ -147,8 +147,8 @@
     "pk": 29,
     "model": "auth.permission",
     "fields": {
-      "codename": "change_election",
-      "name": "Can change election",
+      "codename": "change_ballot",
+      "name": "Can change ballot",
       "content_type": 10
     }
   },
@@ -156,8 +156,8 @@
     "pk": 30,
     "model": "auth.permission",
     "fields": {
-      "codename": "delete_election",
-      "name": "Can delete election",
+      "codename": "delete_ballot",
+      "name": "Can delete ballot",
       "content_type": 10
     }
   },
@@ -192,8 +192,8 @@
     "pk": 52,
     "model": "auth.permission",
     "fields": {
-      "codename": "add_user",
-      "name": "Can add user",
+      "codename": "add_election",
+      "name": "Can add election",
       "content_type": 18
     }
   },
@@ -201,8 +201,8 @@
     "pk": 53,
     "model": "auth.permission",
     "fields": {
-      "codename": "change_user",
-      "name": "Can change user",
+      "codename": "change_election",
+      "name": "Can change election",
       "content_type": 18
     }
   },
@@ -210,8 +210,8 @@
     "pk": 54,
     "model": "auth.permission",
     "fields": {
-      "codename": "delete_user",
-      "name": "Can delete user",
+      "codename": "delete_election",
+      "name": "Can delete election",
       "content_type": 18
     }
   },
@@ -219,8 +219,8 @@
     "pk": 25,
     "model": "auth.permission",
     "fields": {
-      "codename": "add_ballot",
-      "name": "Can add ballot",
+      "codename": "add_range",
+      "name": "Can add range",
       "content_type": 9
     }
   },
@@ -228,8 +228,8 @@
     "pk": 26,
     "model": "auth.permission",
     "fields": {
-      "codename": "change_ballot",
-      "name": "Can change ballot",
+      "codename": "change_range",
+      "name": "Can change range",
       "content_type": 9
     }
   },
@@ -237,8 +237,8 @@
     "pk": 27,
     "model": "auth.permission",
     "fields": {
-      "codename": "delete_ballot",
-      "name": "Can delete ballot",
+      "codename": "delete_range",
+      "name": "Can delete range",
       "content_type": 9
     }
   },

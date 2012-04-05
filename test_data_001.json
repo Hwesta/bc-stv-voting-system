@@ -32,6 +32,14 @@
     }
   },
   {
+    "pk": "146525b0c2a995ecec54f42262def0be",
+    "model": "sessions.session",
+    "fields": {
+      "expire_date": "2012-04-19 05:51:39",
+      "session_data": "YWYzMWM4MzlhYWVhODc5MWM4MjEzYzBkZTJlMzY0MjVmYjcyOGIyOTqAAn1xAShVEl9hdXRoX3Vz\nZXJfYmFja2VuZHECVSRlbGVjdGlvbi5iYWNrZW5kLkVsZWN0aW9uQXV0aEJhY2tlbmRxA1UNX2F1\ndGhfdXNlcl9pZHEESwF1Lg==\n"
+    }
+  },
+  {
     "pk": 1,
     "model": "sites.site",
     "fields": {
