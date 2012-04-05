@@ -1,8 +1,7 @@
 from django.shortcuts import redirect, render
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import user_passes_test
-from users.models import CreateUserForm
+from users.models import CreateUserForm, ModifyUserForm
 from election.models import define_view_permissions
 
 # User Management
@@ -40,18 +39,18 @@ def add_user(request):
 def modify_user(request, user_id):
     """ Edit a user's information. """
     if request.method == 'POST':
-        form = CreateUserForm(request.POST)
+        user = User.objects.get(id=user_id)
+        form = ModifyUserForm(request.POST, instance=user)
         if form.is_valid():
-            print "form clean", form.cleaned_data
-            new_user = User.objects.create_user(form.cleaned_data['username'], form.cleaned_data['password1'])
-            print "new user", new_user
+            form.save()
             return redirect(index)
     else:
         user = User.objects.get(id=user_id)
-        form = CreateUserForm(instance=user)
+        form = ModifyUserForm(instance=user)
 
     return render(request, 'users/modify_user.html', {
         'form': form,
+        'user_id': user_id,
     })
 
 
