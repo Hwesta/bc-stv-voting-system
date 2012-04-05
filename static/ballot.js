@@ -45,3 +45,18 @@ function onSubmit()
 	console.log($('input#id_vote'));
 	return true;
 }
+
+//Function will generate
+function display(ballot_id, vote_json, is_spoiled)
+{
+	if (!is_spoiled)
+	{
+		for (i in vote_json)
+		{
+			value=vote_json[i];
+			$('form#ballot-'+ballot_id+' input#id-'+value+'-'+i).attr('checked', true);
+
+		}
+	}
+	
+}

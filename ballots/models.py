@@ -102,3 +102,8 @@ class ChoosePollForm(forms.Form):
 
 class ChooseRidingToVerifyForm(forms.Form):
     riding = forms.ModelChoiceField(Riding.objects.all())
+
+class AcceptBallotForm(forms.Form):
+    ballot = forms.ModelChoiceField(Ballot.objects.all())
+    ballot_number = forms.IntegerField()
+    

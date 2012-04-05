@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.db.models import Count
 from ridings.models import Riding, Poll
-from ballots.models import Ballot, BallotForm, ChoosePollForm, ChooseRidingToVerifyForm
+from ballots.models import Ballot, BallotForm, ChoosePollForm, ChooseRidingToVerifyForm, AcceptBallotForm
 from politicians.models import Politician
 
 # Entering Ballots
@@ -24,8 +24,29 @@ def choose_poll(request):
     
 def compare_ballot(request, b_id):
     ballot = Ballot.objects.get(id=b_id)
+    candidates = Politician.objects.filter(candidate_riding=ballot.poll.riding)
     ballot_list = Ballot.objects.filter(ballot_num=ballot.ballot_num)
-    return render(request, 'ballots/compare.html', {'ballots':ballot_list})
+    return render(request, 'ballots/compare.html',
+                  {'ballots':ballot_list,
+                  'candidates':candidates,
+            })
+
+def accept_ballot(request):
+    if request.method == 'POST':
+        form = AcceptBallotForm(request.POST)
+        if form.is_valid():
+            for b in Ballot.objects.filter(state__ne='R').filter(ballot_num=form.cleaned_data['ballot_num']).all():
+                b.state='I'
+                b.save()
+            #b=ballot.object(form.ballot)
+        print form.cleaned_data
+        riding_id=0
+        return HttpResponseRedirect(reverse(verify_riding, args=(riding_id,)))
+    else:
+        return render(request, 'ballots/compare.html',
+        {'form': AcceptBallotForm(),
+        })
+        
 
 def close_poll():
     """ Close the poll and check all inputted ballots.
