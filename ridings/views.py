@@ -7,19 +7,26 @@ from politicians.models import Politician
 from keywords.models import RidingKeywordValue, RidingKeywordList, PoliticianKeywordValue, addRidingKeywordValueForm
 from django.contrib.auth.decorators import user_passes_test
 from election.models import define_view_permissions
+from election.views import get_status_display
 
 # TODO Add decorators limiting access
 
 # Riding Information
 
-@user_passes_test(define_view_permissions(['EO','REP'],['BEF','DUR']))
+@user_passes_test(define_view_permissions(['EO'],['BEF','DUR','AFT']))
 def view_all_ridings(request):
     #""" View list of all the ridings. """
     # exlude deleted ridings from list
     ridings = Riding.objects.filter(delete=False)
+    elec = get_status_display(request)
     # render page
-    return render(request, 'ridings/ridings.html',{'ridings': ridings, 'type': str('ridings')})
+    return render(request, 'ridings/ridings.html',{
+		'ridings': ridings,
+        'election': elec,
+		'type': str('ridings')
+		})
 
+@user_passes_test(define_view_permissions(['EO'],['BEF','DUR','AFT']))
 def view_deleted_ridings(request):
     #""" View list of deleted ridings. """
     # exclude ridings from above function
@@ -27,6 +34,7 @@ def view_deleted_ridings(request):
     # render page
     return render(request, 'ridings/deleted_ridings.html',{'ridings': ridings, 'type': str('ridings')})
 
+@user_passes_test(define_view_permissions(['EO'],['BEF','DUR','AFT']))
 def view_riding(request, r_id):
     #""" View all the details about a riding on one page. """
     # store all necessary information for a riding into variables to be added to the dictionary
@@ -44,6 +52,7 @@ def view_riding(request, r_id):
          'keywords': keywords,
         })
 
+@user_passes_test(define_view_permissions(['EO'],['BEF']))
 def add_riding(request):
     # """ Adds a new riding to the system. """
     # if submitting the form
@@ -78,7 +87,7 @@ def add_riding_keyword(request, r_id):
 
     return render(request,'keywords/addriding.html',{'formset':formset,'id':r_id})
 
-
+@user_passes_test(define_view_permissions(['EO'],['BEF']))
 def modify_riding(request, r_id):
     #""" Modify existing riding. """
     # identical to above function except the information of the selected riding is added to the form.
