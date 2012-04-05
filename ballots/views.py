@@ -59,7 +59,7 @@ def input_ballot(request, poll_id):
                 'candidates':candidates,
             })
 
-def view_conflict_list(request):
+def view_conflict_list(request, riding_id):
     # General notes:
     # IMPORTANT:
     # All ballot fetches MUST contain exactly one of the following
@@ -67,6 +67,8 @@ def view_conflict_list(request):
     # - filter(state='x') where x != R
     # Otherwise you will get old recount ballots as well!
     # It needs to be inside the Raw SQL as well for correct processing
+    poll_ids = Polls.object.filter(riding_id=riding_id).values('poll_id').distinct()
+    poll_ids_str = ",".join([str(x) for x in poll_ids])
 
     # Pass 1: All ballots with state NOT 'recount', that exist only once
     ballots_entered_only_once = Ballot.objects.raw(" \
@@ -76,13 +78,13 @@ def view_conflict_list(request):
                 ballot_num, \
                 COUNT(ballot_num) AS cnt \
             FROM ballots_ballot \
-            WHERE state != 'R' \
+            WHERE state != 'R' AND poll_id IN (%s) \
             GROUP BY ballot_num \
             HAVING COUNT(ballot_num) < 2 \
         ) q1 ON q1.ballot_num=ballots_ballot.ballot_num \
-    ")
+    " % (poll_ids_str, ) )
     ids = map(lambda b: b.id, ballots_entered_only_once)
-    ballots_entered_only_once = Ballot.objects.exclude(state='R').filter(id__in=ids)
+    ballots_entered_only_once = Ballot.objects.exclude(state='R').filter(id__in=ids).filter(poll_id__in=poll_ids)
 
     # Pass 2: Exclude pass 1, No mix of unverified/correct, unverified/correct
     ballot_invalid_state_mix = Ballot.objects.raw(" \
@@ -92,13 +94,13 @@ def view_conflict_list(request):
                 ballot_num, \
                 COUNT(ballot_num) AS cnt \
             FROM ballots_ballot \
-            WHERE state != 'R' \
+            WHERE state != 'R' AND poll_id IN (%s) \
             GROUP BY ballot_num, state \
             HAVING COUNT(ballot_num)=1 AND state='U' \
         ) q1 ON q1.ballot_num=ballots_ballot.ballot_num \
-    ")
+    " % (poll_ids_str, ))
     ids = map(lambda b: b.id,ballot_invalid_state_mix)
-    ballot_invalid_state_mix = Ballot.objects.exclude(state='R').exclude(id__in=ballots_entered_only_once).filter(id__in=ids)
+    ballot_invalid_state_mix = Ballot.objects.exclude(state='R').exclude(id__in=ballots_entered_only_once).filter(id__in=ids).filter(poll_id__in=poll_ids)
 
     # Pass 3: Completion check
     # If this AND the above lists are empty
@@ -106,7 +108,7 @@ def view_conflict_list(request):
     # SELECT COUNT(*) AS cnt
     # FROM ballots_ballot
     # WHERE state = 'unverifed';
-    unverified_count = Ballot.objects.filter(state='U').count()
+    unverified_count = Ballot.objects.filter(state='U').filter(poll_id__in=poll_ids).count()
 
     bad_ballots = list(ballots_entered_only_once) + list(ballot_invalid_state_mix)
 
@@ -135,14 +137,14 @@ def view_conflict_list(request):
                 ballot_num, \
                 COUNT(DISTINCT entered_by_id) AS cnt \
             FROM ballots_ballot \
-            WHERE state != 'R' %s \
+            WHERE state != 'R' AND poll_id IN (%s) %s\
             GROUP BY ballot_num \
             HAVING COUNT(DISTINCT entered_by_id) < 2 \
         ) q1 ON q1.ballot_num=ballots_ballot.ballot_num \
-    " % (bad_ballot_nums_str_clause ,))
+    " % (poll_ids_str, bad_ballot_nums_str_clause ,))
     ids = map(lambda b: b.id, ballots_no_different_ro)
     #ballots_no_different_ro_ballot_num = map(lambda b: b.ballot_num, ballots_no_different_ro)
-    ballots_no_different_ro = Ballot.objects.exclude(state='R').filter(id__in=ids)
+    ballots_no_different_ro = Ballot.objects.exclude(state='R').filter(id__in=ids).filter(poll_id__in=poll_ids)
 
     bad_ballots = bad_ballots + list(ballots_no_different_ro)
    
@@ -163,11 +165,11 @@ def view_conflict_list(request):
                 COUNT(spoiled) AS cnt, \
                 COUNT(DISTINCT spoiled) AS cnt_d \
             FROM ballots_ballot \
-            WHERE state='U' AND spoiled=1 %s \
+            WHERE state='U' AND spoiled=1 AND poll_id IN (%s) %s \
             GROUP BY ballot_num, spoiled \
             HAVING COUNT(spoiled)=2 AND COUNT(DISTINCT spoiled)=1 \
         ) q1 ON q1.ballot_num=ballots_ballot.ballot_num \
-    " % (bad_ballot_nums_str_clause ,))
+    " % (poll_ids_str, bad_ballot_nums_str_clause ,))
     ballots_vote_auto_approve = Ballot.objects.raw(" \
         SELECT id FROM ballots_ballot \
         INNER JOIN ( \
@@ -176,13 +178,13 @@ def view_conflict_list(request):
                 COUNT(vote) AS cnt, \
                 COUNT(DISTINCT vote) AS cnt_d \
             FROM ballots_ballot \
-            WHERE state='U' AND spoiled=0 %s \
+            WHERE state='U' AND spoiled=0 AND poll_id IN (%s) %s \
             GROUP BY ballot_num, vote \
             HAVING COUNT(vote)=2 AND COUNT(DISTINCT vote)=1 \
         ) q1 ON q1.ballot_num=ballots_ballot.ballot_num \
-    " % (bad_ballot_nums_str_clause ,))
+    " % (poll_ids_str, bad_ballot_nums_str_clause ,))
     ids = map(lambda b: b.id, ballots_spoiled_auto_approve) + map(lambda b: b.id, ballots_vote_auto_approve)
-    ballots_auto_approve = Ballot.objects.filter(state='U').filter(id__in=ids)
+    ballots_auto_approve = Ballot.objects.filter(state='U').filter(id__in=ids).filter(poll_id__in=poll_ids)
 
     # Pass 6: Conflict resolution - Manual
     # Remaining unverified items
@@ -198,13 +200,13 @@ def view_conflict_list(request):
                 COUNT(DISTINCT vote) as cnt_v, \
                 COUNT(DISTINCT spoiled) as cnt_s \
             FROM ballots_ballot \
-            WHERE state = 'U' \
+            WHERE state = 'U' AND poll_id IN (%s) \
             GROUP BY ballot_num \
             HAVING COUNT(DISTINCT entered_by_id)= 2 AND (COUNT(DISTINCT vote) = 2 OR COUNT(DISTINCT spoiled) = 2) \
         ) q1 ON q1.ballot_num=ballots_ballot.ballot_num \
-    ")
+    " % (poll_ids_str, ))
     ids = map(lambda b: b.id, ballots_manual_approve)
-    ballots_manual_approve = Ballot.objects.exclude(id__in=ballots_auto_approve).filter(state='U').filter(id__in=ids)
+    ballots_manual_approve = Ballot.objects.exclude(id__in=ballots_auto_approve).filter(state='U').filter(id__in=ids).filter(poll_id__in=poll_ids)
 
     return render(request, 'ballots/view_conflicts.html', {
         'bad': {
