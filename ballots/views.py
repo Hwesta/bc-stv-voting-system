@@ -81,8 +81,8 @@ def verify_riding(request, riding_id):
     # - filter(state='x') where x != R
     # Otherwise you will get old recount ballots as well!
     # It needs to be inside the Raw SQL as well for correct processing
-    poll_ids = Polls.object.filter(riding_id=riding_id).values('poll_id').distinct()
-    poll_ids_str = ",".join([str(x) for x in poll_ids])
+    poll_ids = Poll.objects.filter(riding=riding_id).values('id').distinct()
+    poll_ids_str = ",".join([str(x['id']) for x in poll_ids])
 
     # Pass 1: All ballots with state NOT 'recount', that exist only once
     ballots_entered_only_once = Ballot.objects.raw(" \
@@ -98,7 +98,7 @@ def verify_riding(request, riding_id):
         ) q1 ON q1.ballot_num=ballots_ballot.ballot_num \
     " % (poll_ids_str, ) )
     ids = map(lambda b: b.id, ballots_entered_only_once)
-    ballots_entered_only_once = Ballot.objects.exclude(state='R').filter(id__in=ids).filter(poll_id__in=poll_ids)
+    ballots_entered_only_once = Ballot.objects.exclude(state='R').filter(id__in=ids).filter(poll__in=poll_ids)
 
     # Pass 2: Exclude pass 1, No mix of unverified/correct, unverified/correct
     ballot_invalid_state_mix = Ballot.objects.raw(" \
@@ -114,7 +114,7 @@ def verify_riding(request, riding_id):
         ) q1 ON q1.ballot_num=ballots_ballot.ballot_num \
     " % (poll_ids_str, ))
     ids = map(lambda b: b.id,ballot_invalid_state_mix)
-    ballot_invalid_state_mix = Ballot.objects.exclude(state='R').exclude(id__in=ballots_entered_only_once).filter(id__in=ids).filter(poll_id__in=poll_ids)
+    ballot_invalid_state_mix = Ballot.objects.exclude(state='R').exclude(id__in=ballots_entered_only_once).filter(id__in=ids).filter(poll__in=poll_ids)
 
     # Pass 3: Completion check
     # If this AND the above lists are empty
@@ -122,7 +122,7 @@ def verify_riding(request, riding_id):
     # SELECT COUNT(*) AS cnt
     # FROM ballots_ballot
     # WHERE state = 'unverifed';
-    unverified_count = Ballot.objects.filter(state='U').filter(poll_id__in=poll_ids).count()
+    unverified_count = Ballot.objects.filter(state='U').filter(poll__in=poll_ids).count()
 
     bad_ballots = list(ballots_entered_only_once) + list(ballot_invalid_state_mix)
 
@@ -158,7 +158,7 @@ def verify_riding(request, riding_id):
     " % (poll_ids_str, bad_ballot_nums_str_clause ,))
     ids = map(lambda b: b.id, ballots_no_different_ro)
     #ballots_no_different_ro_ballot_num = map(lambda b: b.ballot_num, ballots_no_different_ro)
-    ballots_no_different_ro = Ballot.objects.exclude(state='R').filter(id__in=ids).filter(poll_id__in=poll_ids)
+    ballots_no_different_ro = Ballot.objects.exclude(state='R').filter(id__in=ids).filter(poll__in=poll_ids)
 
     bad_ballots = bad_ballots + list(ballots_no_different_ro)
    
@@ -198,7 +198,7 @@ def verify_riding(request, riding_id):
         ) q1 ON q1.ballot_num=ballots_ballot.ballot_num \
     " % (poll_ids_str, bad_ballot_nums_str_clause ,))
     ids = map(lambda b: b.id, ballots_spoiled_auto_approve) + map(lambda b: b.id, ballots_vote_auto_approve)
-    ballots_auto_approve = Ballot.objects.filter(state='U').filter(id__in=ids).filter(poll_id__in=poll_ids)
+    ballots_auto_approve = Ballot.objects.filter(state='U').filter(id__in=ids).filter(poll__in=poll_ids)
 
     # Pass 6: Conflict resolution - Manual
     # Remaining unverified items
@@ -220,7 +220,7 @@ def verify_riding(request, riding_id):
         ) q1 ON q1.ballot_num=ballots_ballot.ballot_num \
     " % (poll_ids_str, ))
     ids = map(lambda b: b.id, ballots_manual_approve)
-    ballots_manual_approve = Ballot.objects.exclude(id__in=ballots_auto_approve).filter(state='U').filter(id__in=ids).filter(poll_id__in=poll_ids)
+    ballots_manual_approve = Ballot.objects.exclude(id__in=ballots_auto_approve).filter(state='U').filter(id__in=ids).filter(poll__in=poll_ids)
 
     return render(request, 'ballots/view_conflicts.html', {
         'bad': {
