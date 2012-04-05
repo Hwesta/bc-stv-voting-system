@@ -8,7 +8,7 @@ class Riding(models.Model):
     num_voters = models.IntegerField(help_text="Number of eligible voters.")
     num_seats = models.IntegerField(help_text="Number of seats available.")
     active = models.BooleanField(help_text="Whether a riding is accepting ballots.")
-    delete = models.BooleanField(default=False,help_text="Has the riding been deleted?")
+    delete = models.BooleanField(default=False)
     recount_needed = models.BooleanField(help_text="Is a recount required in this riding.")
 
     def __unicode__(self):
