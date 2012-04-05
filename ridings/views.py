@@ -71,6 +71,7 @@ def add_riding(request):
 	# render page
 	return render(request, 'ridings/add_riding.html', {'form': form, })
 
+@user_passes_test(define_view_permissions(['EO'],['BEF']))
 def add_riding_keyword(request, r_id):
     RidingKeywordValueFormSet = formset_factory(addRidingKeywordValueForm, extra=0)
     if request.method == 'POST':
@@ -105,6 +106,7 @@ def modify_riding(request, r_id):
 # Poll Management
 
 # all poll functions follow the same logic as riding functions
+@user_passes_test(define_view_permissions(['EO'],['BEF','DUR','AFT']))
 def view_polls(request, riding_id):
     riding = Riding.objects.get(id=riding_id)
     p = Poll.objects.filter(riding=riding)
@@ -114,6 +116,7 @@ def view_polls(request, riding_id):
          'riding': riding,
         })
 
+@user_passes_test(define_view_permissions(['EO'],['BEF']))
 def add_poll(request, riding_id):
     riding = Riding.objects.get(id=riding_id)
     if request.method == 'POST':
@@ -130,6 +133,7 @@ def add_poll(request, riding_id):
          'riding': riding,
         })
 
+@user_passes_test(define_view_permissions(['EO'],['BEF']))
 def modify_poll(request, riding_id, poll_id):
     riding = Riding.objects.get(id=riding_id)
     poll = Poll.objects.get(id=poll_id, riding=riding)
