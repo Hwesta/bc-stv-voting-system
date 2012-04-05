@@ -6,8 +6,10 @@
 	    <script src="/static/jquery.js"></script>
 	    <script src="/static/json2.js"></script>
         <script src="/static/ballot.js"></script>
+     
 <table>
-<tr>
+
+<tr class="fake">
 <th>RO</th>
 <th>Ballot Number</th>
 <th>Id</th>
@@ -15,13 +17,13 @@
 <th>Choose wisely...</th>
 </tr>
 {% for ballot in ballots %}
-<tr>
+<tr class="fake">
 <td>{{ballot.entered_by}}</td>
 <td>{{ballot.ballot_num}}</td>
 <td>{{ballot.id}}</td>
 <td>
 <!--This is a fake form.-->
-<form id="ballot-{{ballot.id}}">
+<form id="ballot-{{ballot.id}}" class="fake">
 <table>
 	<tr>
 		<th>Candidate</th>
@@ -125,6 +127,8 @@
 	$('#display-new-ballot-form').click(function(x){
 		$('#new-ballot-placeholder').hide();
 		$('#new-ballot').show();
+		$('.fake').hide();
+		$('#display-new-ballot-form').hide();
 	});
 </script>
 
