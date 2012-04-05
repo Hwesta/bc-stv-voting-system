@@ -189,7 +189,8 @@ def calc_winners(request, r_id):
         for _i, _c in vote_line.iteritems():
             # Of the droop ID numbers for the candidate
             if _c == "":
-                data = data + "- "
+                # If empty, skip (empty line on ballot)
+                pass
             else:
                 data = data + str(c2b[int(_c)]) + " "
         # 0 to say no more candidates on ballot
