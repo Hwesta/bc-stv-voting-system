@@ -55,7 +55,7 @@ class editRidingKeywordListForm(ModelForm):
 class addRidingKeywordListForm(ModelForm):
     class Meta:
         model = RidingKeywordList
-	exclude = ('delete')
+        exclude = ('delete')
 
 class editPoliticianKeywordListForm(ModelForm):
     class Meta:
@@ -65,7 +65,7 @@ class editPoliticianKeywordListForm(ModelForm):
 class addPoliticianKeywordListForm(ModelForm):
     class Meta:
         model = PoliticianKeywordList
-	exclude = ('delete')
+        exclude = ('delete')
 
 class editRidingKeywordValueForm(ModelForm):
     class Meta:
