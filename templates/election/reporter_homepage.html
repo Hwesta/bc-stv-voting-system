@@ -3,10 +3,13 @@
 {% block h1 %}Reporter Homepage{% endblock %}
 
 {% block content %}
-<a href="{% url ballots.views.choose_poll_entry %}">Enter Ballots</a>
-<a href="{% url ballots.views.choose_poll_verify %}">Verify Ballots</a>
-
-
+<ul>
+{% if election == 'DUR' %}
+<li><a href="{% url ridings.views.view_all_ridings %}">	Riding Management </a></li>
+{% else %}
+<li>No election in progress, reporter disallowed.</li>
+{% endif %}
+</ul>
 
 {% endblock %}
 
