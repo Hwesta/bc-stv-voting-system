@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block h1 %}Choose Riding to Verify{% endblock %}
+
+{% block subbreadcrumbs %}
+<li><a href="{% url election.views.ro_homepage %}">RO Home Page</a></li>
+<li>Choose Riding To Verify</li>
+{% endblock %}
+{% block content %}
+
+
+<form
+action="" method="post">
+{% csrf_token %}
+{{ form }}
+<input type="submit" value="Select Riding" />
+</form> 
+{% endblock %}
+
+
