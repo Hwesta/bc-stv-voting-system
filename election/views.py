@@ -263,8 +263,11 @@ def calc_all_winners(request):
             # Content of ballot
             vote_line = json.loads(ballot['vote'])
             for _i, _c in vote_line.iteritems():
-                # Of the droop ID numbers for the candidate
-                data = data + str(c2b[int(_c)]) + " "
+				if _c == "":
+					pass
+				else:
+					# Of the droop ID numbers for the candidate
+					data = data + str(c2b[int(_c)]) + " "
             # 0 to say no more candidates on ballot
             data = data + "0\n"
         # 0 to say no more ballots
