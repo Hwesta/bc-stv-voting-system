@@ -7,6 +7,7 @@ from ballots.models import Ballot, BallotForm, ChoosePollForm, ChooseRidingToVer
 from politicians.models import Politician
 from election.models import define_view_permissions, permissions_or, permissions_and, permission_always
 from django.contrib.auth.decorators import user_passes_test
+from django.db import IntegrityError
 
 # Entering Ballots
 @user_passes_test(define_view_permissions(['RO'],['DUR']))
@@ -61,12 +62,16 @@ def accept_ballot(request):
             #print "Saving ballot", correct_ballot
             ballot_num = correct_ballot.ballot_num
             correct_ballot.state='C'
-            correct_ballot.save()
+            riding_id = correct_ballot.poll.riding.id
+            try:
+                correct_ballot.save()
+            except IntegrityError as e:
+                msg="You have already entered this ballot."
+                return verify_riding(request, riding_id, flash=[msg])                
             for b in Ballot.objects.exclude(state='R').exclude(id=correct_ballot.id).filter(ballot_num=ballot_num).all():
                 b.state='I'
                 b.save()
             #b=ballot.object(form.ballot)
-            riding_id = correct_ballot.poll.riding.id
             msg="Manually Accepted Ballot #%s (id=%s)" % (ballot_num, correct_ballot.id)
             return verify_riding(request, riding_id, flash=[msg])
 
@@ -111,10 +116,18 @@ def input_ballot(request, poll_id, *args, **kwargs):
         if form.is_valid():
             new_ballot = form.save(commit=False)
             new_ballot.entered_by = request.user
-            new_ballot.save()
-            msg = 'Ballot input successful. <a href="/">Done?</a>'
+
             modified_request=request
             modified_request.method="GET"
+
+            riding_id = new_ballot.poll.riding.id
+            try:
+                new_ballot.save()
+            except IntegrityError as e:
+                msg="You have already entered this ballot."
+                return input_ballot(modified_request, poll_id, flash=[msg])  
+            
+            msg = 'Ballot input successful. <a href="/">Done?</a>'
             #return HttpResponseRedirect(reverse(input_ballot, args=(poll.id,)))
             return input_ballot(modified_request, poll_id, flash=[msg])
     else:

@@ -6,6 +6,7 @@ from jsonfield import JSONField
 from django.forms import ModelForm
 from django.contrib.auth.models import User
 import json
+from django.db import IntegrityError
 
 BALLOT_STATE_CHOICES = (
     ('U', 'Unverified'),
@@ -44,9 +45,16 @@ class Ballot(models.Model):
             if len(v)>0:
                 candidate=candidates.get(id=int(v))
                 nice_string.append("#"+str(k)+": "+candidate.name)
-        
-        
         return ", ".join(nice_string)
+
+    def save(self, *args, **kwargs):
+        me=self.entered_by
+        conflicting_ballots=Ballot.objects.filter(ballot_num=self.ballot_num).filter(entered_by=me)
+        if self.id is not None:
+            conflicting_ballots=conflicting_ballots.exclude(id=self.id)        
+        if len(conflicting_ballots)>0:
+            raise IntegrityError('You have already entered this ballot.')
+        super(Ballot, self).save(*args, **kwargs)
         
 
 def ids_sequential_and_start_at_1(lst):
@@ -97,14 +105,6 @@ class BallotForm(ModelForm):
         if 'vote' in cleaned_data and isinstance(cleaned_data['vote'], dict):
             cleaned_data['vote'] = json.dumps(cleaned_data['vote'])
         return cleaned_data
-
-    """
-    This function should ensure that a ballot can't be entered twice by the same RO.
-    """
-    '''def clean_entered_by(self):
-
-        
-        return self.clean_data['entered_by']'''
     
     class Meta:
         model = Ballot
