@@ -249,7 +249,8 @@ def calc_winners(request, r_id):
 	    error = "Too few Seats in " + r.name
 	elif r.num_candidates() < r.num_seats:
 	    error = "Too few Candidates in " + r.name + ". " + str(r.num_seats) + " seats for " + str(r.num_candidates()) + " candidates."
-
+	else:
+	    error = e
 	return render(request, 'election/error.html', {'error': error, 'riding': r})
         
 
@@ -296,6 +297,11 @@ def calc_all_winners(request):
         # List of all the required Data
         info = []
         winners = []
+
+        #check if the number of ballots is enough for BCSTV
+        if calculation_ballots.count() < (r.num_candidates() + 1):
+             error = "Too few ballots to calculate BCSTV."
+	return render(request, 'election/error.html', {'error': error, 'riding': r})
         
         # Start of BLT generation
         # Number of candidates, Number of seats
@@ -327,7 +333,13 @@ def calc_all_winners(request):
             E = DroopElection(DroopElectionProfile(data=data.encode('ascii', 'ignore')), dict(rule='bcstv'))
             E.count()
         except DroopElectionProfileError as e:
-		raise e
+		if r.num_seats < 1:
+	       	    error = "Too few Seats in " + r.name
+		elif r.num_candidates() < r.num_seats:
+	    	    error = "Too few Candidates in " + r.name + ". " + str(r.num_seats) + " seats for " + str(r.num_candidates()) + " candidates."
+		else:
+                    error = e
+		return render(request, 'election/error.html', {'error': error, 'riding': r})
 
         result = E.record()
         
