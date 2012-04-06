@@ -78,7 +78,9 @@ def new_politician_keyword_value(request, k_id):
     else:
         data = []
         for i in range(Politician.objects.all().count()):
-            data.append({'politician':i+1,'keyword':k_id})
+            politician = Politician.objects.get(id=i+1)
+            if not politician.delete:
+                data.append({'politician':i+1,'keyword':k_id})
         formset = PoliticianKeywordValueFormSet(initial=data)
 
     return render(request,'keywords/addpoliticiankeywordvalue.html',{'formset':formset,'id':k_id})
