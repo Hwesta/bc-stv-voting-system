@@ -5,11 +5,9 @@ from django.db.models import Count
 from ridings.models import Riding, Poll
 from ballots.models import Ballot, BallotForm, ChoosePollForm, ChooseRidingToVerifyForm, AcceptBallotForm, LockedBallotForm
 from politicians.models import Politician
-from election.models import define_view_permissions, permissions_or, permissions_and
-from django.contrib.auth.decorators import user_passes_test
 
 # Entering Ballots
-@user_passes_test(define_view_permissions(['RO'],['DUR']))
+# TODO Add decorators limiting access
 def choose_poll(request):
     """ Enter the poll number to enter ballots for."""
     if request.method == 'POST':
@@ -24,7 +22,6 @@ def choose_poll(request):
         {'form': form,
         })
     
-@user_passes_test(define_view_permissions(['RO'],['DUR']))
 def compare_ballot(request, b_id):
     ballot = Ballot.objects.get(id=b_id)
     candidates = Politician.objects.filter(candidate_riding=ballot.poll.riding)
@@ -36,7 +33,6 @@ def compare_ballot(request, b_id):
         'tiebreaker_form': tiebreaker_form,
         })
 
-@user_passes_test(define_view_permissions(['RO'],['DUR']))
 def accept_ballot(request):
     riding_id = -1
     if request.method == 'POST':
@@ -68,23 +64,19 @@ def close_poll():
     ballots have been entered twice, and if so compare the results, generating
     a list of ballots that need ot be verified.
     """
-    # TODO: write me
     pass
 
-@user_passes_test(define_view_permissions(['RO'],['DUR']))
 def view_ballots(request):
     ballot_list = Ballot.objects.all()
     return render(request, 'ballots/view.html', {'ballots':ballot_list})
 
-@user_passes_test(define_view_permissions(['RO'],['DUR']))
 def view_ballot(request, b_id):
     ballot = Ballot.objects.get(id=b_id)
     return render(request, 'ballots/view_single.html', {'ballot':ballot, 'ballot_num':b_id})
 
-@user_passes_test(define_view_permissions(['RO'],['DUR']))
 def input_ballot(request, poll_id, *args, **kwargs):
     poll = Poll.objects.get(id=poll_id)
-    candidates = Politician.objects.filter(candidate_riding=poll.riding)
+    candidates = Politician.objects.filter(candidate_riding=poll.riding).filter(delete=False)
 
     # Shortcut processing here
     flash = []
@@ -94,9 +86,7 @@ def input_ballot(request, poll_id, *args, **kwargs):
     if request.method == 'POST':
         form = BallotForm(request.POST)
         if form.is_valid():
-            new_ballot = form.save(commit=False)
-            new_ballot.entered_by = request.user
-            new_ballot.save()
+            new_ballot = form.save()
             msg = "Ballot input successful."
             modified_request=request
             modified_request.method="GET"
@@ -110,7 +100,6 @@ def input_ballot(request, poll_id, *args, **kwargs):
                 'flash':flash,
             })
 
-@user_passes_test(define_view_permissions(['RO'],['DUR']))
 def input_ballot_tiebreaker(request, old_ballot_num):
     # Get old ballots that are not for a recount
     old_ballots = Ballot.objects.exclude(state='R').filter(ballot_num=old_ballot_num).all()
@@ -125,7 +114,6 @@ def input_ballot_tiebreaker(request, old_ballot_num):
                 b.save()
             # Save new ballot
             new_ballot = form.save(commit=False)
-            new_ballot.entered_by = request.user
             new_ballot.state='C'
             new_ballot.save()
             msg = "Added tie-break ballot for ballot number "+old_ballot_num
@@ -137,7 +125,6 @@ def input_ballot_tiebreaker(request, old_ballot_num):
         msg = "Invalid tie-break request for ballot number "+old_ballot_num
     return verify_riding(request, poll.riding.id, flash=[msg])
 
-@user_passes_test(define_view_permissions(['RO'],['DUR']))
 def choose_riding_to_verify(request):
     """ Enter the riding to verify ballots for."""
     if request.method == 'POST':
@@ -152,7 +139,6 @@ def choose_riding_to_verify(request):
         {'form': form,
         })
 
-@user_passes_test(define_view_permissions(['RO'],['DUR']))
 def verify_riding(request, riding_id, *args, **kwargs):
     # General notes:
     # IMPORTANT:
@@ -172,13 +158,13 @@ def verify_riding(request, riding_id, *args, **kwargs):
                 ballot_num, \
                 COUNT(ballot_num) AS cnt \
             FROM ballots_ballot \
-            WHERE state = 'U' AND poll_id IN (%s) \
+            WHERE state != 'R' AND poll_id IN (%s) \
             GROUP BY ballot_num \
             HAVING COUNT(ballot_num) < 2 \
         ) q1 ON q1.ballot_num=ballots_ballot.ballot_num \
     " % (poll_ids_str, ) )
     ids = map(lambda b: b.id, ballots_entered_only_once)
-    ballots_entered_only_once = Ballot.objects.filter(state='U').filter(id__in=ids).filter(poll__in=poll_ids)
+    ballots_entered_only_once = Ballot.objects.exclude(state='R').filter(id__in=ids).filter(poll__in=poll_ids)
 
     # Pass 2: Exclude pass 1, No mix of unverified/correct, unverified/correct
     ballot_invalid_state_mix = Ballot.objects.raw(" \
@@ -236,14 +222,14 @@ def verify_riding(request, riding_id, *args, **kwargs):
                 ballot_num, \
                 COUNT(DISTINCT entered_by_id) AS cnt \
             FROM ballots_ballot \
-            WHERE state = 'U' AND poll_id IN (%s) %s\
+            WHERE state != 'R' AND poll_id IN (%s) %s\
             GROUP BY ballot_num \
             HAVING COUNT(DISTINCT entered_by_id) < 2 \
         ) q1 ON q1.ballot_num=ballots_ballot.ballot_num \
     " % (poll_ids_str, bad_ballot_nums_str_clause ,))
     ids = map(lambda b: b.id, ballots_no_different_ro)
     #ballots_no_different_ro_ballot_num = map(lambda b: b.ballot_num, ballots_no_different_ro)
-    ballots_no_different_ro = Ballot.objects.filter(state='U').filter(id__in=ids).filter(poll__in=poll_ids)
+    ballots_no_different_ro = Ballot.objects.exclude(state='R').filter(id__in=ids).filter(poll__in=poll_ids)
 
     bad_ballots = bad_ballots + list(ballots_no_different_ro)
    
