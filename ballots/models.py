@@ -48,12 +48,15 @@ class Ballot(models.Model):
         return ", ".join(nice_string)
 
     def save(self, *args, **kwargs):
-        me=self.entered_by
+        me=kwargs['current_ro']
         conflicting_ballots=Ballot.objects.filter(ballot_num=self.ballot_num).filter(entered_by=me)
         if self.id is not None:
-            conflicting_ballots=conflicting_ballots.exclude(id=self.id)        
+            conflicting_ballots=conflicting_ballots.exclude(id=self.id)
+            if me==self.entered_by:
+                raise IntegrityError('You cannot verify a ballot you have entered.')
         if len(conflicting_ballots)>0:
             raise IntegrityError('You have already entered this ballot.')
+        del kwargs['current_ro']
         super(Ballot, self).save(*args, **kwargs)
         
 
