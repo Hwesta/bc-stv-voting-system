@@ -2,8 +2,11 @@
 
 {% block h1 %}Add User{% endblock %}
 
-{% block subbreadcrumbs %}<li><a href="{% url users.views.index %}">User Management</a></li>
-<li>Add User</li>{% endblock %}
+{% block subbreadcrumbs %}
+<li><a href="{% url election.views.admin_homepage %}">Admin Home Page</a></li>
+<li><a href="{% url users.views.index %}">User Management</a></li>
+<li>Add User</li>
+{% endblock %}
 
 {% block content %}
 <form action="{% url users.views.add_user %}" method="post">{% csrf_token %}

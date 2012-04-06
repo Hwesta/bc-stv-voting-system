@@ -2,7 +2,10 @@
 
 {% block h1 %}User Management{% endblock %}
 
-{% block subbreadcrumbs %}<li>User Management</li>{% endblock %}
+{% block subbreadcrumbs %}
+<li><a href="{% url election.views.admin_homepage %}">Admin Home Page</a></li>
+<li>User Management</li>
+{% endblock %}
 
 {% block actions %}
 <li><a href="{% url users.views.add_user %}">Add User</a></li>

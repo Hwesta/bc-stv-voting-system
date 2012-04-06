@@ -2,7 +2,11 @@
 
 {% block h1 %}Start Recount{% endblock %}
 
-{% block subbreadcrumbs %}<li>Start Recount</li>{% endblock %}
+{% block subbreadcrumbs %}
+<li><a href="{% url election.views.admin_homepage %}">Admin Home Page</a></li>
+<li>Start Recount</li>
+{% endblock %}
+
 {% block content %}
 <form action="{% url election.views.start_recount %}" method="post">{% csrf_token %}
 {{ form.as_p }}

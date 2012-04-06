@@ -2,6 +2,12 @@
 
 {% block h1 %}Add Politician Keywords {% endblock %}
 
+{% block subbreadcrumbs %}
+<li><a href="{% url election.views.eo_homepage %}">EO Home Page</a></li>
+<li><a href="{% url keywords.views.index %}">Keyword Management</a></li>
+<li>Add New Politician Keyword</li>
+{% endblock %}
+
 {% block content %}
 <form action ="{% url keywords.views.new_politician_keyword %}" method ="post">{% csrf_token %}
 {{form.as_p}}

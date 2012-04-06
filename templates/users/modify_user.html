@@ -2,8 +2,11 @@
 
 {% block h1 %}Modify User{% endblock %}
 
-{% block subbreadcrumbs %}<li><a href="{% url users.views.index %}">User Management</a></li>
-<li>Modify User</li>{% endblock %}
+{% block subbreadcrumbs %}
+<li><a href="{% url election.views.admin_homepage %}">Admin Home Page</a></li>
+<li><a href="{% url users.views.index %}">User Management</a></li>
+<li>Modify User</li>
+{% endblock %}
 
 {% block content %}
 <form action="{% url users.views.modify_user user_id %}" method="post">

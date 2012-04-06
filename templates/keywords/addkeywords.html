@@ -2,6 +2,12 @@
 
 {% block h1 %}Add Riding Keyword{% endblock %}
 
+{% block subbreadcrumbs %}
+<li><a href="{% url election.views.eo_homepage %}">EO Home Page</a></li>
+<li><a href="{% url keywords.views.add_riding_keyword %}"Keyword Management</a></li>
+<li>Add Keyword</li>
+{% endblock %}
+
 {% block content %}
 <form action ={% url keywords.views.submitRidingKeywordList %} method ="post">{% csrf_token %}
 {{form.as_p}}
