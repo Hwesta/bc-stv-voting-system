@@ -201,7 +201,7 @@ def calc_winners(request, r_id):
     # TODO: Should this filtering move to the Riding class or Ballot class?
     num_spoiled_ballots = r.num_spoiled_ballots()
     # All candidates for the riding
-    c = Politician.objects.filter(candidate_riding=r)
+    c = Politician.objects.filter(candidate_riding=r).filter(delete=False)
     # Get distinct ballot contents and how many times they occured
     b2 = calculation_ballots.values("vote").annotate(cnt=Count('vote'))
     # Dictionary of (key=droop candidate ID, value=politician.id)
@@ -280,7 +280,7 @@ def calc_all_winners(request):
     #lists for attributes for each riding
 
     x = []
-    for r in Riding.objects.all():
+    for r in Riding.objects.filter(delete=False):
         # All ballots for a riding
         all_ballots = r.ballots()
         # All ballots for the calculation
@@ -290,7 +290,7 @@ def calc_all_winners(request):
         # TODO: Should this filtering move to the Riding class or Ballot class?
         num_spoiled_ballots = r.num_spoiled_ballots()
         # All candidates for the riding
-        c = Politician.objects.filter(candidate_riding=r)
+        c = Politician.objects.filter(candidate_riding=r).filter(delete=False)
         # Get distinct ballot contents and how many times they occured
         b2 = calculation_ballots.values("vote").annotate(cnt=Count('vote'))
         # Dictionary of (key=droop candidate ID, value=politician.id)
