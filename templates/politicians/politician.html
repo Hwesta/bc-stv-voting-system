@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block actions %}
-{% if election == 'BEF' %}
+{% if election.status == 'BEF' %}
 <li><a href="{% url politicians.views.modify_politician r_id, politician.id %}">Edit Information</a></li>{% endif %}
 {% endblock %}
 

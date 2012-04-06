@@ -7,7 +7,6 @@ from ridings.models import Riding
 from politicians.models import Politician, Politician_Add_Form, Politician_Modify_Form
 from keywords.models import PoliticianKeywordValue, PoliticianKeywordList,addPoliticianKeywordValueForm
 from election.models import define_view_permissions, permissions_or, permissions_and, permission_always
-from election.views import get_status_display
 
 # TODO Add decorators limiting access
 
@@ -19,12 +18,10 @@ from election.views import get_status_display
 def view_politician(request, r_id, p_id):
     p = Politician.objects.get(id=p_id)
     k = PoliticianKeywordValue.objects.filter(politician=p)
-    elec = get_status_display(request)
     return render(request, 'politicians/politician.html',
     {'politician': p,
      'keywords': k,
      'r_id': r_id,
-     'election': elec
     })
 
 @user_passes_test(permissions_or(define_view_permissions(['EO'],['BEF','DUR','AFT']), define_view_permissions(['REP'],['DUR'])))
