@@ -102,5 +102,57 @@
       "poll": 1,
       "entered_by": null
     }
+  },
+  {
+    "pk": 9,
+    "model": "ballots.ballot",
+    "fields": {
+      "ballot_num": 123,
+      "ballot_hash": "",
+      "state": "I",
+      "spoiled": false,
+      "vote": "{\"1\": \"3\", \"2\": \"\"}",
+      "poll": 4,
+      "entered_by": null
+    }
+  },
+  {
+    "pk": 10,
+    "model": "ballots.ballot",
+    "fields": {
+      "ballot_num": 123,
+      "ballot_hash": "",
+      "state": "C",
+      "spoiled": false,
+      "vote": "{\"1\": \"3\", \"2\": \"\"}",
+      "poll": 4,
+      "entered_by": null
+    }
+  },
+  {
+    "pk": 11,
+    "model": "ballots.ballot",
+    "fields": {
+      "ballot_num": 11,
+      "ballot_hash": "",
+      "state": "I",
+      "spoiled": false,
+      "vote": "{\"1\": \"3\", \"2\": \"5\"}",
+      "poll": 4,
+      "entered_by": null
+    }
+  },
+  {
+    "pk": 12,
+    "model": "ballots.ballot",
+    "fields": {
+      "ballot_num": 11,
+      "ballot_hash": "",
+      "state": "C",
+      "spoiled": false,
+      "vote": "{\"1\": \"3\", \"2\": \"5\"}",
+      "poll": 4,
+      "entered_by": null
+    }
   }
 ]
