@@ -300,8 +300,8 @@ def calc_all_winners(request):
 
         #check if the number of ballots is enough for BCSTV
         if calculation_ballots.count() < (r.num_candidates() + 1):
-             error = "Too few ballots to calculate BCSTV."
-	return render(request, 'election/error.html', {'error': error, 'riding': r})
+            error = "Too few ballots to calculate BCSTV."
+            return render(request, 'election/error.html', {'error': error, 'riding': r})
         
         # Start of BLT generation
         # Number of candidates, Number of seats
