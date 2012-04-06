@@ -9,8 +9,8 @@
 <body>
 
 <div id="header">
-<span style="float:left">{{ user }} (Role)</span>
-{{ election.get_status_display }} an election, {% now "N j, Y"%}
+<span style="float:left">{{ user }} ({{ user.groups.all.0.name }})</span>
+{{ election.get_status_display|capfirst }} an election, {% now "N j, Y"%}
 <span style="float:right"><a href="{% url election.views.logout_user %}">Logout</a></span>
 </div>
 

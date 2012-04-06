@@ -7,7 +7,6 @@ from politicians.models import Politician
 from keywords.models import RidingKeywordValue, RidingKeywordList, PoliticianKeywordValue, addRidingKeywordValueForm
 from django.contrib.auth.decorators import user_passes_test
 from election.models import define_view_permissions, permissions_or, permissions_and, permission_always
-from election.views import get_status_display
 
 # TODO Add decorators limiting access
 
@@ -17,11 +16,9 @@ def view_all_ridings(request):
     #""" View list of all the ridings. """
     # exlude deleted ridings from list
     ridings = Riding.objects.filter(delete=False)
-    elec = get_status_display(request)
     # render page
     return render(request, 'ridings/ridings.html',{
         'ridings': ridings,
-        'election': elec,
         'type': str('ridings')
         })
 
@@ -42,7 +39,6 @@ def view_riding(request, r_id):
     incumbents = riding.incumbents().filter(delete=False)
     candidates =riding.candidates().filter(delete=False)
     keywords = RidingKeywordValue.objects.filter(riding=riding)
-    elec = get_status_display(request)
     # render page
     return render(request, 'ridings/riding.html',
         {'riding': riding,
@@ -50,7 +46,6 @@ def view_riding(request, r_id):
          'candidates': candidates,
          'incumbents': incumbents,
          'keywords': keywords,
-	 'election': elec,
         })
 
 @user_passes_test(define_view_permissions(['EO'],['BEF']))

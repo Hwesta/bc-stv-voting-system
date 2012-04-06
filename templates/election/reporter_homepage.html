@@ -4,7 +4,7 @@
 
 {% block content %}
 <ul>
-{% if election == 'DUR' %}
+{% if election.status == 'DUR' %}
 <li><a href="{% url ridings.views.view_all_ridings %}">	Riding Management </a></li>
 {% else %}
 <li>No election in progress, reporter disallowed.</li>

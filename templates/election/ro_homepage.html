@@ -4,7 +4,7 @@
 
 {% block content %}
 <ul>
-{% if election == 'DUR' or election == 'AFT' %}
+{% if election.status == 'DUR' or election.status == 'AFT' %}
     <li><a href="{% url ballots.views.choose_poll %}">Enter Ballots</a></li>
 	<li><a href="{% url ballots.views.choose_riding_to_verify %}">Verify Ballots</a></li>
 {% else %}

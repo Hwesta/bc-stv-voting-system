@@ -1,4 +1,5 @@
 import sys, os, platform
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
 
 # Django settings for bcstv project.
 
@@ -150,6 +151,9 @@ INSTALLED_APPS = (
     'users',
 )
 
+TEMPLATE_CONTEXT_PROCESSORS = TEMPLATE_CONTEXT_PROCESSORS + (
+    'bcstv.context_processors.election_status',
+)
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error.

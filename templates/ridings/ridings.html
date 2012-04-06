@@ -7,11 +7,11 @@
 {% endblock %}
 
 {% block actions %}
-{% if election == 'BEF' %}
+{% if election.status == 'BEF' %}
 <li><a href="{% url ridings.views.add_riding %}">Add New Riding</a></li>
 {% endif %}
 <li><a href="{% url ridings.views.view_deleted_ridings %}">View Deleted Ridings</a></li>
-{% if election == 'DUR' or election == 'AFT' %}
+{% if election.status == 'DUR' or election.status == 'AFT' %}
 <li><a href="{% url election.views.calc_all_winners %}">View All Election Results</a></li>
 {% endif %}
 {% endblock %}
@@ -26,7 +26,7 @@
 {% for riding in ridings %}
 <tr>
 <td><a href="{% url ridings.views.view_riding riding.id %}">{{riding.name}}</a></td>
-{% if election == 'BEF' %}
+{% if election.status == 'BEF' %}
 <td><a href="{% url ridings.views.modify_riding riding.id %}">Modify</a></td>
 {% endif %}
 </tr>

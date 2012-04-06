@@ -4,17 +4,16 @@
 
 {% block content %}
 <ul>
-
-{% if election == 'DUR' or election == 'BEF' %}
+{% if election.status == 'DUR' or election.status == 'BEF' %}
 	<li><a href="{% url ridings.views.view_all_ridings %}">	Riding Management </a></li>
 {% endif %}
-{% if election == 'BEF' %}
-	<li><a href="{% url keywords.views.index %}">Keyword 	Management</a></li>
+{% if election.status == 'BEF' %}
+	<li><a href="{% url keywords.views.index %}">Keyword Management</a></li>
 {% endif %}
-{% if election == 'ARC' %}
+{% if election.status == 'ARC' %}
    <li>The election is archived. Nothing can be changed.</li>
 {% endif %}
-{% if election == 'AFT' %}
+{% if election.status == 'AFT' %}
    <li>The election is completed. Nothing can be changed.</li>
 {% endif %}
 </ul>
