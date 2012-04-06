@@ -10,7 +10,9 @@
 {% if election.status == 'BEF' %}
 <li><a href="{% url ridings.views.add_riding %}">Add New Riding</a></li>
 {% endif %}
+{% comment %}
 <li><a href="{% url ridings.views.view_deleted_ridings %}">View Deleted Ridings</a></li>
+{% endcomment %}
 {% if election.status == 'DUR' or election.status == 'AFT' %}
 <li><a href="{% url election.views.calc_all_winners %}">View All Election Results</a></li>
 {% endif %}

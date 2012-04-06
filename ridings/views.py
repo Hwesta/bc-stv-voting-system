@@ -22,7 +22,7 @@ def view_all_ridings(request):
         'type': str('ridings')
         })
 
-@user_passes_test(define_view_permissions(['EO'],['BEF','DUR','AFT']))
+@user_passes_test(define_view_permissions(['ADMIN'],[]))
 def view_deleted_ridings(request):
     #""" View list of deleted ridings. """
     # exclude ridings from above function
@@ -93,7 +93,10 @@ def modify_riding(request, r_id):
         form = Riding_Modify_Form(request.POST, instance=riding)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse(view_riding, args=(r_id,)))
+            if (riding.delete == True):
+                return HttpResponseRedirect(reverse(view_all_ridings))
+            else:
+                return HttpResponseRedirect(reverse(view_riding, args=(r_id,)))
     else:
         form = Riding_Modify_Form(instance=riding)
     return render(request, 'ridings/modify_riding.html', {'form': form, 'riding': riding, })
