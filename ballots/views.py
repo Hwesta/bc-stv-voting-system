@@ -46,7 +46,7 @@ def auto_accept_ballot(request, ballot_id):
     try:
         correct_ballot.save(current_ro=request.user)
     except IntegrityError as e:
-        msg="You have already entered this ballot."
+        msg=str(e)
         return verify_riding(request, riding_id, flash=[msg])
                              
     for b in Ballot.objects.exclude(state='R').exclude(id=correct_ballot.id).filter(ballot_num=ballot_num).all():
@@ -72,7 +72,7 @@ def accept_ballot(request):
             try:
                 correct_ballot.save(current_ro=request.user)
             except IntegrityError as e:
-                msg="You have already entered this ballot."
+                msg=str(e)
                 return verify_riding(request, riding_id, flash=[msg])                
             for b in Ballot.objects.exclude(state='R').exclude(id=correct_ballot.id).filter(ballot_num=ballot_num).all():
                 b.state='I'
@@ -130,7 +130,7 @@ def input_ballot(request, poll_id, *args, **kwargs):
             try:
                 new_ballot.save(current_ro=request.user)
             except IntegrityError as e:
-                msg="You have already entered this ballot."+str(e)
+                msg=str(e)
                 return input_ballot(modified_request, poll_id, flash=[msg])  
             
             msg = 'Ballot input successful. <a href="/">Done?</a>'
@@ -164,7 +164,7 @@ def input_ballot_tiebreaker(request, old_ballot_num):
             try:
                 new_ballot.save(current_ro=request.user)
             except IntegrityError as e:
-                msg="You have already entered this ballot."+str(e)
+                msg=str(e)
                 return input_ballot(modified_request, poll_id, flash=[msg])
             msg = "Added tie-break ballot for ballot number "+old_ballot_num
             #return verify_riding(request, poll.riding.id, flash=[msg])
