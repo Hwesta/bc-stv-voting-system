@@ -3,9 +3,9 @@
 {% block h1 %}List of {{type}}{% endblock %}
 
 {% block subbreadcrumbs %}
-    <li><a href="{% url ridings.views.view_all_ridings %}">Riding Management</a></li>
-	<li><a href="{% url ridings.views.view_riding riding.id%}">View Riding {{ riding }}</a></li>
-    <li>View Polls</li>
+<li><a href="{% url ridings.views.view_all_ridings %}">Riding Management</a></li>
+<li><a href="{% url ridings.views.view_riding riding.id%}">View Riding {{ riding }}</a></li>
+<li>View Polls</li>
 {% endblock %}
 
 {% block actions %}
