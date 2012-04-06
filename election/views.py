@@ -168,11 +168,11 @@ def change_election(request):
        form = ElectionForm(instance=election)
    return render(request, 'election/change_election_status.html', {'election':election, 'form' : form})
 
-@user_passes_test(define_view_permissions(['ADMIN'],['BEF','DUR','AFT','ARC']))
+@user_passes_test(define_view_permissions(['ADMIN'],['BEF']))
 def set_location(request):
    return render(request, 'election/set_location.html', {})
 
-@user_passes_test(define_view_permissions(['ADMIN'],['BEF','DUR','AFT','ARC']))
+@user_passes_test(define_view_permissions(['ADMIN'],['DUR','AFT']))
 def start_recount(request):
     # TODO Add message in redirect saying recount has been started.
     if request.method == 'POST': 
