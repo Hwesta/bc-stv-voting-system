@@ -6,7 +6,7 @@ from ridings.models import Riding, Poll, Riding_Add_Form, Riding_Modify_Form, Po
 from politicians.models import Politician
 from keywords.models import RidingKeywordValue, RidingKeywordList, PoliticianKeywordValue, addRidingKeywordValueForm
 from django.contrib.auth.decorators import user_passes_test
-from election.models import define_view_permissions, permissions_or, permissions_and
+from election.models import define_view_permissions, permissions_or, permissions_and, permission_always
 from election.views import get_status_display
 
 # TODO Add decorators limiting access

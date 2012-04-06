@@ -17,6 +17,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import REDIRECT_FIELD_NAME, logout, authenticate, login as auth_login
 from django.contrib.auth.views import login as base_login_view
+from django.contrib.auth.decorators import user_passes_test
 # django-messages
 from django.contrib import messages
 # Election
@@ -25,14 +26,14 @@ from ridings.models import Riding, Poll
 from ballots.models import Ballot
 from django.db.models import Count
 from politicians.models import Politician
-from election.models import define_view_permissions, permissions_or, permissions_and
-from django.contrib.auth.decorators import user_passes_test
+from election.models import define_view_permissions, permissions_or, permissions_and, permission_always
 
 
 
 # General
 
 @login_required
+@user_passes_test(permission_always)
 def index(request):
     """ Display the index page. """
     return render(request, 'index.html', 
@@ -125,6 +126,7 @@ def login(request, redirect_field_name=REDIRECT_FIELD_NAME, **kwargs):
 # Election Management
 
 ######################################
+@user_passes_test(permissions_or(define_view_permissions(['EO'],['BEF','DUR','AFT']), define_view_permissions(['REP'],['DUR'])))
 def view_election(request):
    #elec_list = Election.objects.all()
    #elec_list = elec_list[(elec_list.count()-1)]

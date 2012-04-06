@@ -5,7 +5,7 @@ from django.db.models import Count
 from ridings.models import Riding, Poll
 from ballots.models import Ballot, BallotForm, ChoosePollForm, ChooseRidingToVerifyForm, AcceptBallotForm, LockedBallotForm
 from politicians.models import Politician
-from election.models import define_view_permissions, permissions_or, permissions_and
+from election.models import define_view_permissions, permissions_or, permissions_and, permission_always
 from django.contrib.auth.decorators import user_passes_test
 
 # Entering Ballots

@@ -51,13 +51,14 @@ class ElectionForm(ModelForm):
 
 
 
-def define_view_permissions(groups, status):
+def define_view_permissions(allowed_groups, allowed_status):
     ''' Defines the permissions for a view.
+	If either input is empty, it means ALL values are permitted for that field.
 
-    groups is a set
-    status is a STATUS_CHOICES'''
-    groups = set(groups)
-    status = set(status)
+    allowed_groups is a set
+    allowed_status is a STATUS_CHOICES'''
+    allowed_groups = set(allowed_groups)
+    allowed_status = set(allowed_status)
     # TODO: Change to intersection of wanted groups and have groups.
     def func(user):
         if user == None:
@@ -65,11 +66,14 @@ def define_view_permissions(groups, status):
         if user.is_staff or user.is_superuser:
             return True
         election = Election.objects.all()
-        user_groups = user.groups.all()
-        if (user_groups.count() > 0 and str(user_groups[0]) in groups) and (str(election[Election.objects.all().count() - 1].status) in status):
-            return True
-        else:
-            return False
+        election_status = str(election[0].status)
+        user_groups = set([_.name for _ in user.groups.all()])
+        allowed = True
+        if len(allowed_groups) > 0 and user_groups.isdisjoint(allowed_groups):
+            allowed = False
+        if len(allowed_status) > 0 and election_status not in allowed_status:
+            allowed = False
+        return allowed
     return func
 
 def permissions_and(perm1, perm2):
@@ -81,4 +85,5 @@ def permissions_or(perm1, perm2):
         return perm1(u) or perm2(u)
     return f
 
-
+def permission_always(u):
+	return True

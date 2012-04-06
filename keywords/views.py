@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.forms.formsets import formset_factory
+from django.contrib.auth.decorators import user_passes_test
 #System
 from politicians.models import Politician
 from ridings.models import Riding
@@ -10,12 +11,14 @@ from keywords.models import RidingKeywordList, RidingKeywordValue, \
     addRidingKeywordListForm, editRidingKeywordListForm, addRidingKeywordValueForm, editRidingKeywordValueForm
 from keywords.models import PoliticianKeywordList, PoliticianKeywordValue, \
     addPoliticianKeywordListForm, editPoliticianKeywordListForm, addPoliticianKeywordValueForm, editPoliticianKeywordValueForm
+from election.models import define_view_permissions, permissions_or, permissions_and, permission_always
 
 
 # TODO Add decorators limiting access
 
 # Keyword Management
 
+@user_passes_test(define_view_permissions(['EO'],['BEF']))
 def index(request):
     riding_keyword_values = RidingKeywordValue.objects.all()
     politician_keyword_values = PoliticianKeywordValue.objects.all()
@@ -28,6 +31,7 @@ def index(request):
          'politician_keywords': politician_keywords
          })
 
+@user_passes_test(define_view_permissions(['EO'],['BEF']))
 def new_riding_keyword(request):
     if request.method == 'POST':
         form = addRidingKeywordListForm(request.POST)
@@ -38,6 +42,7 @@ def new_riding_keyword(request):
         form = addRidingKeywordListForm()
     return render(request,'keywords/addridingkeywords.html',{'form':form})
 
+@user_passes_test(define_view_permissions(['EO'],['BEF']))
 def new_riding_keyword_value(request, k_id):
     RidingKeywordValueFormSet = formset_factory(addRidingKeywordValueForm, extra=0)
     if request.method == 'POST':
@@ -56,6 +61,7 @@ def new_riding_keyword_value(request, k_id):
 
     return render(request,'keywords/addridingkeywordvalue.html',{'formset':formset,'id':k_id})
 
+@user_passes_test(define_view_permissions(['EO'],['BEF']))
 def new_politician_keyword(request):
     if request.method == 'POST':
         form = addPoliticianKeywordListForm(request.POST)
@@ -67,6 +73,7 @@ def new_politician_keyword(request):
 
     return render(request,'keywords/addpoliticiankeywords.html',{'form':form})
 
+@user_passes_test(define_view_permissions(['EO'],['BEF']))
 def new_politician_keyword_value(request, k_id):
     PoliticianKeywordValueFormSet = formset_factory(addPoliticianKeywordValueForm, extra = 0)
     if request.method == 'POST':
@@ -85,6 +92,7 @@ def new_politician_keyword_value(request, k_id):
 
     return render(request,'keywords/addpoliticiankeywordvalue.html',{'formset':formset,'id':k_id})
 
+@user_passes_test(define_view_permissions(['EO'],['BEF']))
 def edit_riding_keyword(request, k_id):
     keyword = RidingKeywordList.objects.get(id=k_id)
     if request.method == 'POST':
@@ -96,6 +104,7 @@ def edit_riding_keyword(request, k_id):
         form = editRidingKeywordListForm(instance=keyword)
     return render(request, 'keywords/modifyridingkeywordlist.html', {'form':form,'keyword':keyword})
 
+@user_passes_test(define_view_permissions(['EO'],['BEF']))
 def edit_riding_keyword_value(request, k_id):
     keyword = RidingKeywordValue.objects.get(id=k_id)
     if request.method == 'POST':
@@ -107,6 +116,7 @@ def edit_riding_keyword_value(request, k_id):
         form = editRidingKeywordValueForm(instance=keyword)
     return render(request, 'keywords/modifyridingkeywordvalue.html', {'form':form,'keyword':keyword})
 
+@user_passes_test(define_view_permissions(['EO'],['BEF']))
 def edit_politician_keyword(request, k_id):
     keyword = PoliticianKeywordList.objects.get(id=k_id)
     if request.method == 'POST':
@@ -118,6 +128,7 @@ def edit_politician_keyword(request, k_id):
         form = editPoliticianKeywordListForm(instance=keyword)
     return render(request, 'keywords/modifypoliticiankeywordlist.html', {'form':form,'keyword':keyword})
 
+@user_passes_test(define_view_permissions(['EO'],['BEF']))
 def edit_politician_keyword_value(request, k_id):
     keyword = PoliticianKeywordValue.objects.get(id=k_id)
     if request.method == 'POST':
@@ -129,11 +140,13 @@ def edit_politician_keyword_value(request, k_id):
         form = editPoliticianKeywordValueForm(instance=keyword)
     return render(request, 'keywords/modifypoliticiankeywordvalue.html', {'form':form,'keyword':keyword})
 
+@user_passes_test(define_view_permissions(['EO'],['BEF']))
 def restoreRidingKeyword(request):
     title = "Riding"
     list = RidingKeywordList.objects.filter(delete=True)
     return render(request, 'keywords/restoreridingkeyword.html', {'list':list})
 
+@user_passes_test(define_view_permissions(['EO'],['BEF']))
 def restorePoliticianKeyword(request):
     title = "Politician"
     list = PoliticianKeywordList.objects.filter(delete=True)
