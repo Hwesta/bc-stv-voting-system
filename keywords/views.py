@@ -79,7 +79,7 @@ def new_politician_keyword_value(request, k_id):
             data.append({'politician':i+1,'keyword':k_id})
         formset = PoliticianKeywordValueFormSet(initial=data)
 
-    return render(request,'keywords/addpoliticiankeywordvalue.html',{'formset':formset,'id':p_id})
+    return render(request,'keywords/addpoliticiankeywordvalue.html',{'formset':formset,'id':k_id})
 
 def edit_riding_keyword(request, k_id):
     keyword = RidingKeywordList.objects.get(id=k_id)
