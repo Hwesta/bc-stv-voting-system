@@ -2,6 +2,12 @@
 
 {% block h1 %}Add Riding Keyword Value{% endblock %}
 
+{% block subbreadcrumbs %}
+<li><a href="{% url ridings.views.view_all_ridings %}">Riding Management</a></li>
+<li><a href="{% url ridings.views.add_riding %}">Add Riding</a></li>
+<li>Add Riding Keyword Values</li>
+{% endblock %}
+
 {% block content %}
 <form action ="{% url ridings.views.add_riding_keyword id %}" method ="post">{% csrf_token %}
 <table>
