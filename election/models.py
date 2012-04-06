@@ -72,12 +72,12 @@ def define_view_permissions(groups, status):
     return func
 
 def permissions_and(perm1, perm2):
-	def f(u):
-		return perm1(u) and perm2(u)
-	return f
+    def f(u):
+        return perm1(u) and perm2(u)
+    return f
 def permissions_or(perm1, perm2):
-	def f(u):
-		return perm1(u) or perm2(u)
-	return f
+    def f(u):
+        return perm1(u) or perm2(u)
+    return f
 
 

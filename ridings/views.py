@@ -20,10 +20,10 @@ def view_all_ridings(request):
     elec = get_status_display(request)
     # render page
     return render(request, 'ridings/ridings.html',{
-		'ridings': ridings,
+        'ridings': ridings,
         'election': elec,
-		'type': str('ridings')
-		})
+        'type': str('ridings')
+        })
 
 @user_passes_test(define_view_permissions(['EO'],['BEF','DUR','AFT']))
 def view_deleted_ridings(request):
@@ -56,19 +56,19 @@ def add_riding(request):
     # """ Adds a new riding to the system. """
     # if submitting the form
     if request.method == 'POST':
-	# form variable is updated
+    # form variable is updated
         form = Riding_Add_Form(request.POST)
-	# input validation
+    # input validation
         if form.is_valid():
-	    # save information to database
+        # save information to database
             form.save()
-	    # go add riding keywords
+        # go add riding keywords
             return HttpResponseRedirect(reverse(add_riding_keyword, args=[Riding.objects.all().count()]))
     else:
-	# create a blank form instance
+    # create a blank form instance
         form = Riding_Add_Form()
-	# render page
-	return render(request, 'ridings/add_riding.html', {'form': form, })
+    # render page
+    return render(request, 'ridings/add_riding.html', {'form': form, })
 
 @user_passes_test(define_view_permissions(['EO'],['BEF']))
 def add_riding_keyword(request, r_id):
@@ -99,7 +99,7 @@ def modify_riding(request, r_id):
             return HttpResponseRedirect(reverse(view_riding, args=(r_id,)))
     else:
         form = Riding_Modify_Form(instance=riding)
-	return render(request, 'ridings/modify_riding.html', {'form': form, 'riding': riding, })
+    return render(request, 'ridings/modify_riding.html', {'form': form, 'riding': riding, })
 
 
 # Poll Management

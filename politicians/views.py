@@ -16,10 +16,10 @@ def view_politician(request, r_id, p_id):
     p = Politician.objects.get(id=p_id)
     k = PoliticianKeywordValue.objects.filter(politician=p)
     return render(request, 'politicians/politician.html',
-	{'politician': p,
-	 'keywords': k,
-	 'r_id': r_id
-	})
+    {'politician': p,
+     'keywords': k,
+     'r_id': r_id
+    })
 
 def view_candidates(request):
     p = Politician.objects.filter(candidate_riding__isnull=False)
@@ -40,15 +40,15 @@ def view_politicians(request, r_id):
     return render(request, 'politicians/politicians.html',
         {'politicians': p,
          'type':str("Politicians"),
-	 'r_id': r_id
-	})
+     'r_id': r_id
+    })
 
 def view_deleted_politicians(request, r_id):
     p = Politician.objects.all()
     return render(request, 'politicians/deleted_politicians.html',
         {'politicians': p,
          'type':str("Deleted Politicians"),
-	 'r_id': r_id
+     'r_id': r_id
          })
 
 def add_politician(request, r_id):

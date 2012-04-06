@@ -68,7 +68,7 @@ def close_poll():
     ballots have been entered twice, and if so compare the results, generating
     a list of ballots that need ot be verified.
     """
-	# TODO: write me
+    # TODO: write me
     pass
 
 @user_passes_test(define_view_permissions(['RO'],['DUR']))
