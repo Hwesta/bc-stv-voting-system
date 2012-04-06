@@ -9,7 +9,7 @@
 {% if flash %}
 	<ul>
 		{% for msg in flash %}
-			<li>{{ msg }}</li>
+			<li>{{ msg|safe }}</li>
 		{% endfor %}
 	</ul>
 {% endif %}

@@ -34,7 +34,6 @@ def compare_ballot(request, b_id):
         'ballots':ballot_list,
         'candidates':candidates,
         'tiebreaker_form': tiebreaker_form,
-        'b_1':ballot_list[0],
         })
 
 @user_passes_test(define_view_permissions(['RO'],['DUR']))
@@ -98,7 +97,7 @@ def input_ballot(request, poll_id, *args, **kwargs):
             new_ballot = form.save(commit=False)
             new_ballot.entered_by = request.user
             new_ballot.save()
-            msg = "Ballot input successful."
+            msg = 'Ballot input successful. <a href="/">Done?</a>'
             modified_request=request
             modified_request.method="GET"
             #return HttpResponseRedirect(reverse(input_ballot, args=(poll.id,)))
