@@ -7,11 +7,11 @@ class Politician(models.Model):
     party = models.CharField(max_length=128)
     # This should be NULL if the politician is not a candidate
     candidate_riding = models.ForeignKey(Riding, null=True, blank=True,
-        related_name="candidate_riding")
+        related_name="candidate_riding", db_index=True)
     # This should be NULL if the politician is not an incumbent
     incumbent_riding = models.ForeignKey(Riding, null=True, blank=True,
-        related_name="incumbent_riding")
-    delete = models.BooleanField(default=False)
+        related_name="incumbent_riding", db_index=True)
+    delete = models.BooleanField(default=False, db_index=True)
 
     def __unicode__(self):
         return self.name+", "+self.party+" candidate in "+str(self.candidate_riding)+" incumbent in "+str(self.incumbent_riding)

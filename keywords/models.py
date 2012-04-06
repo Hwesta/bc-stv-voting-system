@@ -16,9 +16,9 @@ class RidingKeywordList(models.Model):
 
 class RidingKeywordValue(models.Model):
     """ The value of a keyword for a particular riding. """
-    keyword = models.ForeignKey(RidingKeywordList)
-    riding = models.ForeignKey(Riding)
-    value = models.CharField(max_length=128)
+    keyword = models.ForeignKey(RidingKeywordList, db_index=True)
+    riding = models.ForeignKey(Riding, db_index=True)
+    value = models.CharField(max_length=128, db_index=True)
 
     def __unicode__(self):
         return str(self.keyword)+" "+str(self.riding)+" "+self.value
@@ -38,9 +38,9 @@ class PoliticianKeywordList(models.Model):
 
 class PoliticianKeywordValue(models.Model):
     """ The value of a keyword for a particular riding. """
-    keyword = models.ForeignKey(PoliticianKeywordList)
-    politician = models.ForeignKey(Politician)
-    value = models.CharField(max_length=128)
+    keyword = models.ForeignKey(PoliticianKeywordList, db_index=True)
+    politician = models.ForeignKey(Politician, db_index=True)
+    value = models.CharField(max_length=128, db_index=True)
 
     def __unicode__(self):
         return str(self.keyword)+" "+str(self.politician)+" "+self.value

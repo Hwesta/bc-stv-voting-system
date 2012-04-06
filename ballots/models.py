@@ -20,7 +20,7 @@ BALLOT_STATE_CHOICES = (
 class Ballot(models.Model):
     
     ballot_num = models.IntegerField(db_index=True)
-    poll = models.ForeignKey(Poll)
+    poll = models.ForeignKey(Poll, db_index=True)
     # State of ballot for verification
     state = models.CharField(max_length=1, choices=BALLOT_STATE_CHOICES, default='U', null=False, db_index=True)
     # Was the ballot spoiled/rejected?
