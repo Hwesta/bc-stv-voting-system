@@ -37,6 +37,20 @@ def compare_ballot(request, b_id):
         })
 
 @user_passes_test(define_view_permissions(['RO'],['DUR']))
+def auto_accept_ballot(request, ballot_id):
+    correct_ballot = Ballot.objects.get(id=ballot_id)
+    ballot_num = correct_ballot.ballot_num
+    correct_ballot.state='C'
+    correct_ballot.save()
+    for b in Ballot.objects.exclude(state='R').exclude(id=correct_ballot.id).filter(ballot_num=ballot_num).all():
+        b.state='I'
+        b.save()
+    #b=ballot.object(form.ballot)
+    riding_id = correct_ballot.poll.riding.id
+    msg="Auto-Accepted Ballot #%s (id=%s)" % (ballot_num, correct_ballot.id)
+    return verify_riding(request, riding_id, flash=[msg])
+
+@user_passes_test(define_view_permissions(['RO'],['DUR']))
 def accept_ballot(request):
     riding_id = -1
     if request.method == 'POST':
@@ -53,7 +67,8 @@ def accept_ballot(request):
                 b.save()
             #b=ballot.object(form.ballot)
             riding_id = correct_ballot.poll.riding.id
-            return verify_riding(request, riding_id)
+            msg="Manually Accepted Ballot #%s (id=%s)" % (ballot_num, correct_ballot.id)
+            return verify_riding(request, riding_id, flash=[msg])
 
     if riding_id > 0:
         return HttpResponseRedirect(reverse(verify_riding, args=(riding_id,)))
