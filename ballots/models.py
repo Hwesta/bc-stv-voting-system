@@ -41,8 +41,9 @@ class Ballot(models.Model):
         candidates = Politician.objects.filter(candidate_riding=self.poll.riding)
         vote_json=json.loads(self.vote)
         for (k,v) in sorted(vote_json.iteritems(), key=lambda x:x[0]):
-            candidate=candidates.get(id=int(v))
-            nice_string.append("#"+str(k)+": "+candidate.name)
+            if len(v)>0:
+                candidate=candidates.get(id=int(v))
+                nice_string.append("#"+str(k)+": "+candidate.name)
         
         
         return ", ".join(nice_string)
