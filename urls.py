@@ -23,7 +23,7 @@ urlpatterns = patterns('',
     url(r'^users/(\d+)/ban/$', 'users.views.ban_user'),
     url(r'^users/(\d+)/delete/$', 'users.views.delete_user'),
 
-    url(r'^election/$', 'election.views.view_election'),
+    #url(r'^election/$', 'election.views.view_election'),
     url(r'^election/recount/$', 'election.views.start_recount'),
     url(r'^election/change-status/$', 'election.views.change_election_status'),
     url(r'^election/change/$', 'election.views.change_election'),

@@ -18,10 +18,12 @@ from election.models import define_view_permissions, permissions_or, permissions
 def view_politician(request, r_id, p_id):
     p = Politician.objects.get(id=p_id)
     k = PoliticianKeywordValue.objects.filter(politician=p)
+    elec = get_status_display(request)
     return render(request, 'politicians/politician.html',
     {'politician': p,
      'keywords': k,
-     'r_id': r_id
+     'r_id': r_id,
+     'election': elec
     })
 
 @user_passes_test(permission_always)
