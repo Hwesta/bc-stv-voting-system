@@ -8,7 +8,7 @@
 <li><a href="{% url users.views.index %}">Manage Users</a></li>
 {% if election == 'BEF' %}
 <li><a href="{% url election.views.change_election %}">Change Election Name/Date</a></li>
-<li><a href="{% url election.views.set_location %}">Set Location</a></li>
+{% comment %}<li><a href="{% url election.views.set_location %}">Set Location</a></li>{% endcomment %}
 {% endif  %}
 <li><a href="{% url election.views.change_election_status %}">{{ election_action }}</a></li>
 {% if election == 'DUR' %}
