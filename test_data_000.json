@@ -8,6 +8,14 @@
     }
   },
   {
+    "pk": 2,
+    "model": "auth.group",
+    "fields": {
+      "name": "RO",
+      "permissions": []
+    }
+  },
+  {
     "pk": 3,
     "model": "auth.group",
     "fields": {
@@ -20,14 +28,6 @@
     "model": "auth.group",
     "fields": {
       "name": "REP",
-      "permissions": []
-    }
-  },
-  {
-    "pk": 2,
-    "model": "auth.group",
-    "fields": {
-      "name": "RO",
       "permissions": []
     }
   }
