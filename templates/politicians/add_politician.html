@@ -4,12 +4,12 @@
 
 {% block subbreadcrumbs %}
 <li><a href="{% url ridings.views.view_all_ridings %}">Riding Management</a></li>
-<li><a href="{% url ridings.views.view_riding r_id%}">View Riding {{ riding }}</a></li>
+<li><a href="{% url ridings.views.view_riding riding.id %}">View Riding {{ riding }}</a></li>
 <li>Add Politician</li>
 {% endblock %}
 
 {% block content %}
-<form action="{% url politicians.views.add_politician r_id %}" method="post">{% csrf_token %}
+<form action="{% url politicians.views.add_politician riding.id %}" method="post">{% csrf_token %}
 {{ form.as_p }}
 <input type="submit" value="Submit" />
 </form>

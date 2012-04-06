@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
-{% block h1 %}Modify Riding{% endblock %}
+{% block h1 %}Modify {{ riding }}{% endblock %}
 
 {% block subbreadcrumbs %}
 <li><a href="{% url ridings.views.view_all_ridings %}">Riding Management</a></li>
-<li>Modify Riding</li>
+<li>Modify {{ riding }}</li>
 {% endblock %}
 
 {% block content %}
