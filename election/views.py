@@ -205,6 +205,10 @@ def calc_winners(request, r_id):
     # Dictionary of (key=politician.id, value=droop candidate ID)
     c2b = dict((v,k) for k,v in c2.iteritems())
     winners = []
+    fc_votes = {}
+    for politician in c:
+        fc_votes[politician.id] = 0
+
 
     #check if the number of ballots is enough for BCSTV
     if calculation_ballots.count() < (r.num_candidates() + 1):
@@ -216,10 +220,11 @@ def calc_winners(request, r_id):
     data = str(c.count()) + " " + str(r.num_seats) + "\n"
     # For each distinct ballot content
     for ballot in b2:
-        # Count of times
+        # Count of timesro_home.html
         data = data + str(ballot['cnt']) + " "
         # Content of ballot
         vote_line = json.loads(ballot['vote'])
+	first = True
         for _i, _c in vote_line.iteritems():
             # Of the droop ID numbers for the candidate
             if _c == "":
@@ -227,6 +232,11 @@ def calc_winners(request, r_id):
                 pass
             else:
                 data = data + str(c2b[int(_c)]) + " "
+                if first:
+                    fc_votes[int(_c)] += ballot['cnt']
+                    first = False
+
+        print fc_votes
         # 0 to say no more candidates on ballot
         data = data + "0\n"
     # 0 to say no more ballots
@@ -261,6 +271,7 @@ def calc_winners(request, r_id):
         k = result['cdict'][i+1]['name']
         temp.append(Politician.objects.get(id = k))
         temp.append(result['actions'][-1]['cstate'][i+1])
+        temp.append(fc_votes[int(k)])
         winners.append(temp)
         
     return render(request, 'election/winners.html', {
@@ -297,6 +308,10 @@ def calc_all_winners(request):
         # List of all the required Data
         info = []
         winners = []
+        fc_votes = {}
+        for politician in c:
+            fc_votes[politician.id] = 0
+
 
         #check if the number of ballots is enough for BCSTV
         if calculation_ballots.count() < (r.num_candidates() + 1):
@@ -312,12 +327,17 @@ def calc_all_winners(request):
             data = data + str(ballot['cnt']) + " "
             # Content of ballot
             vote_line = json.loads(ballot['vote'])
+            first = True
             for _i, _c in vote_line.iteritems():
                 if _c == "":
                     pass
                 else:
                     # Of the droop ID numbers for the candidate
                     data = data + str(c2b[int(_c)]) + " "
+                    if first:
+                        fc_votes[int(_c)] += ballot['cnt']
+                        first = False
+
             # 0 to say no more candidates on ballot
             data = data + "0\n"
         # 0 to say no more ballots
@@ -356,6 +376,7 @@ def calc_all_winners(request):
             k = result['cdict'][i+1]['name']
             temp.append(Politician.objects.get(id = k))
             temp.append(result['actions'][-1]['cstate'][i+1])
+            temp.append(fc_votes[int(k)])
             winners.append(temp)
         
         info.append(winners)
