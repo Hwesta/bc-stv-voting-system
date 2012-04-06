@@ -133,20 +133,24 @@ def get_status_display(request):
 
 @user_passes_test(define_view_permissions(['ADMIN'],['BEF','DUR','AFT','ARC']))
 def change_election_status(request):
-##if status isn't initiated yet it can't be used
-   if Election.objects.count() == 0:
-       elec_list = Election.objects.all()
+   ##if status isn't initiated yet it can't be used
+   #election = Election.objects.exclude(status='ARC').all()
+   election = Election.objects.all()
+    # TODO: This will only work with one election for now
+   if len(election) == 0:
+       election = Election()
+       election.save()
    else:
-       elec_list = Election.objects.get(id=Election.objects.count())
+       election = election[0]
        
    if request.method == 'POST':
-      form = ElectionForm(request.POST)
-      if form.is_valid():
-         form.save()
-         return HttpResponseRedirect(reverse(index))
+       form = ElectionForm(request.POST, instance=election)
+       if form.is_valid():
+           form.save()
+           return HttpResponseRedirect(reverse(index))
    else:
-       form = ElectionForm()
-   return render(request, 'election/change_election_status.html', {'election':elec_list, 'form' : form})
+       form = ElectionForm(instance=election)
+   return render(request, 'election/change_election_status.html', {'election':election, 'form' : form})
 
 @user_passes_test(define_view_permissions(['ADMIN'],['BEF','DUR','AFT','ARC']))
 def set_location(request):
