@@ -50,7 +50,7 @@
 <td>{{ballot.spoiled}}</td>
 <td>{{ballot.candidates_as_string}}</td>
 <td>{{ballot.id}}</td>
-<td><a href="{% url ballots.views.compare_ballot ballot.id %}">Compare</a></td>
+<td><a href="{% url ballots.views.auto_accept_ballot ballot.id %}">Accept</a></td>
 </tr>
 {% endfor %}
 <tr><td colspan='7'><hr /></td></tr>
