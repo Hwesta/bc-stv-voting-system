@@ -33,7 +33,7 @@
 <td>{{ballot.poll}}</td>
 <td>{{ballot.get_state_display}}</td>
 <td>{{ballot.spoiled}}</td>
-<td>{{ballot.vote}}</td>
+<td>{{ballot.candidates_as_string}}</td>
 <td>{{ballot.id}}</td>
 <td><a href="{% url ballots.views.compare_ballot ballot.id %}">Compare</a></td>
 </tr>
@@ -48,7 +48,7 @@
 <td>{{ballot.poll}}</td>
 <td>{{ballot.get_state_display}}</td>
 <td>{{ballot.spoiled}}</td>
-<td>{{ballot.vote}}</td>
+<td>{{ballot.candidates_as_string}}</td>
 <td>{{ballot.id}}</td>
 <td><a href="{% url ballots.views.compare_ballot ballot.id %}">Compare</a></td>
 </tr>
@@ -62,7 +62,7 @@
 <td>{{ballot.poll}}</td>
 <td>{{ballot.get_state_display}}</td>
 <td>{{ballot.spoiled}}</td>
-<td>{{ballot.vote}}</td>
+<td>{{ballot.candidates_as_string}}</td>
 <td>{{ballot.id}}</td>
 <td><a href="{% url ballots.views.compare_ballot ballot.id %}">Compare</a></td>
 </tr>

@@ -1,6 +1,7 @@
 from django.db import models
 from django import forms
 from ridings.models import Poll, Riding
+from politicians.models import Politician
 from jsonfield import JSONField
 from django.forms import ModelForm
 from django.contrib.auth.models import User
@@ -34,6 +35,18 @@ class Ballot(models.Model):
 
     def __unicode__(self):
         return str(self.ballot_num)+", "+str(self.state)+", "+str(self.vote)
+
+    def candidates_as_string(self):
+        nice_string=[]
+        candidates = Politician.objects.filter(candidate_riding=self.poll.riding)
+        vote_json=json.loads(self.vote)
+        for (k,v) in sorted(vote_json.iteritems(), key=lambda x:x[0]):
+            candidate=candidates.get(id=int(v))
+            nice_string.append("#"+str(k)+": "+candidate.name)
+        
+        
+        return ", ".join(nice_string)
+        
 
 def ids_sequential_and_start_at_1(lst):
     return set(lst) == set(range(1,len(lst)+1))
