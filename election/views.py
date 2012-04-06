@@ -50,7 +50,7 @@ def index(request):
         return render(request, 'index.html')
 
 @login_required
-@user_passes_test(define_view_permissions(['RO'],['DUR']))
+@user_passes_test(define_view_permissions(['RO'],['BEF','DUR','AFT']))
 def ro_homepage(request):
     """ Display the index page. """
     return render(request, 'election/ro_homepage.html')
@@ -62,7 +62,7 @@ def eo_homepage(request):
     return render(request, 'election/eo_homepage.html')
 
 @login_required
-@user_passes_test(define_view_permissions(['REP'],['DUR']))
+@user_passes_test(define_view_permissions(['REP'],['BEF','DUR','AFT']))
 def reporter_homepage(request):
     """ Display the index page. """
     return render(request, 'election/reporter_homepage.html')
@@ -71,7 +71,7 @@ def reporter_homepage(request):
 @user_passes_test(define_view_permissions(['ADMIN'],['BEF','DUR','AFT','ARC']))
 def admin_homepage(request):
     """ Display the index page. """
-    election = get_election(request)
+    election = Election.objects.all()[0]
     election_action = 'TODO: NEXT ELECTION STATE (presently '+election.status+')'
     return render(request, 'election/admin_homepage.html',{
         'election_action': election_action,
@@ -135,13 +135,9 @@ def view_election(request):
    return render(request, 'election/view.html', {'election': (elec_list) })
 ######################################
 
-def get_election(request):
-    # TODO: Very bad practice
-   return Election.objects.get(id=Election.objects.count())
-
 @user_passes_test(define_view_permissions(['ADMIN'],['BEF','DUR','AFT','ARC']))
 def change_election_status(request):
-   election = get_election(request)
+   election = Election.objects.all()[0]
    election.changeStatus()
    election.save()
    return HttpResponseRedirect(reverse('election.views.admin_homepage'))
