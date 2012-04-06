@@ -34,6 +34,7 @@ def compare_ballot(request, b_id):
         'ballots':ballot_list,
         'candidates':candidates,
         'tiebreaker_form': tiebreaker_form,
+        'b_1':ballot_list[0],
         })
 
 @user_passes_test(define_view_permissions(['RO'],['DUR']))

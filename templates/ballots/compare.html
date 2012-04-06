@@ -2,6 +2,12 @@
 
 {% block h1 %}Ballot Conflict Resolution{% endblock %}
 
+{% block subbreadcrumbs %}
+<li><a href="{% url ballots.views.choose_riding_to_verify %}">Choose Riding to Verify</a></li>
+<li><a href="{% url ballots.views.verify_riding b_1.poll.riding.id %}">Conflicted Ballots</a></li>
+<li>Resolve Conflict</li>
+{% endblock %}
+
 {% block content %}
 	    <script src="/static/jquery.js"></script>
 	    <script src="/static/json2.js"></script>

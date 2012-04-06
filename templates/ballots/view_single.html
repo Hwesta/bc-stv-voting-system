@@ -2,6 +2,12 @@
 
 {% block h1 %}Ballot {{ ballot.ballot_num }}{% endblock %}
 
+{% block subbreadcrumbs %}
+<li><a href="{% url ballots.views.choose_riding_to_verify %}">Choose Riding to Verify</a></li>
+<li><a href="{% url ballots.views.verify_riding ballot.poll.riding.id %}">Conflicted Ballots</a></li>
+<li>View Ballot {{ ballot.ballot_num }}</li>
+{% endblock %}
+
 {% block content %}
 <p>Poll: {{ballot.poll}}</p>
 <p>State: {{ballot.get_state_display}}</p>
