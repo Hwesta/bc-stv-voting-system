@@ -94,7 +94,9 @@ def input_ballot(request, poll_id, *args, **kwargs):
     if request.method == 'POST':
         form = BallotForm(request.POST)
         if form.is_valid():
-            new_ballot = form.save()
+            new_ballot = form.save(commit=False)
+            new_ballot.entered_by = request.user
+            new_ballot.save()
             msg = "Ballot input successful."
             modified_request=request
             modified_request.method="GET"
@@ -123,6 +125,7 @@ def input_ballot_tiebreaker(request, old_ballot_num):
                 b.save()
             # Save new ballot
             new_ballot = form.save(commit=False)
+            new_ballot.entered_by = request.user
             new_ballot.state='C'
             new_ballot.save()
             msg = "Added tie-break ballot for ballot number "+old_ballot_num
