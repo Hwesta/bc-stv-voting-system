@@ -9,22 +9,24 @@ from election.rules import BCSTVRule
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 # django-auth
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import REDIRECT_FIELD_NAME, logout, authenticate, login as auth_login
 from django.contrib.auth.views import login as base_login_view
-from django.contrib.auth.decorators import user_passes_test, login_required
+from django.contrib.auth.decorators import user_passes_test
 # django-messages
 from django.contrib import messages
 # Election
 from election.models import Election, RecountForm, ElectionForm
-from election.models import define_view_permissions, permissions_or, permissions_and, permission_always
 from ridings.models import Riding, Poll
 from ballots.models import Ballot
 from django.db.models import Count
 from politicians.models import Politician
+from election.models import define_view_permissions, permissions_or, permissions_and, permission_always
 
 
 
@@ -34,19 +36,8 @@ from politicians.models import Politician
 @user_passes_test(permission_always)
 def index(request):
     """ Display the index page. """
-    user_groups = request.user.groups.all()
-    if user_groups.count() == 0:
-        return render(request, 'index.html')
-    elif user_groups[0].name == 'RO':
-        return redirect(ro_homepage)
-    elif user_groups[0].name == 'EO':
-        return redirect(eo_homepage)
-    elif user_groups[0].name == 'REP':
-        return redirect(reporter_homepage)
-    elif user_groups[0].name == 'ADMIN':
-        return redirect(admin_homepage)
-    else:
-        return render(request, 'index.html')
+    return render(request, 'index.html', 
+        {  })
 
 @login_required
 @user_passes_test(define_view_permissions(['RO'],['DUR']))
@@ -181,7 +172,7 @@ def change_election(request):
 def set_location(request): 
    return render(request, 'election/set_location.html', {})
 
-@user_passes_test(define_view_permissions(['ADMIN'],['BEF','DUR','AFT']))
+@user_passes_test(define_view_permissions(['ADMIN'],['DUR','AFT']))
 def start_recount(request):
     # TODO Add message in redirect saying recount has been started.
     if request.method == 'POST': 

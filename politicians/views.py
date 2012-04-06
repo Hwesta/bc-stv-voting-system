@@ -15,7 +15,7 @@ from election.views import get_status_display
 # NOTE Should we have one set of functions for incumbents and candidates,
 # and just display different info based on a flag?
 
-@user_passes_test(permission_always)
+@user_passes_test(permissions_or(define_view_permissions(['EO'],['BEF','DUR','AFT']), define_view_permissions(['REP'],['DUR'])))
 def view_politician(request, r_id, p_id):
     p = Politician.objects.get(id=p_id)
     k = PoliticianKeywordValue.objects.filter(politician=p)
@@ -27,7 +27,7 @@ def view_politician(request, r_id, p_id):
      'election': elec
     })
 
-@user_passes_test(permission_always)
+@user_passes_test(permissions_or(define_view_permissions(['EO'],['BEF','DUR','AFT']), define_view_permissions(['REP'],['DUR'])))
 def view_candidates(request):
     p = Politician.objects.filter(candidate_riding__isnull=False)
     return render(request, 'politicians/politicians.html',
@@ -35,7 +35,7 @@ def view_candidates(request):
          'type':str("Candidates")
          })
 
-@user_passes_test(permission_always)
+@user_passes_test(permissions_or(define_view_permissions(['EO'],['BEF','DUR','AFT']), define_view_permissions(['REP'],['DUR'])))
 def view_incumbents(request):
     p = Politician.objects.filter(incumbent_riding__isnull=False)
     return render(request, 'politicians/politicians.html',
@@ -43,7 +43,7 @@ def view_incumbents(request):
          'type':str("Incumbents")
          })
 
-@user_passes_test(permission_always)
+@user_passes_test(permissions_or(define_view_permissions(['EO'],['BEF','DUR','AFT']), define_view_permissions(['REP'],['DUR'])))
 def view_politicians(request, r_id):
     p = Politician.objects.all()
     return render(request, 'politicians/politicians.html',
@@ -52,7 +52,7 @@ def view_politicians(request, r_id):
      'r_id': r_id
     })
 
-@user_passes_test(define_view_permissions(['EO'],[]))
+@user_passes_test(define_view_permissions(['EO'],['BEF', 'DUR', 'AFT']))
 def view_deleted_politicians(request, r_id):
     p = Politician.objects.all()
     return render(request, 'politicians/deleted_politicians.html',
