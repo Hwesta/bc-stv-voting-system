@@ -189,7 +189,7 @@ def start_recount(request):
         {'form': form,
         })
 
-@user_passes_test(permissions_or(define_view_permissions(['EO'],['BEF','DUR','AFT']), define_view_permissions(['REP'],['DUR'])))
+@user_passes_test(permissions_or(define_view_permissions(['EO'],['DUR','AFT']), define_view_permissions(['REP'],['DUR'])))
 def calc_winners(request, r_id):
     r = Riding.objects.get(id=r_id)
     # All ballots for a riding
@@ -264,7 +264,7 @@ def calc_winners(request, r_id):
         'winners': winners
         })
 
-@user_passes_test(permissions_or(define_view_permissions(['EO'],['BEF','DUR','AFT']), define_view_permissions(['REP'],['DUR'])))
+@user_passes_test(permissions_or(define_view_permissions(['EO'],['DUR','AFT']), define_view_permissions(['REP'],['DUR'])))
 def calc_all_winners(request):
     #lists for attributes for each riding
 
