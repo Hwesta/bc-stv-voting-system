@@ -22,7 +22,7 @@
 <th>Spoiled</th>
 <th>Vote</th>
 <th>Id</th>
-<th>Fix</th>
+<th>Compare</th>
 </tr>
 
 {% for bad_type, bad_list in bad.items %}
@@ -35,7 +35,7 @@
 <td>{{ballot.spoiled}}</td>
 <td>{{ballot.vote}}</td>
 <td>{{ballot.id}}</td>
-<td><a href="{% url ballots.views.compare_ballot ballot.id %}">Fix</a></td>
+<td><a href="{% url ballots.views.compare_ballot ballot.id %}">Compare</a></td>
 </tr>
 {% endfor %}
 <tr><td colspan=7><hr /></td></tr>
@@ -50,7 +50,7 @@
 <td>{{ballot.spoiled}}</td>
 <td>{{ballot.vote}}</td>
 <td>{{ballot.id}}</td>
-<td><a href="{% url ballots.views.compare_ballot ballot.id %}">Fix</a></td>
+<td><a href="{% url ballots.views.compare_ballot ballot.id %}">Compare</a></td>
 </tr>
 {% endfor %}
 <tr><td colspan='7'><hr /></td></tr>
@@ -64,7 +64,7 @@
 <td>{{ballot.spoiled}}</td>
 <td>{{ballot.vote}}</td>
 <td>{{ballot.id}}</td>
-<td><a href="{% url ballots.views.compare_ballot ballot.id %}">Fix</a></td>
+<td><a href="{% url ballots.views.compare_ballot ballot.id %}">Compare</a></td>
 </tr>
 {% endfor %}
 <tr><td colspan='7'><hr /></td></tr>
