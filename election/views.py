@@ -3,6 +3,7 @@ import json
 from itertools import chain
 from droop.election import Election as DroopElection
 from droop.profile import ElectionProfile as DroopElectionProfile
+from droop.profile import ElectionProfileError as DroopElectionProfileError
 # This is our BCSTV rules for Droop
 from election.rules import BCSTVRule
 # Django
@@ -209,6 +210,11 @@ def calc_winners(request, r_id):
     c2b = dict((v,k) for k,v in c2.iteritems())
     winners = []
 
+    #check if the number of ballots is enough for BCSTV
+    if calculation_ballots.count() < (r.num_candidates() + 1):
+        error = "Too few ballots to calculate BCSTV."
+	return render(request, 'election/error.html', {'error': error, 'riding': r})
+    
     # Start of BLT generation
     # Number of candidates, Number of seats
     data = str(c.count()) + " " + str(r.num_seats) + "\n"
@@ -239,11 +245,17 @@ def calc_winners(request, r_id):
 
     try:
         E = DroopElection(DroopElectionProfile(data=data.encode('ascii', 'ignore')), dict(rule='bcstv'))
-    except ElectionProfileError as e:
+    except DroopElectionProfileError as e:
         # TODO: catch and send nice page for election
         # "too few ballots" => did not meet droop quota to vote, must be more ballots than candidates
         # "too few candidates" => seats > candidates
-        raise e
+	if r.num_seats < 1:
+	    error = "Too few Seats in " + r.name
+	elif r.num_candidates() < r.num_seats:
+	    error = "Too few Candidates in " + r.name + ". " + str(r.num_seats) + " seats for " + str(r.num_candidates()) + " candidates."
+
+	return render(request, 'election/error.html', {'error': error, 'riding': r})
+        
 
     E.count()
     result = E.record()
@@ -315,9 +327,12 @@ def calc_all_winners(request):
         # Name of election
         data = data + "\"" + r.name + " Results\""
         # End of BLT generation
+	try:
+            E = DroopElection(DroopElectionProfile(data=data.encode('ascii', 'ignore')), dict(rule='bcstv'))
+            E.count()
+        except DroopElectionProfileError as e:
+		raise e
 
-        E = DroopElection(DroopElectionProfile(data=data.encode('ascii', 'ignore')), dict(rule='bcstv'))
-        E.count()
         result = E.record()
         
         #places all information in a list

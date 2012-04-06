@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block h1 %}{{riding.name}} Result Error{% endblock %}
+
+{% block content %}
+
+<p>{{error}}</p>
+
+
+<p><a href='{% url ridings.views.view_riding riding.id %}'>Return to Riding</a></p>
+{% endblock %}
+
