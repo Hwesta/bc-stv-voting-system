@@ -13,9 +13,8 @@ STATUS_CHOICES = (
 # BEF -> DUR -> AFT -> ARC
 class Election(models.Model):
     status = models.CharField(max_length=3, choices=STATUS_CHOICES, default='BEF')
-    description = models.CharField(max_length=128)
-    start = models.DateField(help_text="YYYY-MM-DD")
-    #archive = 
+    description = models.CharField(max_length=128, verbose_name="Name", help_text="For later identification")
+    start = models.DateField(verbose_name="Date", help_text="Start date of the election.  Format: YYYY-MM-DD")
     
     def __unicode__(self):
         return "Election "+self.status

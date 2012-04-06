@@ -7,10 +7,14 @@ class Politician(models.Model):
     party = models.CharField(max_length=128)
     # This should be NULL if the politician is not a candidate
     candidate_riding = models.ForeignKey(Riding, null=True, blank=True,
-        related_name="candidate_riding", db_index=True)
+        related_name="candidate_riding", db_index=True,
+        verbose_name="Candidate in riding",
+        help_text="Leave blank if they are not a candidate.")
     # This should be NULL if the politician is not an incumbent
     incumbent_riding = models.ForeignKey(Riding, null=True, blank=True,
-        related_name="incumbent_riding", db_index=True)
+        related_name="incumbent_riding", db_index=True,
+        verbose_name="Incumbent in riding",
+        help_text="Leave blank if they are not an incumbent.")
     delete = models.BooleanField(default=False, db_index=True)
 
     def __unicode__(self):

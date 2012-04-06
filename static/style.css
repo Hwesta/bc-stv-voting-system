@@ -144,3 +144,9 @@ div#messages .info {
     padding: 5px;
 }
 
+.helptext {
+    font-size: .8em;
+    display: block;
+    padding-left: .5em;
+}
+
