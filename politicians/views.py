@@ -7,6 +7,7 @@ from ridings.models import Riding
 from politicians.models import Politician, Politician_Add_Form, Politician_Modify_Form
 from keywords.models import PoliticianKeywordValue, PoliticianKeywordList,addPoliticianKeywordValueForm
 from election.models import define_view_permissions, permissions_or, permissions_and, permission_always
+from election.views import get_status_display
 
 # TODO Add decorators limiting access
 
