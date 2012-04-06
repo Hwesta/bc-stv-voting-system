@@ -47,6 +47,7 @@ class RecountForm(forms.Form):
 class ElectionForm(ModelForm):
     class Meta:
         model = Election
+        exclude = ('status', )
 
 
 

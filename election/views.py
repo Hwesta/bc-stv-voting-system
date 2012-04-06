@@ -66,9 +66,13 @@ def reporter_homepage(request):
 @user_passes_test(define_view_permissions(['ADMIN'],['BEF','DUR','AFT','ARC']))
 def admin_homepage(request):
     """ Display the index page. """
-    elec = get_status_display(request)
-    return render(request, 'election/admin_homepage.html',
-        {'election': elec, })
+    elec_status = get_status_display(request)
+    election = get_election(request)
+    election_action = 'TODO: NEXT ELECTION STATE (presently '+election.status+')'
+    return render(request, 'election/admin_homepage.html',{
+        'election': elec_status, 
+        'election_action': election_action,
+    })
 
 # Login Management
 
@@ -127,12 +131,22 @@ def view_election(request):
    return render(request, 'election/view.html', {'election': (elec_list) })
 ######################################
 
+def get_election(request):
+    # TODO: Very bad practice
+   return Election.objects.get(id=Election.objects.count())
 def get_status_display(request):
-   elec = Election.objects.get(id=Election.objects.count())
-   return elec.status
+   return get_election(request).status
 
 @user_passes_test(define_view_permissions(['ADMIN'],['BEF','DUR','AFT','ARC']))
 def change_election_status(request):
+   election = get_election(request)
+   election.changeStatus()
+   election.save()
+   return HttpResponseRedirect(reverse('election.views.admin_homepage'))
+    
+
+@user_passes_test(define_view_permissions(['ADMIN'],['BEF']))
+def change_election(request):
    ##if status isn't initiated yet it can't be used
    #election = Election.objects.exclude(status='ARC').all()
    election = Election.objects.all()
