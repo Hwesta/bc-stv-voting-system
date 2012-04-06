@@ -9,14 +9,19 @@
 <body>
 
 <div id="header">
-<span style="float:left">{{ user }} ({{ user.groups.all.0.name }})</span>
+{% if user.is_authenticated %}
+    <span style="float:left">{{ user }} ({{ user.groups.all.0.name }})</span>
+{% endif %}
 {{ election.get_status_display|capfirst }} an election, {% now "N j, Y"%}
-<span style="float:right"><a href="{% url election.views.logout_user %}">Logout</a></span>
+{% if user.is_authenticated %}
+    <span style="float:right"><a href="{% url election.views.logout_user %}">Logout</a></span>
+{% endif %}
 </div>
 
 <h1>{% block h1 %}BC-STV Voting System{% endblock %}</h1>
 
 <div id="breadcrumbs">
+{% if user.is_authenticated %}
     <ul>
     {% block breadcrumbs %}
         <li><a href="{% url election.views.index %}">BC-STV Home</a></li>
@@ -24,6 +29,7 @@
         {% endblock subbreadcrumbs %}
     {% endblock breadcrumbs%}
     </ul>
+{% endif %}
 </div>
 
 
