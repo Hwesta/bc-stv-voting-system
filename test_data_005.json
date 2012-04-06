@@ -1,158 +1,37 @@
 [
   {
     "pk": 1,
-    "model": "ballots.ballot",
+    "model": "election.election",
     "fields": {
-      "ballot_num": 2,
-      "ballot_hash": "",
-      "state": "I",
-      "spoiled": false,
-      "vote": "{\"1\": \"1\", \"3\": \"6\", \"2\": \"\"}",
-      "poll": 1,
-      "entered_by": 1
+      "status": "BEF",
+      "start": "2012-03-16",
+      "description": "Test Election"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "ridings.riding",
+    "fields": {
+      "num_voters": 12345,
+      "name": "Burnaby-New West",
+      "created": "2012-03-16",
+      "active": false,
+      "num_seats": 2,
+      "recount_needed": false,
+      "delete": false
     }
   },
   {
     "pk": 2,
-    "model": "ballots.ballot",
+    "model": "ridings.riding",
     "fields": {
-      "ballot_num": 2,
-      "ballot_hash": "",
-      "state": "C",
-      "spoiled": false,
-      "vote": "{\"1\": \"1\", \"3\": \"6\", \"2\": \"\"}",
-      "poll": 1,
-      "entered_by": 2
-    }
-  },
-  {
-    "pk": 3,
-    "model": "ballots.ballot",
-    "fields": {
-      "ballot_num": 42,
-      "ballot_hash": "",
-      "state": "I",
-      "spoiled": false,
-      "vote": "{\"1\": \"1\", \"3\": \"6\", \"2\": \"4\"}",
-      "poll": 1,
-      "entered_by": 1
-    }
-  },
-  {
-    "pk": 4,
-    "model": "ballots.ballot",
-    "fields": {
-      "ballot_num": 42,
-      "ballot_hash": "",
-      "state": "I",
-      "spoiled": false,
-      "vote": "{\"1\": \"1\", \"3\": \"6\", \"2\": \"4\"}",
-      "poll": 1,
-      "entered_by": 2
-    }
-  },
-  {
-    "pk": 5,
-    "model": "ballots.ballot",
-    "fields": {
-      "ballot_num": 42,
-      "ballot_hash": "",
-      "state": "C",
-      "spoiled": false,
-      "vote": "{\"1\": \"1\", \"3\": \"6\", \"2\": \"4\"}",
-      "poll": 1,
-      "entered_by": 2
-    }
-  },
-  {
-    "pk": 6,
-    "model": "ballots.ballot",
-    "fields": {
-      "ballot_num": 122,
-      "ballot_hash": "",
-      "state": "C",
-      "spoiled": false,
-      "vote": "{\"1\": \"1\", \"3\": \"6\", \"2\": \"4\"}",
-      "poll": 1,
-      "entered_by": 1
-    }
-  },
-  {
-    "pk": 7,
-    "model": "ballots.ballot",
-    "fields": {
-      "ballot_num": 122,
-      "ballot_hash": "",
-      "state": "I",
-      "spoiled": false,
-      "vote": "{\"1\": \"1\", \"3\": \"6\", \"2\": \"4\"}",
-      "poll": 1,
-      "entered_by": 2
-    }
-  },
-  {
-    "pk": 8,
-    "model": "ballots.ballot",
-    "fields": {
-      "ballot_num": 9,
-      "ballot_hash": null,
-      "state": "U",
-      "spoiled": false,
-      "vote": "{\"1\": \"1\", \"3\": \"4\", \"2\": \"6\"}",
-      "poll": 1,
-      "entered_by": null
-    }
-  },
-  {
-    "pk": 9,
-    "model": "ballots.ballot",
-    "fields": {
-      "ballot_num": 123,
-      "ballot_hash": "",
-      "state": "I",
-      "spoiled": false,
-      "vote": "{\"1\": \"3\", \"2\": \"\"}",
-      "poll": 4,
-      "entered_by": null
-    }
-  },
-  {
-    "pk": 10,
-    "model": "ballots.ballot",
-    "fields": {
-      "ballot_num": 123,
-      "ballot_hash": "",
-      "state": "C",
-      "spoiled": false,
-      "vote": "{\"1\": \"3\", \"2\": \"\"}",
-      "poll": 4,
-      "entered_by": null
-    }
-  },
-  {
-    "pk": 11,
-    "model": "ballots.ballot",
-    "fields": {
-      "ballot_num": 11,
-      "ballot_hash": "",
-      "state": "I",
-      "spoiled": false,
-      "vote": "{\"1\": \"3\", \"2\": \"5\"}",
-      "poll": 4,
-      "entered_by": null
-    }
-  },
-  {
-    "pk": 12,
-    "model": "ballots.ballot",
-    "fields": {
-      "ballot_num": 11,
-      "ballot_hash": "",
-      "state": "C",
-      "spoiled": false,
-      "vote": "{\"1\": \"3\", \"2\": \"5\"}",
-      "poll": 4,
-      "entered_by": null
+      "num_voters": 2345,
+      "name": "Vancouver",
+      "created": "2012-03-16",
+      "active": false,
+      "num_seats": 1,
+      "recount_needed": false,
+      "delete": false
     }
   }
 ]

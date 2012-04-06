@@ -1,38 +1,34 @@
 [
   {
     "pk": 1,
-    "model": "keywords.ridingkeywordvalue",
+    "model": "keywords.politiciankeywordlist",
     "fields": {
-      "riding": 1,
-      "value": "1234",
-      "keyword": 1
+      "name": "Height",
+      "delete": false
     }
   },
   {
     "pk": 2,
-    "model": "keywords.ridingkeywordvalue",
+    "model": "keywords.politiciankeywordlist",
     "fields": {
-      "riding": 2,
-      "value": "1234",
-      "keyword": 1
+      "name": "Age",
+      "delete": false
     }
   },
   {
-    "pk": 3,
-    "model": "keywords.ridingkeywordvalue",
+    "pk": 1,
+    "model": "keywords.ridingkeywordlist",
     "fields": {
-      "riding": 1,
-      "value": "3245",
-      "keyword": 2
+      "name": "Area",
+      "delete": false
     }
   },
   {
-    "pk": 4,
-    "model": "keywords.ridingkeywordvalue",
+    "pk": 2,
+    "model": "keywords.ridingkeywordlist",
     "fields": {
-      "riding": 2,
-      "value": "4232",
-      "keyword": 2
+      "name": "Population",
+      "delete": false
     }
   }
 ]

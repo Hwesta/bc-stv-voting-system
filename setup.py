@@ -2,9 +2,13 @@
 
 import subprocess
 
-subprocess.call(["python", "manage.py", "syncdb", "--noinput"])
+PYTHON_COMMAND="python"
 
-files=[0,1,2,3,4,5,6,7,8]
+subprocess.call([PYTHON_COMMAND, "manage.py", "syncdb", "--noinput"])
+
+files=[0,1,2,3,4,5,6,7,8,9,10]
 
 for value in files:
-    subprocess.call(["python", "manage.py", "loaddata", "test_data_00"+str(value)+".json"])
+    jsonfile="test_data_00"+str(value)+".json"
+    print "Loading",jsonfile
+    subprocess.call([PYTHON_COMMAND, "manage.py", "loaddata", jsonfile])
