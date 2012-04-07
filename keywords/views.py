@@ -8,9 +8,9 @@ from django.contrib.auth.decorators import user_passes_test
 from politicians.models import Politician
 from ridings.models import Riding
 from keywords.models import RidingKeywordList, RidingKeywordValue, \
-    addRidingKeywordListForm, editRidingKeywordListForm, addRidingKeywordValueForm, editRidingKeywordValueForm
+    addRidingKeywordListForm, editRidingKeywordListForm, addhRidingKeywordValueForm, editRidingKeywordValueForm
 from keywords.models import PoliticianKeywordList, PoliticianKeywordValue, \
-    addPoliticianKeywordListForm, editPoliticianKeywordListForm, addPoliticianKeywordValueForm, editPoliticianKeywordValueForm
+    addPoliticianKeywordListForm, editPoliticianKeywordListForm, addhPoliticianKeywordValueForm, editPoliticianKeywordValueForm
 from election.models import define_view_permissions, permissions_or, permissions_and, permission_always
 
 
@@ -44,7 +44,7 @@ def new_riding_keyword(request):
 
 @user_passes_test(define_view_permissions(['EO'],['BEF']))
 def new_riding_keyword_value(request, k_id):
-    RidingKeywordValueFormSet = formset_factory(addRidingKeywordValueForm, extra=0)
+    RidingKeywordValueFormSet = formset_factory(addhRidingKeywordValueForm, extra=0)
     if request.method == 'POST':
         formset = RidingKeywordValueFormSet(request.POST, request.FILES)
         if formset.is_valid():
@@ -58,8 +58,9 @@ def new_riding_keyword_value(request, k_id):
             if not riding.delete:
                 data.append({'riding':i+1,'keyword':k_id})
         formset = RidingKeywordValueFormSet(initial=data)
+        name = RidingKeywordList.objects.get(id=k_id).name
 
-    return render(request,'keywords/addridingkeywordvalue.html',{'formset':formset,'id':k_id})
+    return render(request,'keywords/addridingkeywordvalue.html',{'formset':formset,'id':k_id,'name':name})
 
 @user_passes_test(define_view_permissions(['EO'],['BEF']))
 def new_politician_keyword(request):
@@ -75,7 +76,8 @@ def new_politician_keyword(request):
 
 @user_passes_test(define_view_permissions(['EO'],['BEF']))
 def new_politician_keyword_value(request, k_id):
-    PoliticianKeywordValueFormSet = formset_factory(addPoliticianKeywordValueForm, extra = 0)
+    PoliticianKeywordValueFormSet = formset_factory(addhPoliticianKeywordValueForm, extra = 0)
+    name = PoliticianKeywordList.objects.get(id=k_id).name
     if request.method == 'POST':
         formset = PoliticianKeywordValueFormSet(request.POST, request.FILES)
         if formset.is_valid():
@@ -90,7 +92,8 @@ def new_politician_keyword_value(request, k_id):
                 data.append({'politician':i+1,'keyword':k_id})
         formset = PoliticianKeywordValueFormSet(initial=data)
 
-    return render(request,'keywords/addpoliticiankeywordvalue.html',{'formset':formset,'id':k_id})
+
+    return render(request,'keywords/addpoliticiankeywordvalue.html',{'formset':formset,'id':k_id,'name':name})
 
 @user_passes_test(define_view_permissions(['EO'],['BEF']))
 def edit_riding_keyword(request, k_id):

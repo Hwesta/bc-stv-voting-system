@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block h1 %}Add Riding Keyword Value{% endblock %}
+{% block h1 %}Add Riding Keyword Value for {{name}}{% endblock %}
 
 {% block subbreadcrumbs %}
 <li><a href="{% url keywords.views.index %}">Keyword Management</a></li>
@@ -11,7 +11,14 @@
 {% block content %}
 <form action ="{% url keywords.views.new_riding_keyword_value id %}" method ="post">{% csrf_token %}
 <table>
-{{formset}}
+{{formset.management_form }}
+{% for form in formset %}
+<tr>
+	<td>{{form.keyword}}</td>
+	<td>{{form.riding}}</td>
+	<td>{{form.value}}</td>
+</tr>
+{% endfor %}
 </table>
 <input type="submit" value="Submit"/>
 </form> 

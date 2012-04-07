@@ -2,6 +2,7 @@ from django.db import models
 from ridings.models import Riding
 from politicians.models import Politician
 from django.forms import ModelForm
+from django import forms
 
 class RidingKeywordList(models.Model):
     """ The name of the keyword.
@@ -80,7 +81,19 @@ class editPoliticianKeywordValueForm(ModelForm):
 class addRidingKeywordValueForm(ModelForm):
     class Meta:
         model = RidingKeywordValue
+        widgets = {'riding': forms.HiddenInput()}
 
 class addPoliticianKeywordValueForm(ModelForm):
     class Meta:
         model = PoliticianKeywordValue
+        widgets = {'politician': forms.HiddenInput()}
+
+class addhRidingKeywordValueForm(ModelForm):
+    class Meta:
+        model = RidingKeywordValue
+        widgets = {'keyword': forms.HiddenInput()}
+
+class addhPoliticianKeywordValueForm(ModelForm):
+    class Meta:
+        model = PoliticianKeywordValue
+        widgets = {'keyword': forms.HiddenInput()}

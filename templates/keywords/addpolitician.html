@@ -5,7 +5,14 @@
 {% block content %}
 <form action ="{% url politicians.views.add_politician_keyword p_id r_id %}" method ="post">{% csrf_token %}
 <table>
-{{formset}}
+{{formset.management_form }}
+{% for form in formset %}
+<tr>
+	<td>{{form.keyword}}</td>
+	<td>{{form.politician}}</td>
+	<td>{{form.value}}</td>
+</tr>
+{% endfor %}
 </table>
 <input type="submit" value="Submit"/>
 </form> 
