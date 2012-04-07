@@ -12,7 +12,6 @@ class Riding(models.Model):
     num_seats = models.IntegerField(verbose_name="Seats", help_text="Number of seats available.")
     active = models.BooleanField(help_text="Whether a riding is accepting ballots.")
     delete = models.BooleanField(default=False)
-    recount_needed = models.BooleanField(help_text="Is a recount required in this riding.")
 
     def __unicode__(self):
         return self.name
@@ -102,13 +101,13 @@ class Poll(models.Model):
 class Riding_Add_Form(ModelForm):
     class Meta:
         model = Riding
-        exclude = ('active', 'delete', 'recount_needed',)
+        exclude = ('active', 'delete',)
 
 # Form for modifying a riding includeds delete flag
 class Riding_Modify_Form(ModelForm):
     class Meta:
         model = Riding
-        exclude = ('active', 'recount_needed',)
+        exclude = ('active',)
 
 # Form for adding a poll excludes choosing associated riding
 class Poll_Add_Form(ModelForm):
