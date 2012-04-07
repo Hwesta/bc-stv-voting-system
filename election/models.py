@@ -1,6 +1,7 @@
 from django.db import models
 from django import forms
 from ridings.models import Riding, Poll
+from ballots.models import Ballot
 from django.forms import ModelForm
 
 STATUS_CHOICES = (
@@ -22,6 +23,7 @@ class Election(models.Model):
     def changeStatus(self):
         """ Move the election to the next status. """
         if self.status == 'BEF':
+	    # activate all ridings, polls
 	    ridings = Riding.objects.filter(delete=False)
 	    polls = Poll.objects.filter(delete=False)
 	    for riding in ridings:
@@ -32,7 +34,15 @@ class Election(models.Model):
 		poll.save()
             self.status = 'DUR'
         elif self.status == 'DUR':
-            self.status = 'AFT'
+	    # ensure all ridings are closed
+	    num_ridings = Riding.objects.filter(active=True).count()
+	    # if all ridings are closed, all polls are closed
+	    # if a poll is closed, all ballots in that poll are verified
+	    if num_ridings > 0:
+		# requires a real error message
+		print "riding(s) still active"
+	    else:
+        	self.status = 'AFT'
         elif self.status == 'AFT':
             self.status = 'ARC'
         elif self.status == 'ARC':
