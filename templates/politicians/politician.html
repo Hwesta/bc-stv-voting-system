@@ -18,9 +18,20 @@
 {% endif %}
 <p>Name: {{politician.name}}</p>
 <p>Party: {{politician.party}}</p>
-<p>Incumbant in: {{politician.incumbent_riding}}</p>
-<p>Candidate in: {{politician.candidate_riding}}</p>
-
+<p>Incumbant in: {% if politician.incumbent_riding != NULL %}
+<a href='{% url ridings.views.view_riding politician.incumbent_riding.id %}'>
+{{politician.incumbent_riding}}</a>
+{% else %}
+{{politician.incumbent_riding}}
+</p>
+{% endif %}
+<p>Candidate in: {% if politician.candidate_riding != NULL %}
+<a href='{% url ridings.views.view_riding politician.candidate_riding.id %}'>
+{{politician.candidate_riding}}</a>
+{% else %}
+{{politician.candidate_riding}}
+</p>
+{% endif %}
 <h2>Keywords</h2>
 {% for PoliticianKeywordValue in keywords %}
 {% if not PoliticianKeywordValue.keyword.delete %}
