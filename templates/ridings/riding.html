@@ -29,7 +29,18 @@
 <li>Polls Numbers: {{ polls }}</li>
 <li>Number of Candidates: {{riding.num_candidates}}</li>
 <li>Number of Incuments: {{riding.num_incumbents}}</li>
-
+{% if election.status == 'DUR' or election.status == 'AFT' %}
+<li>Number of Ballots Cast: {{ ballots }}</li>
+{% endif %}
+{% if election.status == 'DUR' or election.status == 'AFT' %}
+<li>Number of Spoiled Ballots: {{ spoiled }}</li>
+{% endif %}
+{% if election.status == 'DUR' or election.status == 'AFT' %}
+<li>Voter Turnout: <script type="text/javascript">
+var v_t = ({{ ballots }}/{{riding.num_voters}} * 100);
+document.write((v_t.toFixed(2)+"%"));
+</script></li>
+{% endif %}
 </ul>
 
 <h2>Candidates</h2>

@@ -39,6 +39,8 @@ def view_riding(request, r_id):
     incumbents = riding.incumbents().filter(delete=False)
     candidates =riding.candidates().filter(delete=False)
     keywords = RidingKeywordValue.objects.filter(riding=riding)
+    ballots = riding.ballots().filter(state='C').count()
+    spoiled = riding.num_spoiled_ballots()
     # render page
     return render(request, 'ridings/riding.html',
         {'riding': riding,
@@ -46,6 +48,8 @@ def view_riding(request, r_id):
          'candidates': candidates,
          'incumbents': incumbents,
          'keywords': keywords,
+	 'ballots': ballots,
+	 'spoiled': spoiled,
         })
 
 @user_passes_test(define_view_permissions(['EO'],['BEF']))
