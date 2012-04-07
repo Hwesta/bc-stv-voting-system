@@ -67,9 +67,10 @@ class Riding(models.Model):
 	else:
 	    return str(polls[0].poll_num)+"-"+str(polls[num_polls - 1].poll_num)+", excluding "+deleted_poll_list+"due to deletion"
 
-    def calculate_results(self):
-        """ Determine who gets elected. """
-        pass
+# no longer necessary
+#    def calculate_results(self):
+#        """ Determine who gets elected. """
+#        pass
 
 class Poll(models.Model):
     riding = models.ForeignKey(Riding)
@@ -88,6 +89,7 @@ class Poll(models.Model):
         if self.poll_num is None:
             existing_max = Poll.objects.filter(riding=self.riding).annotate(max_poll_num=Max('poll_num')).values('max_poll_num').distinct()
             if len(existing_max.all()) > 0:
+		# here we want to reference the last item in the list
                 existing_max = existing_max[len(existing_max.all())-1]['max_poll_num']
             else:
                 existing_max = None

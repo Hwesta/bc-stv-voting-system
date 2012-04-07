@@ -39,7 +39,9 @@ def view_riding(request, r_id):
     incumbents = riding.incumbents().filter(delete=False)
     candidates =riding.candidates().filter(delete=False)
     keywords = RidingKeywordValue.objects.filter(riding=riding)
+    #these two lines give confirmed and distinct unverified # of ballots
     ballots = riding.ballots().filter(state='C').count()
+    ballots = ballots + riding.ballots().filter(state='U').values('ballot_num').distinct().count()
     spoiled = riding.num_spoiled_ballots()
     # render page
     return render(request, 'ridings/riding.html',

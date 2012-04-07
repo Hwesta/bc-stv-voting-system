@@ -10,7 +10,12 @@
 <p>#Seats: {{data.0.num_seats}}</p>
 <p>#Voters: {{data.0.num_voters}}</p>
 <p>Poll Range: {{ data.6 }}</p>
+{% if election.status == 'DUR' %}
+<p>#Verified Ballots: {{data.3}}</p>
+{% endif %}
+{% if election.status == 'AFT' %}
 <p>#Ballots Cast: {{data.3}}</p>
+{% endif %}
 <p>#Spoiled Ballots: {{data.4}}</p>
 <p>Voter Turnout: <script type="text/javascript">
 var v_t = ({{data.3}}/{{data.0.num_voters}} * 100);

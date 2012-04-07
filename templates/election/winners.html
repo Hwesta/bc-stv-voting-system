@@ -6,7 +6,12 @@
 <p>Number of Seats: {{riding.num_seats}}</p>
 <p>Number of Eligible Voters: {{riding.num_voters}}</p>
 <p>Poll Range: {{ polls }}</p>
+{% if election.status == 'DUR' %}
+<p>Number of Verified Ballots: {{numVotes}}</p>
+{% endif %}
+{% if election.status == 'AFT' %}
 <p>Number of Ballots Cast: {{numVotes}}</p>
+{% endif %}
 <p>Number of Spoiled Ballots: {{numSpoiled}}</p>
 <p>Voter Turnout: <script type="text/javascript">
 var v_t = ({{numVotes}}/{{riding.num_voters}} * 100.0);
