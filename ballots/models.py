@@ -105,8 +105,9 @@ class BallotForm(ModelForm):
                 raise forms.ValidationError("(clean) Could not parse vote data: "+ str(e))
             
         #if got_vote and (len(vote_data.keys()) == 0 and not cleaned_data['spoiled']):
-        if got_vote and ([a for a in vote_data.values() if a != []] and not cleaned_data['spoiled']):
-            print "42"
+        has_values=bool([a for a in vote_data.values() if a != ''])
+        if got_vote and not (has_values or cleaned_data['spoiled']):
+            print vote_data.values()," ", not bool([a for a in vote_data.values() if a != ''])
             raise forms.ValidationError("Invalid ballot: Empty but not spoiled?")
         if cleaned_data['spoiled']:
             cleaned_data['vote'] = {}
