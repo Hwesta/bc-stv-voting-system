@@ -77,15 +77,15 @@ class Poll(models.Model):
     def save(self, *args, **kwargs):
         # Is this a create
         if self.poll_num is None:
-            existing_max = Poll.objects.filter(riding=self.riding).annotate(max_poll_num=Max('poll_num')).values('max_poll_num').distinct()
+            existing_max = Poll.objects.filter(riding=self.riding)
             print existing_max
-            if len(existing_max.all()) > 0:
-                existing_max = existing_max[0]['max_poll_num']
+            if len(existing_max) > 0:
+                existing_max = existing_max.count() + 1
             else:
                 existing_max = None
             if existing_max is None:
-                existing_max = self.riding.id * MAX_POLLS_PER_RIDING
-            self.poll_num = existing_max+1
+                existing_max = self.riding.id * MAX_POLLS_PER_RIDING + 1
+            self.poll_num = self.riding.id * MAX_POLLS_PER_RIDING + existing_max
         super(Poll, self).save(*args, **kwargs)
 
 
