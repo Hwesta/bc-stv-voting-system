@@ -5,8 +5,9 @@
     "fields": {
       "active": false,
       "riding": 1,
-      "poll_num": null,
-      "polling_stn": "1"
+      "poll_num": 10001,
+      "polling_stn": "1",
+      "delete": false
     }
   },
   {
@@ -15,8 +16,9 @@
     "fields": {
       "active": false,
       "riding": 1,
-      "poll_num": null,
-      "polling_stn": "2"
+      "poll_num": 10002,
+      "polling_stn": "2",
+      "delete": false
     }
   },
   {
@@ -25,8 +27,9 @@
     "fields": {
       "active": false,
       "riding": 1,
-      "poll_num": null,
-      "polling_stn": "3"
+      "poll_num": 10003,
+      "polling_stn": "3",
+      "delete": false
     }
   },
   {
@@ -35,8 +38,9 @@
     "fields": {
       "active": false,
       "riding": 2,
-      "poll_num": null,
-      "polling_stn": "4"
+      "poll_num": 20004,
+      "polling_stn": "4",
+      "delete": false
     }
   },
   {
@@ -45,8 +49,9 @@
     "fields": {
       "active": false,
       "riding": 2,
-      "poll_num": null,
-      "polling_stn": "5"
+      "poll_num": 20005,
+      "polling_stn": "5",
+      "delete": false
     }
   },
   {
@@ -55,8 +60,9 @@
     "fields": {
       "active": false,
       "riding": 2,
-      "poll_num": null,
-      "polling_stn": "6"
+      "poll_num": 20006,
+      "polling_stn": "6",
+      "delete": false
     }
   },
   {
