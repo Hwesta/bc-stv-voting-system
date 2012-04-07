@@ -25,7 +25,6 @@ def view_all_politicians(request):
 def view_politician(request, p_id):
     p = Politician.objects.get(id=p_id)
     k = PoliticianKeywordValue.objects.filter(politician=p)
-    print k
     return render(request, 'politicians/politician.html',
     {'politician': p,
      'keywords': k,
@@ -88,7 +87,8 @@ def add_politician_keyword(request, p_id):
     else:
         data = []
         for i in range(PoliticianKeywordList.objects.all().count()):
-            data.append({'politician':p_id,'keyword':i+1})
+            if not PoliticianKeywordList.objects.get(id=i+1).delete:
+                data.append({'politician':p_id,'keyword':i+1})
         formset = PoliticianKeywordValueFormSet(initial=data)
 
     return render(request,'keywords/addpolitician.html',{'formset':formset,'p_id':p_id})
