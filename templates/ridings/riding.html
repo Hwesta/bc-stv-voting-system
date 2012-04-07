@@ -35,7 +35,7 @@
 <h2>Candidates</h2>
 <ul>
 {% for candidate in candidates %}
-    <li><a href="{% url politicians.views.view_politician candidate.id %}">{{ candidate.name }}</a> {{ candidate.party }}</li>
+    <li><a href="{% url politicians.views.view_politician candidate.id %}">{{ candidate.name }}</a> ({{ candidate.party }})</li>
 {% endfor %}
 </ul>
 
