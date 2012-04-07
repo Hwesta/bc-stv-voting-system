@@ -391,4 +391,21 @@ def calc_all_winners(request):
         
     return render(request, 'election/all_winners.html', {
         'results':x
-        })      
+        })
+
+def save_db(request):
+    election = Election.objects.all()[0]
+    election_action = 'TODO: NEXT ELECTION STATE (presently '+election.status+')'
+    messages.info(request, "save DB")
+    return render(request, 'election/admin_homepage.html',{
+        'election_action': election_action,
+    })
+
+def reset_db(request):
+    election = Election.objects.all()[0]
+    election_action = 'TODO: NEXT ELECTION STATE (presently '+election.status+')'
+    messages.info(request,"reset DB")
+    return render(request, 'election/admin_homepage.html',{
+        'election_action': election_action,
+    })
+    

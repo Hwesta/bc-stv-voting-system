@@ -5,15 +5,22 @@
 
 {% block content %}
 <ul>
-<li><a href="{% url users.views.index %}">Manage Users</a></li>
+    <li><a href="{% url users.views.index %}">Manage Users</a></li>
 {% if election.status == 'BEF' %}
-<li><a href="{% url election.views.change_election %}">Change Election Name/Date</a></li>
-{% comment %}<li><a href="{% url election.views.set_location %}">Set Location</a></li>{% endcomment %}
+    <li><a href="{% url election.views.change_election %}">Change Election Name/Date</a></li>
+    {% comment %}<li><a href="{% url election.views.set_location %}">Set Location</a></li>{% endcomment %}
 {% endif  %}
-<li><a href="{% url election.views.change_election_status %}">{{ election_action }}</a></li>
+
+    <li><a href="{% url election.views.change_election_status %}">{{ election_action }}</a></li>
+
 {% if election.status == 'DUR' %}
-<li><a href="{% url election.views.start_recount %}">Start a Recount</a></li>
+    <li><a href="{% url election.views.start_recount %}">Start a Recount</a></li>
 {% endif  %}
+
+{% if election.status = 'ARC' %}
+    <li><a href="{% url election.views.save_db %}">Save copy of the election.</a></li>
+    <li><a href="{% url election.views.reset_db %}">Reset database, start new election.</a></li>
+{% endif %}
 </ul>
 
 
