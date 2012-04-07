@@ -28,10 +28,10 @@
 </tr>
 {% for poll in polls %}
 <tr>
-<td><a href="{% url ridings.views.modify_poll riding.id poll.id %}">Modify</a></td>
 <td>{{ poll.poll_num }}</td>
 <td>{{ poll.active }}</td>
 <td>{{ poll.polling_stn }}</td>
+<td><a href="{% url ridings.views.modify_poll riding.id poll.id %}">Modify</a></td>
 </tr>
 {% endfor %}
 </table>
