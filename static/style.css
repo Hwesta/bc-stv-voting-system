@@ -132,6 +132,18 @@ div#messages {
 
 /* End stuff from CourSys */
 
+.errorlist {
+	border: 1px solid #002B7F;
+    padding: 0.5em;
+    color: #002B7F;
+    background-color: #f0f0ff;
+    margin-bottom: 1em;
+    list-style-position:inside;
+    color: #CE1126;
+    border-color: #CE1126;
+    background-color: #fff0f0;
+}
+
 #main {
     width: 80%;
     margin: auto;
