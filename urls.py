@@ -42,6 +42,8 @@ urlpatterns = patterns('',
     url(r'^ballots/accept_ballot/$', 'ballots.views.accept_ballot'),
     url(r'^ballots/auto_accept_ballot/(\d+)/$', 'ballots.views.auto_accept_ballot'),
 
+    url(r'^politicians/$', 'politicians.views.view_all_politidcians'),
+
     url(r'^ridings/$', 'ridings.views.view_all_ridings'),
     url(r'^ridings/deleted_ridings/$', 'ridings.views.view_deleted_ridings'),
     url(r'^ridings/add/$', 'ridings.views.add_riding'),
@@ -58,7 +60,6 @@ urlpatterns = patterns('',
     url(r'^ridings/(\d+)/politicians/add/$', 'politicians.views.add_politician'),
     url(r'^ridings/(\d+)/politicians/add/(\d+)/$', 'politicians.views.add_politician_keyword'),
     url(r'^ridings/(\d+)/politicians/deleted/$', 'politicians.views.view_deleted_politicians'),
-   # url(r'^ridings/politicians/(\d+)/$', 'politicians.
 
     url(r'^keywords/$', 'keywords.views.index'),
     url(r'^keywords/riding/add/$', 'keywords.views.new_riding_keyword'),
