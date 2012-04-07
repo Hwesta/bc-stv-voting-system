@@ -13,6 +13,7 @@
 <th>Party</th>
 <th>Incumbant in:</th>
 <th>Candidate in:</th>
+<th></th>
 </tr>
 
 
@@ -24,6 +25,7 @@
 <td>{{politician.party}}</td>
 <td>{{politician.incumbent_riding}}</td>
 <td>{{politician.candidate_riding}}</td>
+<td><a href='{% url politicians.views.modify_politician politician.id %}'>Modify</a></td>
 </tr>
 
 {% endfor %}

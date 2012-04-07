@@ -25,6 +25,7 @@ def view_all_politicians(request):
 def view_politician(request, p_id):
     p = Politician.objects.get(id=p_id)
     k = PoliticianKeywordValue.objects.filter(politician=p)
+    print k
     return render(request, 'politicians/politician.html',
     {'politician': p,
      'keywords': k,
@@ -100,7 +101,7 @@ def modify_politician(request, p_id):
         form = Politician_Modify_Form(request.POST,instance=politician)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse(view_politicians))
+            return HttpResponseRedirect(reverse(view_politician, args=[p_id]))
     else:
         form = Politician_Modify_Form(instance=politician)
     return render(request, 'politicians/modify_politician.html', { 'form':form, 'politician':politician })
