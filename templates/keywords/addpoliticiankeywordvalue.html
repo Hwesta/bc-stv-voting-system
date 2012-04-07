@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block h1 %}Add Politician Keywords {% endblock %}
+{% block h1 %}Add Politician Keywords for {{name}}{% endblock %}
 
 {% block subbreadcrumbs %}
 <li><a href="{% url keywords.views.index %}">Keyword Management</a></li>
@@ -11,7 +11,15 @@
 {% block content %}
 <form action ="{% url keywords.views.new_politician_keyword_value id %}" method ="post">{% csrf_token %}
 <table>
-{{formset}}
+{{formset.management_form }}
+{% for form in formset %}
+<tr>
+        <td>{{form.id}}</td>
+	<td>{{form.keyword}}</td>
+	<td>{{form.politician}}</td>
+	<td>{{form.value}}</td>
+</tr>
+{% endfor %}
 </table>
 <input type="submit" value="Submit"/>
 </form> 
