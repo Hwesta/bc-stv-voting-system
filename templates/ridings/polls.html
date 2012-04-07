@@ -9,9 +9,9 @@
 {% endblock %}
 
 {% block actions %}
-
+{% if election.status == 'BEF' %}
 <li><a href="{% url ridings.views.add_poll riding.id %}">Add Poll to Riding</a></li>
-
+{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -31,7 +31,9 @@
 <td>{{ poll.poll_num }}</td>
 <td>{{ poll.active }}</td>
 <td>{{ poll.polling_stn }}</td>
+{% if election.status == 'BEF' %}
 <td><a href="{% url ridings.views.modify_poll riding.id poll.id %}">Modify</a></td>
+{% endif %}
 </tr>
 {% endfor %}
 </table>
