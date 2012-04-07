@@ -48,15 +48,17 @@ class Ballot(models.Model):
         return ", ".join(nice_string)
 
     def save(self, *args, **kwargs):
-        me=kwargs['current_ro']
-        conflicting_ballots=Ballot.objects.filter(ballot_num=self.ballot_num).filter(entered_by=me)
-        if self.id is not None:
-            conflicting_ballots=conflicting_ballots.exclude(id=self.id)
-            if me==self.entered_by:
-                raise IntegrityError('You cannot verify a ballot you have entered.')
-        if len(conflicting_ballots)>0:
-            raise IntegrityError('You have already entered this ballot.')
-        del kwargs['current_ro']
+        if 'current_ro' in kwargs:
+            me=kwargs['current_ro']
+            conflicting_ballots=Ballot.objects.filter(ballot_num=self.ballot_num).filter(entered_by=me)
+            if self.id is not None:
+                conflicting_ballots=conflicting_ballots.exclude(id=self.id)
+                if me==self.entered_by:
+                    raise IntegrityError('You cannot verify a ballot you have entered.')
+            if len(conflicting_ballots)>0:
+                raise IntegrityError('You have already entered this ballot.')
+            del kwargs['current_ro']
+
         super(Ballot, self).save(*args, **kwargs)
         
 
@@ -101,7 +103,10 @@ class BallotForm(ModelForm):
                 raise e
             except Exception as e:
                 raise forms.ValidationError("(clean) Could not parse vote data: "+ str(e))
-        if got_vote and (len(vote_data.keys()) == 0 and not cleaned_data['spoiled']):
+            
+        #if got_vote and (len(vote_data.keys()) == 0 and not cleaned_data['spoiled']):
+        if got_vote and ([a for a in vote_data.values() if a != []] and not cleaned_data['spoiled']):
+            print "42"
             raise forms.ValidationError("Invalid ballot: Empty but not spoiled?")
         if cleaned_data['spoiled']:
             cleaned_data['vote'] = {}

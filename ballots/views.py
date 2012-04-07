@@ -52,7 +52,7 @@ def auto_accept_ballot(request, ballot_id):
                              
     for b in Ballot.objects.exclude(state='R').exclude(id=correct_ballot.id).filter(ballot_num=ballot_num).all():
         b.state='I'
-        b.save(current_ro=request.user)
+        b.save()
     #b=ballot.object(form.ballot)
 
     messages.info(request, "Auto-Accepted Ballot #%s (id=%s)" % (ballot_num, correct_ballot.id))
@@ -77,7 +77,7 @@ def accept_ballot(request):
                 return verify_riding(request, riding_id)                
             for b in Ballot.objects.exclude(state='R').exclude(id=correct_ballot.id).filter(ballot_num=ballot_num).all():
                 b.state='I'
-                b.save(current_ro=request.user)
+                b.save()
             #b=ballot.object(form.ballot)
             messages.info(request, "Manually Accepted Ballot #%s (id=%s)" % (ballot_num, correct_ballot.id))
             return verify_riding(request, riding_id)
@@ -109,7 +109,7 @@ def view_ballot(request, b_id):
     return render(request, 'ballots/view_single.html', {'ballot':ballot, 'ballot_num':b_id})
 
 @user_passes_test(define_view_permissions(['RO'],['DUR']))
-def input_ballot(request, poll_id):
+def input_ballot(request, poll_id, *args, **kwargs):
     poll = Poll.objects.get(id=poll_id)
     candidates = Politician.objects.filter(candidate_riding=poll.riding).filter(delete=False)
         
@@ -151,7 +151,7 @@ def input_ballot_tiebreaker(request, old_ballot_num):
             # Invalidate old ballots
             for b in old_ballots:
                 b.state='I'
-                b.save(current_ro=request.user)
+                b.save()
             # Save new ballot
             new_ballot = form.save(commit=False)
             new_ballot.entered_by = request.user
