@@ -5,7 +5,8 @@
 {% block content %}
 <ul>
 {% if election.status == 'DUR' or election.status == 'BEF' %}
-	<li><a href="{% url ridings.views.view_all_ridings %}">	Riding Management </a></li>
+	<li><a href="{% url ridings.views.view_all_ridings %}">Riding Management</a></li>
+	<li><a href="{% url politicians.views.view_all_politicians %}">Politician Management</a></li>
 {% endif %}
 {% if election.status == 'BEF' %}
 	<li><a href="{% url keywords.views.index %}">Keyword Management</a></li>

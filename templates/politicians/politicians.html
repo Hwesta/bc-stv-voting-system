@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block actions %}
-<li><a href="{% url politicians.views.view_deleted_politicians r_id %}">View Deleted Politicians</a></li>
+<li><a href="{% url politicians.views.view_deleted_politicians 0 %}">View Deleted Politicians</a></li>
 {% endblock %}
 
 {% block content %}
@@ -22,7 +22,12 @@
 {% for politician in politicians %}
 {% if not politician.delete %}
 <tr>
-<td><a href="{% url politicians.views.view_politician r_id, politician.id %}">{{politician.name}}</a></td>
+{{comment}}{% if politician.candidate_riding != NULL %}{{endcomment}}
+<td><a href="{% url politicians.views.view_politician politician.candidate_riding.id, politician.id %}">
+{{politician.name}}</a></td>
+{{comment}}{% else %}
+<td><a href="{% url politicians.views.view_politician politician.incumbent_riding.id, politician.id %}">{{politician.name}}</a></td>
+{% endif %}{{endcomment}}
 <td>{{politician.party}}</td>
 <td>{{politician.incumbent_riding}}</td>
 <td>{{politician.candidate_riding}}</td>
