@@ -30,6 +30,7 @@
 <td><a href="{% url ridings.views.view_riding riding.id %}">{{riding.name}}</a></td>
 {% if election.status == 'BEF' %}
 <td><a href="{% url ridings.views.modify_riding riding.id %}">Modify</a></td>
+<td><a href="{% url ridings.views.view_polls riding.id %}">View Polls</a></td> 
 {% endif %}
 </tr>
 {% endfor %}

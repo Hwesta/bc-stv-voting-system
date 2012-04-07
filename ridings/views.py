@@ -75,7 +75,7 @@ def add_riding_keyword(request, r_id):
         if formset.is_valid():
             for form in formset:
                 form.save()
-            return HttpResponseRedirect(reverse(view_all_ridings))
+            return HttpResponseRedirect(reverse(view_riding, args=[r_id]))
     else:
         data = []
         for i in range(RidingKeywordList.objects.all().count()):
