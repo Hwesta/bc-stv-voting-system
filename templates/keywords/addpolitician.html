@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 
-{% block h1 %}Add Politician Keywords {% endblock %}
+{% block h1 %}Add Politician Keywords{% endblock %}
+
+{% block subbreadcrumb %}
+<li><a href="{% url politicians.views.view_all_politicians %}">Politician Management</a></li>
+<li><a href="{% url polticians.views.add_politician %}">Add Politician</a></li>
+<li>Add Politician Keyword Values</li>
+{% endblock %}
 
 {% block content %}
 <form action ="{% url politicians.views.add_politician_keyword p_id %}" method ="post">{% csrf_token %}

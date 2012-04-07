@@ -2,6 +2,12 @@
 
 {% block h1 %}Modify Politician Keyword Value{% endblock %}
 
+{% block subbreadcrumbs %}
+<li><a href="{% url politicians.views.view_all_politicians %}>Politician Management</a></li>
+<li><a href="{% url politicians.views.view_politician politician.id%}">View Politician {{politician.name}}</a></li>
+<li>Modify Politician Keyword Value</li>
+{% endblock %}
+
 {% block content %}
 <form action ={% url keywords.views.edit_politician_keyword_value keyword.id %} method ="post">{% csrf_token %}
 {{form.as_p}}

@@ -139,11 +139,11 @@ def edit_politician_keyword_value(request, k_id):
     if request.method == 'POST':
         form = editPoliticianKeywordValueForm(request.POST,instance=keyword)
         if form.is_valid():
-            x = form.save()
-            return HttpResponseRedirect(reverse(view_politician, args=[x.politician.id]))
+            form.save()
+            return HttpResponseRedirect(reverse(view_politician, args=[keyword.politician.id]))
     else:
         form = editPoliticianKeywordValueForm(instance=keyword)
-    return render(request, 'keywords/modifypoliticiankeywordvalue.html', {'form':form,'keyword':keyword})
+    return render(request, 'keywords/modifypoliticiankeywordvalue.html', {'form':form,'keyword':keyword, 'politician':keyword.politician})
 
 @user_passes_test(define_view_permissions(['EO'],['BEF']))
 def restoreRidingKeyword(request):
