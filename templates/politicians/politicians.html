@@ -1,4 +1,4 @@
-{% extends "base-subsection.html" %}
+{% extends "base.html" %}
 
 {% block h1 %}List of {{type}}{% endblock %}
 
@@ -7,9 +7,7 @@
 <li>Politician Management</li>
 {% endblock %}
 
-{% block actions %}
-<li><a href="{% url politicians.views.view_deleted_politicians 0 %}">View Deleted Politicians</a></li>
-{% endblock %}
+
 
 {% block content %}
 <table>
@@ -19,20 +17,22 @@
 <th>Incumbant in</th>
 <th>Candidate in</th>
 </tr>
+
+
 {% for politician in politicians %}
-{% if not politician.delete %}
+
 <tr>
-{{comment}}{% if politician.candidate_riding != NULL %}{{endcomment}}
-<td><a href="{% url politicians.views.view_politician politician.candidate_riding.id, politician.id %}">
+
+<td><a href='{% url politicians.views.view_politician politician.candidate_riding.id politician.id %}'>
 {{politician.name}}</a></td>
-{{comment}}{% else %}
-<td><a href="{% url politicians.views.view_politician politician.incumbent_riding.id, politician.id %}">{{politician.name}}</a></td>
-{% endif %}{{endcomment}}
+
+<td><a href="{% url politicians.views.view_politician politician.incumbent_riding.id politician.id %}">{{politician.name}}</a></td>
+
 <td>{{politician.party}}</td>
 <td>{{politician.incumbent_riding}}</td>
 <td>{{politician.candidate_riding}}</td>
 </tr>
-{% endif %}
+
 {% endfor %}
 </table>
 
