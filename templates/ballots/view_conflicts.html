@@ -9,149 +9,134 @@
 {% block content %}
 
 {% if single_entry %}
+<h2>Ballots with problems: Single Entry</h2>
 <table>
-	<tr>
-    	<th colspan='7'><h2>Ballots with problems: Single Entry</h2></th>
+    <tr>
+        <th>Ballot Number</th>
+        <th>Poll</th>
+        <th>Vote Data</th>
+        <th>Resolve</th>
     </tr>
-	<tr>
-		<th>Ballot Number</th>
-		<th>Poll</th>
-		<th>State</th>
-		<th>Spoiled</th>
-		<th>Vote</th>
-		<th>Id</th>
-		<th>Resolve</th>
-	</tr>
-	{% for ballot in single_entry %}
+    {% for ballot in single_entry %}
         <tr>
-            <td><a href="{% url ballots.views.view_ballot ballot.id %}">{{ballot.ballot_num}}</a></td>
+            <td>{{ballot.ballot_num}}</td>
             <td>{{ballot.poll}}</td>
-            <td>{{ballot.get_state_display}}</td>
-            <td>{{ballot.spoiled}}</td>
-            <td>{{ballot.candidates_as_string}}</td>
-            <td>{{ballot.id}}</td>
+            <td>
+                {% if ballot.spoiled %}
+                    Spoiled
+                {% else %}
+                    {{ballot.candidates_as_string}}
+            {% endif %}</td>
             <td><a href="{% url ballots.views.compare_ballot ballot.id %}">Compare</a></td>
         </tr>
-	{% endfor %}
-	<tr><td colspan=7><hr /></td></tr>
+    {% endfor %}
 </table>
 {% else %}
 	<h2>No ballots with problem: Single Entry</h2>
 {% endif %}
 
-{% if invalid_state_mix %}
-<table>
-	<tr><th colspan='7'><h2>Ballots with problems: Invalid State Mix</h2></th></tr>
-	<tr>
-		<th>Ballot Number</th>
-		<th>Poll</th>
-		<th>State</th>
-		<th>Spoiled</th>
-		<th>Vote</th>
-		<th>Id</th>
-		<th>Resolve</th>
-	</tr>
-	{% for ballot in invalid_state_mix %}
-        <tr>
-            <td><a href="{% url ballots.views.view_ballot ballot.id %}">{{ballot.ballot_num}}</a></td>
-            <td>{{ballot.poll}}</td>
-            <td>{{ballot.get_state_display}}</td>
-            <td>{{ballot.spoiled}}</td>
-            <td>{{ballot.candidates_as_string}}</td>
-            <td>{{ballot.id}}</td>
-            <td><a href="{% url ballots.views.input_ballot ballot.poll %}">Add Another</a></td>
-        </tr>
-	{% endfor %}
-	<tr><td colspan=7><hr /></td></tr>
-</table>
-{% else %}
-	<h2>No ballots with problems: Invalid State Mix</h2>
-{% endif %}
-
-{% if single_ro_only %}
-<table>
-	<tr><th colspan='7'>Ballots with problems: Single RO Only</th></tr>
-    	<tr>
-		<th>Ballot Number</th>
-		<th>Poll</th>
-		<th>State</th>
-		<th>Spoiled</th>
-		<th>Vote</th>
-		<th>Id</th>
-		<th>Resolve</th>
-	</tr>
-	{% for ballot in single_ro_only %}
-		<tr>
-			<td><a href="{% url ballots.views.view_ballot ballot.id %}">{{ballot.ballot_num}}</a></td>
-			<td>{{ballot.poll}}</td>
-			<td>{{ballot.get_state_display}}</td>
-			<td>{{ballot.spoiled}}</td>
-			<td>{{ballot.candidates_as_string}}</td>
-			<td>{{ballot.id}}</td>
-			<td><a href="{% url ballots.views.input_ballot ballot.poll %}">Add Another</a></td>
-		</tr>
-	{% endfor %}
-</table>
-{% else %}
-	<h2>No ballots with problems: Single RO Only</h2>
-{% endif %}
-
 {% if auto_ballots %}
+<h2>Ballots eligible for automatic verification</h2>
 <table>
-	<tr><td colspan=7><hr /></td></tr>
-	<tr><th colspan='7'>Ballots eligible for automatic verification</th></tr>
     <tr>
-		<th>Ballot Number</th>
-		<th>Poll</th>
-		<th>State</th>
-		<th>Spoiled</th>
-		<th>Vote</th>
-		<th>Id</th>
-		<th>Resolve</th>
-	</tr>
-	{% for ballot in auto_ballots %}
-		<tr>
-			<td><a href="{% url ballots.views.view_ballot ballot.id %}">{{ballot.ballot_num}}</a></td>
-				<td>{{ballot.poll}}</td>
-				<td>{{ballot.get_state_display}}</td>
-				<td>{{ballot.spoiled}}</td>
-				<td>{{ballot.candidates_as_string}}</td>
-				<td>{{ballot.id}}</td>
-				<td><a href="{% url ballots.views.auto_accept_ballot ballot.id %}">Accept</a></td>
-		</tr>
-	{% endfor %}
-	<tr><td colspan='7'><hr /></td></tr>
+        <th>Ballot Number</th>
+        <th>Poll</th>
+        <th>Vote Data</th>
+        <th>Resolve</th>
+    </tr>
+    {% for ballot in auto_ballots %}
+    <tr>
+        <td>{{ballot.ballot_num}}</td>
+        <td>{{ballot.poll}}</td>
+        <td>
+            {% if ballot.spoiled %}
+                Spoiled
+            {% else %}
+                {{ballot.candidates_as_string}}
+        {% endif %}</td>
+        <td><a href="{% url ballots.views.auto_accept_ballot ballot.id %}">Accept</a></td>
+    </tr>
+    {% endfor %}
 </table>
 {% else %}
 	<h2>No ballots eligible for automatic verification</h2>
 {% endif %}
 
 {% if manual_ballots %}
+<h2>Ballots requiring manual verification</h2>
 <table>
-	<tr><th colspan='7'>Ballots requiring manual verification</th></tr>
-        <tr>
-		<th>Ballot Number</th>
-		<th>Poll</th>
-		<th>State</th>
-		<th>Spoiled</th>
-		<th>Vote</th>
-		<th>Id</th>
-		<th>Resolve</th>
-	</tr>
-	{% for ballot in manual_ballots %}
-	<tr>
-		<td><a href="{% url ballots.views.view_ballot ballot.id %}">{{ballot.ballot_num}}</a></td>
-		<td>{{ballot.poll}}</td>
-		<td>{{ballot.get_state_display}}</td>
-		<td>{{ballot.spoiled}}</td>
-		<td>{{ballot.candidates_as_string}}</td>
-		<td>{{ballot.id}}</td>
-		<td><a href="{% url ballots.views.compare_ballot ballot.id %}">Compare</a></td>
-	</tr>
-	{% endfor %}
-	<tr><td colspan='7'><hr /></td></tr>
+    <tr>
+        <th>Ballot Number</th>
+        <th>Poll</th>
+        <th>Vote Data</th>
+        <th>Resolve</th>
+    </tr>
+    {% for ballot in manual_ballots %}
+    <tr>
+        <td>{{ballot.ballot_num}}</td>
+        <td>{{ballot.poll}}</td>
+        <td>
+            {% if ballot.spoiled %}
+                Spoiled
+            {% else %}
+                {{ballot.candidates_as_string}}
+        {% endif %}</td>
+        <td><a href="{% url ballots.views.compare_ballot ballot.id %}">Compare</a></td>
+    </tr>
+    {% endfor %}
 </table>
 {% else %}
 	<h2>No ballots requiring manual verification</h2>
 {% endif %}
+
+{% if invalid_state_mix %}
+<h2>Ballots with problems: Invalid State Mix</h2>
+<table>
+    <tr>
+        <th>Ballot Number</th>
+        <th>Poll</th>
+        <th>Vote Data</th>
+        <th>Resolve</th>
+    </tr>
+    {% for ballot in invalid_state_mix %}
+    <tr>
+        <td>{{ballot.ballot_num}}</td>
+        <td>{{ballot.poll}}</td>
+        <td>
+            {% if ballot.spoiled %}
+                Spoiled
+            {% else %}
+                {{ballot.candidates_as_string}}
+        {% endif %}</td>
+        <td><a href="{% url ballots.views.input_ballot ballot.poll %}">Add Another</a></td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+{% if single_ro_only %}
+<h2>Ballots with problems: Single RO Only</h2>
+<table>
+    <tr>
+        <th>Ballot Number</th>
+        <th>Poll</th>
+        <th>Vote Data</th>
+        <th>Resolve</th>
+    </tr>
+    {% for ballot in single_ro_only %}
+    <tr>
+        <td>{{ballot.ballot_num}}</td>
+        <td>{{ballot.poll}}</td>
+        <td>
+            {% if ballot.spoiled %}
+                Spoiled
+            {% else %}
+                {{ballot.candidates_as_string}}
+        {% endif %}</td>
+            <td><a href="{% url ballots.views.input_ballot ballot.poll %}">Add Another</a></td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
 {% endblock %}
