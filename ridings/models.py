@@ -57,6 +57,8 @@ class Riding(models.Model):
     def poll_range(self):
 	polls = Poll.objects.filter(riding=self.id).exclude(delete=True)
 	num_polls = polls.count()
+	if num_polls == 0:
+	    return "no polls"
 	deleted_polls = Poll.objects.filter(riding=self.id).exclude(delete=False)
 	deleted_poll_list = ""
 	for i in range(0, (deleted_polls.count())):
