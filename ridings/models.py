@@ -101,7 +101,7 @@ class Poll(models.Model):
 	self.active = False
 	self.save()
 	# the # of polls belonging to the riding that are still active
-	num_rem_polls = Poll.objects.filter(riding=self.riding, active=True).count()
+	num_rem_polls = Poll.objects.filter(riding=self.riding, active=True).exclude(delete=True).count()
 	if num_rem_polls == 0:
 	    riding.active = False
 	    riding.save()
