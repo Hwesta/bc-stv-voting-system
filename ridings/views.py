@@ -35,7 +35,7 @@ def view_riding(request, r_id):
     #""" View all the details about a riding on one page. """
     # store all necessary information for a riding into variables to be added to the dictionary
     riding = Riding.objects.get(id=r_id)
-    polls = riding.polls()
+    polls = riding.poll_range()
     incumbents = riding.incumbents().filter(delete=False)
     candidates =riding.candidates().filter(delete=False)
     keywords = RidingKeywordValue.objects.filter(riding=riding)
