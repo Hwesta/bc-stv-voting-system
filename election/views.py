@@ -213,7 +213,7 @@ def calc_winners(request, r_id):
     #check if the number of ballots is enough for BCSTV
     if calculation_ballots.count() < (r.num_candidates() + 1):
         error = "Too few ballots to calculate BCSTV."
-	return render(request, 'election/error.html', {'error': error, 'riding': r})
+        return render(request, 'election/error.html', {'error': error, 'riding': r})
     
     # Start of BLT generation
     # Number of candidates, Number of seats
@@ -224,7 +224,7 @@ def calc_winners(request, r_id):
         data = data + str(ballot['cnt']) + " "
         # Content of ballot
         vote_line = json.loads(ballot['vote'])
-	first = True
+        first = True
         for _i, _c in vote_line.iteritems():
             # Of the droop ID numbers for the candidate
             if _c == "":
@@ -255,13 +255,13 @@ def calc_winners(request, r_id):
         # TODO: catch and send nice page for election
         # "too few ballots" => did not meet droop quota to vote, must be more ballots than candidates
         # "too few candidates" => seats > candidates
-	if r.num_seats < 1:
-	    error = "Too few Seats in " + r.name
-	elif r.num_candidates() < r.num_seats:
-	    error = "Too few Candidates in " + r.name + ". " + str(r.num_seats) + " seats for " + str(r.num_candidates()) + " candidates."
-	else:
-	    error = e
-	return render(request, 'election/error.html', {'error': error, 'riding': r})
+        if r.num_seats < 1:
+            error = "Too few Seats in " + r.name
+        elif r.num_candidates() < r.num_seats:
+            error = "Too few Candidates in " + r.name + ". " + str(r.num_seats) + " seats for " + str(r.num_candidates()) + " candidates."
+        else:
+            error = e
+        return render(request, 'election/error.html', {'error': error, 'riding': r})
         
 
     E.count()
@@ -283,7 +283,7 @@ def calc_winners(request, r_id):
         'numVotes': result['nballots'],
         'numSpoiled': num_spoiled_ballots,
         'winners': winners,
-	'polls': polls
+        'polls': polls
         })
 
 @user_passes_test(permissions_or(define_view_permissions(['EO'],['DUR','AFT']), define_view_permissions(['REP'],['DUR'])))
@@ -308,7 +308,7 @@ def calc_all_winners(request):
         c2 = dict((i+1,v.id) for i, v in enumerate(list(c)))
         # Dictionary of (key=politician.id, value=droop candidate ID)
         c2b = dict((v,k) for k,v in c2.iteritems())
-	polls = r.poll_range()
+        polls = r.poll_range()
         # List of all the required Data
         info = []
         winners = []
@@ -353,17 +353,17 @@ def calc_all_winners(request):
         # Name of election
         data = data + "\"" + r.name + " Results\""
         # End of BLT generation
-	try:
+        try:
             E = DroopElection(DroopElectionProfile(data=data.encode('ascii', 'ignore')), dict(rule='bcstv'))
             E.count()
         except DroopElectionProfileError as e:
-		if r.num_seats < 1:
-	       	    error = "Too few Seats in " + r.name
-		elif r.num_candidates() < r.num_seats:
-	    	    error = "Too few Candidates in " + r.name + ". " + str(r.num_seats) + " seats for " + str(r.num_candidates()) + " candidates."
-		else:
-                    error = e
-		return render(request, 'election/error.html', {'error': error, 'riding': r})
+            if r.num_seats < 1:
+                error = "Too few Seats in " + r.name
+            elif r.num_candidates() < r.num_seats:
+                error = "Too few Candidates in " + r.name + ". " + str(r.num_seats) + " seats for " + str(r.num_candidates()) + " candidates."
+            else:
+                error = e
+            return render(request, 'election/error.html', {'error': error, 'riding': r})
 
         result = E.record()
         
@@ -384,7 +384,7 @@ def calc_all_winners(request):
             winners.append(temp)
         
         info.append(winners)
-	info.append(polls)
+        info.append(polls)
         
         x.append(info)
         
