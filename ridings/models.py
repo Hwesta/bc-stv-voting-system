@@ -55,9 +55,9 @@ class Riding(models.Model):
         return self.ballots().filter(spoiled=True,state='C').values('ballot_num').distinct().count()
 
     def poll_range(self):
-	polls = Poll.objects.filter(riding=self.name)
+	polls = Poll.objects.filter(riding=self.id)
 	num_polls = polls.count()
-	return str(polls[0])+"-"+str(polls[num_polls - 1])
+	return str(polls[0].id)+"-"+str(polls[num_polls - 1].id)
 
     def calculate_results(self):
         """ Determine who gets elected. """

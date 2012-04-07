@@ -9,7 +9,7 @@
 <h1>{{data.0.name}}</h1>
 <p>#Seats: {{data.0.num_seats}}</p>
 <p>#Voters: {{data.0.num_voters}}</p>
-<p>Poll Range: {{poll_range}}</p>
+<p>Poll Range: {{ data.5 }}</p>
 <p>#Ballots Cast: {{data.3}}</p>
 <p>#Ballots Spoiled: {{data.4}}</p>
 <p>Voter Turnout: <script type="text/javascript">
@@ -53,7 +53,7 @@ else
 </table>
 <hr/>
 {% endfor %}
-
+<p>{{ polls }}</p>
 
 {% endblock %}
 
