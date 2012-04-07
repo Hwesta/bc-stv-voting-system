@@ -2,6 +2,13 @@
 
 {% block h1 %}Modify Poll{% endblock %}
 
+{% block subbreadcrumbs %}
+<li><a href="{% url ridings.views.view_all_ridings %}">Riding Management</a></li>
+<li><a href="{% url ridings.views.view_riding riding.id%}">View Riding {{ riding }}</a></li>
+<li><a href="{% url ridings.views.view_polls riding.id %}">View Polls</a></li>
+<li>Modify Poll {{ poll.id }}</li>
+{% endblock %}
+
 {% block content %}
 <form action="{% url ridings.views.modify_poll riding.id poll.id %}" method="post">
 	{% csrf_token %}
