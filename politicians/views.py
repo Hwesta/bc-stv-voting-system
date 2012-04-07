@@ -100,7 +100,10 @@ def modify_politician(request, p_id):
         form = Politician_Modify_Form(request.POST,instance=politician)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse(view_politician, args=[p_id]))
+	    if politician.delete:
+		return HttpResponseRedirect(reverse(view_all_politicians))
+	    else:
+                return HttpResponseRedirect(reverse(view_politician, args=[p_id]))
     else:
         form = Politician_Modify_Form(instance=politician)
     return render(request, 'politicians/modify_politician.html', { 'form':form, 'politician':politician })
