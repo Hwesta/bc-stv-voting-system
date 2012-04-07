@@ -79,7 +79,8 @@ def add_riding_keyword(request, r_id):
     else:
         data = []
         for i in range(RidingKeywordList.objects.all().count()):
-            data.append({'riding':r_id,'keyword':i+1})
+            if not RidingKeywordList.objects.get(id=i+1).delete:
+                data.append({'riding':r_id,'keyword':i+1})
         formset = RidingKeywordValueFormSet(initial=data)
 
     return render(request,'keywords/addriding.html',{'formset':formset,'id':r_id})
