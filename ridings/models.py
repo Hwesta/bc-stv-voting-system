@@ -53,19 +53,29 @@ class Riding(models.Model):
         """ Number of verified correct spoiled ballots cast in all polls in the riding. """
         return self.ballots().filter(spoiled=True,state='C').values('ballot_num').distinct().count()
 
+    def poll_min(self):
+        return (self._poll_minmaxcount())['minpoll']
+    def poll_max(self):
+        return (self._poll_minmaxcount())['maxpoll']
+
     def poll_range(self):
-	polls = Poll.objects.filter(riding=self.id).exclude(delete=True)
-	num_polls = polls.count()
-	if num_polls == 0:
-	    return "no polls"
-	deleted_polls = Poll.objects.filter(riding=self.id).exclude(delete=False)
-	deleted_poll_list = ""
-	for i in range(0, (deleted_polls.count())):
-	    deleted_poll_list = deleted_poll_list+str(deleted_polls[i].poll_num)+", "
-	if deleted_poll_list == "":
-	    return str(polls[0].poll_num)+"-"+str(polls[num_polls - 1].poll_num)
-	else:
-	    return str(polls[0].poll_num)+"-"+str(polls[num_polls - 1].poll_num)+", excluding "+deleted_poll_list+"due to deletion"
+        polls = Poll.objects.filter(riding=self.id)
+        minmax = self._poll_minmaxcount()
+        minpoll = minmax['minpoll']
+        maxpoll = minmax['maxpoll']
+        num_polls = minmax['count']
+        if num_polls == 0:
+            return "no polls"
+        deleted_polls = polls.exclude(delete=False)
+        deleted_poll_list = ", ".join([ str(p) for p in [ p.poll_num or -1 for p in deleted_polls ]])
+        s = "%d-%d" % (minpoll, maxpoll, )
+        if deleted_poll_list != "":
+            s += ", excluding %s due to deletion" % (deleted_poll_list, )
+        return s
+    
+    # Private
+    def _poll_minmaxcount(self):
+        return self.poll_set.aggregate(maxpoll=Max('poll_num'),minpoll=Min('poll_num'),count=Count('id'))
 
 # no longer necessary
 #    def calculate_results(self):
@@ -87,12 +97,7 @@ class Poll(models.Model):
     def save(self, *args, **kwargs):
         # Is this a create
         if self.poll_num is None:
-            existing_max = Poll.objects.filter(riding=self.riding).annotate(max_poll_num=Max('poll_num')).values('max_poll_num').distinct()
-            if len(existing_max.all()) > 0:
-		# here we want to reference the last item in the list
-                existing_max = existing_max[len(existing_max.all())-1]['max_poll_num']
-            else:
-                existing_max = None
+            existing_max = self.riding.poll_max()
             if existing_max is None:
                 existing_max = self.riding.id * MAX_POLLS_PER_RIDING
             self.poll_num = existing_max+1
