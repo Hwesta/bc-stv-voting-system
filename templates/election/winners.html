@@ -21,7 +21,19 @@ document.write((v_t.toFixed(2)+"%"));
 
 </table>{% endcomment %}
 {% for vote in winners %}
-<p>{{vote.0.name}} of the {{vote.0.party}} has been {{vote.1.state}}</p>
+<p>{{vote.0.name}} of the {{vote.0.party}} has been {{vote.1.state}} with {{vote.2}} first choice votes and <script type="text/javascript">
+var fc_v = {{vote.2}}
+var droop_v = {{vote.1.vote}};
+//var trans_v = fc_v - droop_v.toFixed(0)
+if (fc_v >= droop_v)
+{
+    document.write(0);
+}
+else
+{
+    document.write(droop_v);
+}
+</script> transferred votes.</p>
 {% endfor %}
 {% endblock %}
 

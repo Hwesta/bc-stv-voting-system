@@ -51,6 +51,11 @@ class Riding(models.Model):
         """ Number of verified correct spoiled ballots cast in all polls in the riding. """
         return self.ballots().filter(spoiled=True,state='C').values('ballot_num').distinct().count()
 
+    def poll_range(self):
+	polls = Poll.objects.filter(riding=self.name)
+	num_polls = polls.count()
+	return str(polls[0])+"-"+str(polls[num_polls - 1])
+
     def calculate_results(self):
         """ Determine who gets elected. """
         pass
@@ -62,6 +67,7 @@ class Poll(models.Model):
 
     def __unicode__(self):
         return str(self.riding)+", "+str(self.id)
+
 
 # Form for adding a riding excludes delete flag (default = false)
 class Riding_Add_Form(ModelForm):

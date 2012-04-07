@@ -6,9 +6,10 @@
 
 {% for data in results %}
 
-<h2>{{data.0.name}}</h2>
+<h1>{{data.0.name}}</h1>
 <p>#Seats: {{data.0.num_seats}}</p>
 <p>#Voters: {{data.0.num_voters}}</p>
+<p>Poll Range: {{poll_range}}</p>
 <p>#Ballots Cast: {{data.3}}</p>
 <p>#Ballots Spoiled: {{data.4}}</p>
 <p>Voter Turnout: <script type="text/javascript">
@@ -26,15 +27,26 @@ document.write((v_t.toFixed(2)+"%"));
 <th>Status</th>
 {% endif %}
 <th>#First Choice Votes</th>
+<th>#Transferred Votes</th>
 </tr>
 {% for winner in data.5 %}
 <tr>
 <td>{{winner.0.name}}</td>
 <td>{{winner.0.party}}</td>
-<td>{{winner.1.state}}</td>
+<td align="center">{{winner.1.state}}</td>
+<td align="center">{{winner.2}}</td>
 <td align="center"><script type="text/javascript">
-var fc_v = {{winner.1.vote}};
-document.write(fc_v.toFixed(0));
+var fc_v = {{winner.2}}
+var droop_v = {{winner.1.vote}};
+//var trans_v = fc_v - droop_v.toFixed(0)
+if (fc_v >= droop_v)
+{
+    document.write(0);
+}
+else
+{
+    document.write(droop_v);
+}
 </script></td>
 </tr>
 {% endfor %}
