@@ -123,6 +123,7 @@ def add_poll(request, riding_id):
         if form.is_valid():
             new_poll = form.save(commit=False)
             new_poll.riding = riding
+            print repr(new_poll)
             new_poll.save()
             return HttpResponseRedirect(reverse(view_polls, args=(riding_id,)))
     else:

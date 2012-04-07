@@ -1,5 +1,8 @@
 from django.db import models
 from django.forms import ModelForm
+from django.db.models import Count, Max, Min
+
+MAX_POLLS_PER_RIDING = 10000
 
 class Riding(models.Model):
     name = models.CharField(max_length=128)
@@ -63,23 +66,40 @@ class Riding(models.Model):
 class Poll(models.Model):
     riding = models.ForeignKey(Riding)
     active = models.BooleanField(help_text="Whether the poll is still accepting ballots.")
+    poll_num = models.IntegerField(help_text="Number of polling station.", editable=False, null=True)
     polling_stn = models.CharField(max_length=128,help_text="Name of polling station.")
 
     def __unicode__(self):
-        return str(self.riding)+", "+str(self.id)
+        poll_num = int(-1 if self.poll_num is None else self.poll_num)
+        return "%s, #%d %s" % (str(self.riding), poll_num, self.polling_stn, )
+        #return str(self.riding)+", "+str(self.polling_stn)+"
+
+    def save(self, *args, **kwargs):
+        # Is this a create
+        if self.poll_num is None:
+            existing_max = Poll.objects.filter(riding=self.riding).annotate(max_poll_num=Max('poll_num')).values('max_poll_num').distinct()
+            print existing_max
+            if len(existing_max.all()) > 0:
+                existing_max = existing_max[0]['max_poll_num']
+            else:
+                existing_max = None
+            if existing_max is None:
+                existing_max = self.riding.id * MAX_POLLS_PER_RIDING
+            self.poll_num = existing_max+1
+        super(Poll, self).save(*args, **kwargs)
 
 
 # Form for adding a riding excludes delete flag (default = false)
 class Riding_Add_Form(ModelForm):
     class Meta:
         model = Riding
-        exclude = ('active','num_ballots','num_ballots_spoiled', 'delete', 'recount_needed',)
+        exclude = ('active', 'delete', 'recount_needed',)
 
 # Form for modifying a riding includeds delete flag
 class Riding_Modify_Form(ModelForm):
     class Meta:
         model = Riding
-        exclude = ('active','num_ballots','num_ballots_spoiled', 'recount_needed',)
+        exclude = ('active', 'recount_needed',)
 
 # Form for adding/modifying a poll excludes choosing associated riding
 class PollForm(ModelForm):
