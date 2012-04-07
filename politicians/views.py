@@ -16,7 +16,7 @@ from election.models import define_view_permissions, permissions_or, permissions
 
 @user_passes_test(permissions_or(define_view_permissions(['EO'],['BEF','DUR','AFT']), define_view_permissions(['REP'],['DUR'])))
 def view_all_politicians(request):
-    p = Politician.object.all().filter(delete=False)
+    p = Politician.objects.all().filter(delete=False)
     return render(request, 'politicians/politicians.html',
 	{'politicans': p})
 
