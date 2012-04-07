@@ -12,6 +12,7 @@ from keywords.models import RidingKeywordList, RidingKeywordValue, \
 from keywords.models import PoliticianKeywordList, PoliticianKeywordValue, \
     addPoliticianKeywordListForm, editPoliticianKeywordListForm, addhPoliticianKeywordValueForm, editPoliticianKeywordValueForm
 from election.models import define_view_permissions, permissions_or, permissions_and, permission_always
+from politicians.views import view_politician
 
 
 # TODO Add decorators limiting access
@@ -137,8 +138,8 @@ def edit_politician_keyword_value(request, k_id):
     if request.method == 'POST':
         form = editPoliticianKeywordValueForm(request.POST,instance=keyword)
         if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse(index))
+            x = form.save()
+            return HttpResponseRedirect(reverse(view_politician, args=[x.politician.id]))
     else:
         form = editPoliticianKeywordValueForm(instance=keyword)
     return render(request, 'keywords/modifypoliticiankeywordvalue.html', {'form':form,'keyword':keyword})
