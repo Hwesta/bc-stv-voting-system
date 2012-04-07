@@ -15,6 +15,12 @@ from election.models import define_view_permissions, permissions_or, permissions
 # and just display different info based on a flag?
 
 @user_passes_test(permissions_or(define_view_permissions(['EO'],['BEF','DUR','AFT']), define_view_permissions(['REP'],['DUR'])))
+def view_all_politicians(request):
+    p = Politician.object.all().filter(delete=False)
+    return render(request, 'politicians/politicians.html',
+	'politicans': p})
+
+@user_passes_test(permissions_or(define_view_permissions(['EO'],['BEF','DUR','AFT']), define_view_permissions(['REP'],['DUR'])))
 def view_politician(request, r_id, p_id):
     p = Politician.objects.get(id=p_id)
     k = PoliticianKeywordValue.objects.filter(politician=p)
