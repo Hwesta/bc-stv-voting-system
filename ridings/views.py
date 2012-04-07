@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.forms.formsets import formset_factory
-from ridings.models import Riding, Poll, Riding_Add_Form, Riding_Modify_Form, PollForm
+from ridings.models import Riding, Poll, Riding_Add_Form, Riding_Modify_Form, Poll_Add_Form, Poll_Modify_Form
 from politicians.models import Politician
 from keywords.models import RidingKeywordValue, RidingKeywordList, PoliticianKeywordValue, addRidingKeywordValueForm
 from django.contrib.auth.decorators import user_passes_test
@@ -108,7 +108,7 @@ def modify_riding(request, r_id):
 @user_passes_test(permissions_or(define_view_permissions(['EO'],['BEF','DUR','AFT']), define_view_permissions(['REP'],['DUR'])))
 def view_polls(request, riding_id):
     riding = Riding.objects.get(id=riding_id)
-    p = Poll.objects.filter(riding=riding)
+    p = Poll.objects.filter(riding=riding).exclude(delete=True)
     return render(request, 'ridings/polls.html',
         {'polls': p,
          'type': str('Polls'),
@@ -119,7 +119,7 @@ def view_polls(request, riding_id):
 def add_poll(request, riding_id):
     riding = Riding.objects.get(id=riding_id)
     if request.method == 'POST':
-        form = PollForm(request.POST)
+        form = Poll_Add_Form(request.POST)
         if form.is_valid():
             new_poll = form.save(commit=False)
             new_poll.riding = riding
@@ -127,7 +127,7 @@ def add_poll(request, riding_id):
             new_poll.save()
             return HttpResponseRedirect(reverse(view_polls, args=(riding_id,)))
     else:
-        form = PollForm()
+        form = Poll_Add_Form()
     return render(request, 'ridings/add_poll.html',
         {'form': form,
          'riding': riding,
@@ -138,12 +138,12 @@ def modify_poll(request, riding_id, poll_id):
     riding = Riding.objects.get(id=riding_id)
     poll = Poll.objects.get(id=poll_id, riding=riding)
     if request.method == 'POST':
-        form = PollForm(request.POST, instance=poll)
+        form = Poll_Modify_Form(request.POST, instance=poll)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse(view_polls, args=(riding_id,)))
     else:
-        form = PollForm(instance=poll)
+        form = Poll_Modify_Form(instance=poll)
     return render(request, 'ridings/modify_poll.html',
         {'form': form,
          'poll': poll,

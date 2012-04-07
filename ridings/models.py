@@ -55,9 +55,16 @@ class Riding(models.Model):
         return self.ballots().filter(spoiled=True,state='C').values('ballot_num').distinct().count()
 
     def poll_range(self):
-	polls = Poll.objects.filter(riding=self.id)
+	polls = Poll.objects.filter(riding=self.id).exclude(delete=True)
 	num_polls = polls.count()
-	return str(polls[0].poll_num)+"-"+str(polls[num_polls - 1].poll_num)
+	deleted_polls = Poll.objects.filter(riding=self.id).exclude(delete=False)
+	deleted_poll_list = ""
+	for i in range(0, (deleted_polls.count())):
+	    deleted_poll_list = deleted_poll_list+str(deleted_polls[i].poll_num)+", "
+	if deleted_poll_list == "":
+	    return str(polls[0].poll_num)+"-"+str(polls[num_polls - 1].poll_num)
+	else:
+	    return str(polls[0].poll_num)+"-"+str(polls[num_polls - 1].poll_num)+", excluding "+deleted_poll_list+"due to deletion"
 
     def calculate_results(self):
         """ Determine who gets elected. """
@@ -68,6 +75,7 @@ class Poll(models.Model):
     active = models.BooleanField(help_text="Whether the poll is still accepting ballots.")
     poll_num = models.IntegerField(help_text="Number of polling station.", editable=False, null=True)
     polling_stn = models.CharField(max_length=128,help_text="Name of polling station.")
+    delete = models.BooleanField(default=False)
 
     def __unicode__(self):
         poll_num = int(-1 if self.poll_num is None else self.poll_num)
@@ -100,9 +108,14 @@ class Riding_Modify_Form(ModelForm):
         model = Riding
         exclude = ('active', 'recount_needed',)
 
-# Form for adding/modifying a poll excludes choosing associated riding
-class PollForm(ModelForm):
+# Form for adding a poll excludes choosing associated riding
+class Poll_Add_Form(ModelForm):
+    class Meta:
+        model = Poll
+        exclude = ('riding', 'delete',)
+
+# Form for modifying a poll excludes choosing associated riding
+class Poll_Modify_Form(ModelForm):
     class Meta:
         model = Poll
         exclude = ('riding',)
-
