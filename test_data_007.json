@@ -5,6 +5,7 @@
     "fields": {
       "active": false,
       "riding": 1,
+      "poll_num": null,
       "polling_stn": "1"
     }
   },
@@ -14,6 +15,7 @@
     "fields": {
       "active": false,
       "riding": 1,
+      "poll_num": null,
       "polling_stn": "2"
     }
   },
@@ -23,6 +25,7 @@
     "fields": {
       "active": false,
       "riding": 1,
+      "poll_num": null,
       "polling_stn": "3"
     }
   },
@@ -32,6 +35,7 @@
     "fields": {
       "active": false,
       "riding": 2,
+      "poll_num": null,
       "polling_stn": "4"
     }
   },
@@ -41,6 +45,7 @@
     "fields": {
       "active": false,
       "riding": 2,
+      "poll_num": null,
       "polling_stn": "5"
     }
   },
@@ -50,6 +55,7 @@
     "fields": {
       "active": false,
       "riding": 2,
+      "poll_num": null,
       "polling_stn": "6"
     }
   },

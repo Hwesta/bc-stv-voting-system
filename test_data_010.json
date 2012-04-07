@@ -1,0 +1,110 @@
+[
+  {
+    "pk": 1,
+    "model": "keywords.politiciankeywordvalue",
+    "fields": {
+      "politician": 1,
+      "value": "6'6\"",
+      "keyword": 1
+    }
+  },
+  {
+    "pk": 2,
+    "model": "keywords.politiciankeywordvalue",
+    "fields": {
+      "politician": 2,
+      "value": "5'3\"",
+      "keyword": 1
+    }
+  },
+  {
+    "pk": 3,
+    "model": "keywords.politiciankeywordvalue",
+    "fields": {
+      "politician": 3,
+      "value": "5'6\"",
+      "keyword": 1
+    }
+  },
+  {
+    "pk": 4,
+    "model": "keywords.politiciankeywordvalue",
+    "fields": {
+      "politician": 4,
+      "value": "5'5\"",
+      "keyword": 1
+    }
+  },
+  {
+    "pk": 5,
+    "model": "keywords.politiciankeywordvalue",
+    "fields": {
+      "politician": 5,
+      "value": "5'6\"",
+      "keyword": 1
+    }
+  },
+  {
+    "pk": 6,
+    "model": "keywords.politiciankeywordvalue",
+    "fields": {
+      "politician": 6,
+      "value": "5'6\"",
+      "keyword": 1
+    }
+  },
+  {
+    "pk": 7,
+    "model": "keywords.politiciankeywordvalue",
+    "fields": {
+      "politician": 1,
+      "value": "20",
+      "keyword": 2
+    }
+  },
+  {
+    "pk": 8,
+    "model": "keywords.politiciankeywordvalue",
+    "fields": {
+      "politician": 2,
+      "value": "21",
+      "keyword": 2
+    }
+  },
+  {
+    "pk": 9,
+    "model": "keywords.politiciankeywordvalue",
+    "fields": {
+      "politician": 3,
+      "value": "19",
+      "keyword": 2
+    }
+  },
+  {
+    "pk": 10,
+    "model": "keywords.politiciankeywordvalue",
+    "fields": {
+      "politician": 4,
+      "value": "35",
+      "keyword": 2
+    }
+  },
+  {
+    "pk": 11,
+    "model": "keywords.politiciankeywordvalue",
+    "fields": {
+      "politician": 5,
+      "value": "56",
+      "keyword": 2
+    }
+  },
+  {
+    "pk": 12,
+    "model": "keywords.politiciankeywordvalue",
+    "fields": {
+      "politician": 6,
+      "value": "45",
+      "keyword": 2
+    }
+  }
+]

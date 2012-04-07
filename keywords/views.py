@@ -45,6 +45,7 @@ def new_riding_keyword(request):
 
 @user_passes_test(define_view_permissions(['EO'],['BEF']))
 def new_riding_keyword_value(request, k_id):
+    name = RidingKeywordList.objects.get(id=k_id).name
     RidingKeywordValueFormSet = formset_factory(addhRidingKeywordValueForm, extra=0)
     if request.method == 'POST':
         formset = RidingKeywordValueFormSet(request.POST, request.FILES)
@@ -59,7 +60,7 @@ def new_riding_keyword_value(request, k_id):
             if not riding.delete:
                 data.append({'riding':i+1,'keyword':k_id})
         formset = RidingKeywordValueFormSet(initial=data)
-        name = RidingKeywordList.objects.get(id=k_id).name
+
 
     return render(request,'keywords/addridingkeywordvalue.html',{'formset':formset,'id':k_id,'name':name})
 

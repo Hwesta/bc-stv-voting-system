@@ -46,5 +46,13 @@
       "expire_date": "2012-04-20 16:44:20",
       "session_data": "YWYzMWM4MzlhYWVhODc5MWM4MjEzYzBkZTJlMzY0MjVmYjcyOGIyOTqAAn1xAShVEl9hdXRoX3Vz\nZXJfYmFja2VuZHECVSRlbGVjdGlvbi5iYWNrZW5kLkVsZWN0aW9uQXV0aEJhY2tlbmRxA1UNX2F1\ndGhfdXNlcl9pZHEESwF1Lg==\n"
     }
+  },
+  {
+    "pk": "6a3276ab172db1c679a22b04bc7d2a9d",
+    "model": "sessions.session",
+    "fields": {
+      "expire_date": "2012-04-20 21:48:28",
+      "session_data": "YWYzMWM4MzlhYWVhODc5MWM4MjEzYzBkZTJlMzY0MjVmYjcyOGIyOTqAAn1xAShVEl9hdXRoX3Vz\nZXJfYmFja2VuZHECVSRlbGVjdGlvbi5iYWNrZW5kLkVsZWN0aW9uQXV0aEJhY2tlbmRxA1UNX2F1\ndGhfdXNlcl9pZHEESwF1Lg==\n"
+    }
   }
 ]
