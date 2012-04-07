@@ -58,6 +58,7 @@ urlpatterns = patterns('',
     url(r'^ridings/(\d+)/$', 'ridings.views.view_riding'),
     url(r'^ridings/(\d+)/modify/$', 'ridings.views.modify_riding'),
     url(r'^ridings/(\d+)/polls/$', 'ridings.views.view_polls'),
+    url(r'^ridings/(\d+)/polls/(\d+)/close/$', 'ridings.views.close_poll'),
     url(r'^ridings/(\d+)/polls/add/$', 'ridings.views.add_poll'),
     url(r'^ridings/(\d+)/polls/(\d+)/modify/$', 'ridings.views.modify_poll'),
 

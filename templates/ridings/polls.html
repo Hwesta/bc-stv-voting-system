@@ -34,6 +34,9 @@
 {% if election.status == 'BEF' %}
 <td><a href="{% url ridings.views.modify_poll riding.id poll.id %}">Modify</a></td>
 {% endif %}
+{% if election.status == 'DUR' %}
+<td><a href="{% url ridings.views.close_poll riding.id poll.id %}">Close Poll</a></td>
+{% endif %}
 </tr>
 {% endfor %}
 </table>

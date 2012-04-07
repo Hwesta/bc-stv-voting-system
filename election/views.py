@@ -72,7 +72,7 @@ def reporter_homepage(request):
 def admin_homepage(request):
     """ Display the index page. """
     election = Election.objects.all()[0]
-    election_action = 'TODO: NEXT ELECTION STATE (presently '+election.status+')'
+    election_action = 'GOTO: Next Election State (Current State:  '+election.status+')'
     return render(request, 'election/admin_homepage.html',{
         'election_action': election_action,
     })
@@ -176,7 +176,11 @@ def start_recount(request):
         if form.is_valid():
             riding = form.cleaned_data['riding']
             riding.active = True
-            riding.save()
+	    riding.save()
+	    polls = Poll.objects.filter(riding=riding.id)
+	    for poll in polls:
+		poll.active = True
+		poll.save()
             return HttpResponseRedirect(reverse(index))
     else:
         form = RecountForm()

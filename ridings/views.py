@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.forms.formsets import formset_factory
 from ridings.models import Riding, Poll, Riding_Add_Form, Riding_Modify_Form, Poll_Add_Form, Poll_Modify_Form
+from ballots.models import Ballot
 from politicians.models import Politician
 from keywords.models import RidingKeywordValue, RidingKeywordList, PoliticianKeywordValue, addRidingKeywordValueForm
 from django.contrib.auth.decorators import user_passes_test
@@ -155,3 +156,12 @@ def modify_poll(request, riding_id, poll_id):
          'poll': poll,
          'riding': riding,
         })
+
+@user_passes_test(define_view_permissions(['EO'],['DUR']))
+def close_poll(request, riding_id, poll_id):
+    poll = Poll.objects.get(id=poll_id)
+    # # of ballots belonging to the poll that are unverified
+    num_u_ballots = Ballot.objects.filter(poll=poll_id, state='U').count()
+    if num_u_ballots == 0:
+	poll.close()
+    return HttpResponseRedirect(reverse(view_polls, args=(riding_id,)))

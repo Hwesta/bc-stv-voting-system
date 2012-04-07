@@ -2,6 +2,7 @@ from django.db import models
 from django.forms import ModelForm
 from django.db.models import Count, Max, Min
 
+
 MAX_POLLS_PER_RIDING = 10000
 
 class Riding(models.Model):
@@ -94,6 +95,17 @@ class Poll(models.Model):
         return "%s, #%d %s" % (str(self.riding), poll_num, self.polling_stn, )
         #return str(self.riding)+", "+str(self.polling_stn)+"
 
+    def close(self):
+	# riding poll belongs to
+	riding = Riding.objects.get(name=self.riding)
+	self.active = False
+	self.save()
+	# the # of polls belonging to the riding that are still active
+	num_rem_polls = Poll.objects.filter(riding=self.riding, active=True).count()
+	if num_rem_polls == 0:
+	    riding.active = False
+	    riding.save()
+
     def save(self, *args, **kwargs):
         # Is this a create
         if self.poll_num is None:
@@ -120,10 +132,10 @@ class Riding_Modify_Form(ModelForm):
 class Poll_Add_Form(ModelForm):
     class Meta:
         model = Poll
-        exclude = ('riding', 'delete',)
+        exclude = ('riding', 'active', 'delete',)
 
 # Form for modifying a poll excludes choosing associated riding
 class Poll_Modify_Form(ModelForm):
     class Meta:
         model = Poll
-        exclude = ('riding',)
+        exclude = ('riding', 'active',)
