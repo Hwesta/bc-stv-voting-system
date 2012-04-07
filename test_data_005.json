@@ -17,7 +17,6 @@
       "created": "2012-03-16",
       "active": false,
       "num_seats": 2,
-      "recount_needed": false,
       "delete": false
     }
   },
@@ -30,7 +29,6 @@
       "created": "2012-03-16",
       "active": false,
       "num_seats": 1,
-      "recount_needed": false,
       "delete": false
     }
   }
