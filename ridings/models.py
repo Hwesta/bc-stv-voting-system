@@ -78,7 +78,6 @@ class Poll(models.Model):
         # Is this a create
         if self.poll_num is None:
             existing_max = Poll.objects.filter(riding=self.riding).annotate(max_poll_num=Max('poll_num')).values('max_poll_num').distinct()
-            print existing_max
             if len(existing_max.all()) > 0:
                 existing_max = existing_max[len(existing_max.all())-1]['max_poll_num']
             else:
