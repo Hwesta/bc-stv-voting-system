@@ -1,17 +1,15 @@
-<<<<<<< .mine
 {% extends "base-subsection.html" %}
 
 {% block h1 %}Politician Information{% endblock %}
 
 {% block subbreadcrumbs %}
-<li><a href="{% url ridings.views.view_all_ridings %}">Riding Management</a></li>
-<li><a href="{% url ridings.views.view_riding riding.id %}">View Riding {{ riding }}</a></li>
+<li><a href="{% url politicians.views.view_all_politicians %}">Politician Management</a></li>
 <li>View Politician {{ politician.name }}</li>
 {% endblock %}
 
 {% block actions %}
 {% if election.status == 'BEF' %}
-<li><a href="{% url politicians.views.modify_politician r_id, politician.id %}">Edit Information</a></li>{% endif %}
+<li><a href="{% url politicians.views.modify_politician politician.id %}">Edit Information</a></li>{% endif %}
 {% endblock %}
 
 {% block content %}

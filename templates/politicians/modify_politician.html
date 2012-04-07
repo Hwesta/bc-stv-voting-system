@@ -3,7 +3,7 @@
 {% block h1 %}Modify Politician{% endblock %}
 
 {% block content %}
-<form action="{% url politicians.views.modify_politician r_id, politician.id %}" method="post">{% csrf_token %}
+<form action="{% url politicians.views.modify_politician politician.id %}" method="post">{% csrf_token %}
 {{ form.as_p }}
 <input type="submit" value="Submit" />
 </form>

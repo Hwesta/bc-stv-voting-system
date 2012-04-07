@@ -14,21 +14,20 @@ from election.models import define_view_permissions, permissions_or, permissions
 # NOTE Should we have one set of functions for incumbents and candidates,
 # and just display different info based on a flag?
 
-
+@user_passes_test(permissions_or(define_view_permissions(['EO'],['BEF','DUR','AFT']), define_view_permissions(['REP'],['DUR'])))
 def view_all_politicians(request):
+    t = "Politicians"
     p = Politician.objects.all().filter(delete=False)
     return render(request, 'politicians/politicians.html',
-	{'politicians': p})
+	{'politicians': p, 'type':t})
 
 @user_passes_test(permissions_or(define_view_permissions(['EO'],['BEF','DUR','AFT']), define_view_permissions(['REP'],['DUR'])))
-def view_politician(request, r_id, p_id):
+def view_politician(request, p_id):
     p = Politician.objects.get(id=p_id)
     k = PoliticianKeywordValue.objects.filter(politician=p)
-    riding = Riding.objects.get(id=r_id)
     return render(request, 'politicians/politician.html',
     {'politician': p,
      'keywords': k,
-     'riding': riding,
     })
 
 @user_passes_test(permissions_or(define_view_permissions(['EO'],['BEF','DUR','AFT']), define_view_permissions(['REP'],['DUR'])))
@@ -95,13 +94,13 @@ def add_politician_keyword(request, r_id, p_id):
     return render(request,'keywords/addpolitician.html',{'formset':formset,'p_id':p_id,'r_id':r_id})
 
 @user_passes_test(define_view_permissions(['EO'],['BEF']))
-def modify_politician(request, r_id, p_id):
+def modify_politician(request, p_id):
     politician = Politician.objects.get(id=p_id)
     if request.method == 'POST':
         form = Politician_Modify_Form(request.POST,instance=politician)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse(view_politicians, args=(r_id)))
+            return HttpResponseRedirect(reverse(view_politicians))
     else:
         form = Politician_Modify_Form(instance=politician)
-    return render(request, 'politicians/modify_politician.html', { 'form':form, 'politician':politician, 'r_id': r_id})
+    return render(request, 'politicians/modify_politician.html', { 'form':form, 'politician':politician })
