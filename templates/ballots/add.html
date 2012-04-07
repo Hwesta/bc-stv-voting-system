@@ -6,14 +6,6 @@
 <li><a href="{% url ballots.views.choose_poll %}">Choose Poll</a></li>
 <li>Enter Ballot for Poll {{ form.poll.value }}</li>{% endblock %}
 {% block content %}
-{% if flash %}
-	<ul>
-		{% for msg in flash %}
-			<li>{{ msg|safe }}</li>
-		{% endfor %}
-	</ul>
-{% endif %}
-
 	    <script src="/static/jquery.js"></script>
 	    <script src="/static/json2.js"></script>
         <script src="/static/ballot.js"></script>
