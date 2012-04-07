@@ -1,9 +1,14 @@
-{% extends "base.html" %}
+{% extends "base-subsection.html" %}
 
 {% block h1 %}List of {{type}}{% endblock %}
 
 {% block subbreadcrumbs %}
 <li>Politician Management</li>
+{% endblock %}
+
+{% block actions %}
+{% if election.status == 'BEF' %}
+<li><a href="{% url politicians.views.add_politician %}">Add Politician</a></li>{% endif %}
 {% endblock %}
 
 {% block content %}

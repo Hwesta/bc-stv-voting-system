@@ -74,8 +74,7 @@ def add_politician(request):
             return HttpResponseRedirect(reverse(add_politician_keyword, args=[Politician.objects.all().count()]))
     else:
         form = Politician_Add_Form()
-    riding = Riding.objects.get(id=r_id)
-    return render(request, 'politicians/add_politician.html', { 'form':form, 'riding': riding})
+    return render(request, 'politicians/add_politician.html', { 'form':form})
     
 @user_passes_test(define_view_permissions(['EO'],['BEF']))
 def add_politician_keyword(request, p_id):
@@ -85,7 +84,7 @@ def add_politician_keyword(request, p_id):
         if formset.is_valid():
             for form in formset:
                 form.save()
-            return HttpResponseRedirect(reverse(view_politicians))
+            return HttpResponseRedirect(reverse(view_politician, args=[p_id]))
     else:
         data = []
         for i in range(PoliticianKeywordList.objects.all().count()):
