@@ -49,7 +49,8 @@ def auto_accept_ballot(request, ballot_id):
     except IntegrityError as e:
         messages.error(request, str(e))
         return verify_riding(request, riding_id)
-                             
+
+    # We don't need the current_ro check here, it was done by the correct_ballot.save()
     for b in Ballot.objects.exclude(state='R').exclude(id=correct_ballot.id).filter(ballot_num=ballot_num).all():
         b.state='I'
         b.save()
@@ -75,6 +76,7 @@ def accept_ballot(request):
             except IntegrityError as e:
                 messages.error(request, str(e))
                 return verify_riding(request, riding_id)                
+            # We don't need the current_ro check here, it was done by the correct_ballot.save()
             for b in Ballot.objects.exclude(state='R').exclude(id=correct_ballot.id).filter(ballot_num=ballot_num).all():
                 b.state='I'
                 b.save()
