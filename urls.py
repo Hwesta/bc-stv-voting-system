@@ -44,6 +44,10 @@ urlpatterns = patterns('',
 
     url(r'^politicians/$', 'politicians.views.view_all_politicians'),
     url(r'^politicians/(\d+)/$', 'politicians.views.view_politician'),
+    url(r'^politicians/(\d+)/modify/$', 'politicians.views.modify_politician'),
+    url(r'^politicians/add/$', 'politicians.views.add_politician'),
+    url(r'^politicians/add/(\d+)/$', 'politicians.views.add_politician_keyword'),
+    url(r'^politicians/deleted/$', 'politicians.views.view_deleted_politicians'),
 
     url(r'^ridings/$', 'ridings.views.view_all_ridings'),
     url(r'^ridings/deleted_ridings/$', 'ridings.views.view_deleted_ridings'),
@@ -54,12 +58,6 @@ urlpatterns = patterns('',
     url(r'^ridings/(\d+)/polls/$', 'ridings.views.view_polls'),
     url(r'^ridings/(\d+)/polls/add/$', 'ridings.views.add_poll'),
     url(r'^ridings/(\d+)/polls/(\d+)/modify/$', 'ridings.views.modify_poll'),
-
-    url(r'^ridings/(\d+)/politicians/$', 'politicians.views.view_politicians'),
-    url(r'^ridings/(\d+)/politicians/(\d+)/modify/$', 'politicians.views.modify_politician'),
-    url(r'^ridings/(\d+)/politicians/add/$', 'politicians.views.add_politician'),
-    url(r'^ridings/(\d+)/politicians/add/(\d+)/$', 'politicians.views.add_politician_keyword'),
-    url(r'^ridings/(\d+)/politicians/deleted/$', 'politicians.views.view_deleted_politicians'),
 
     url(r'^keywords/$', 'keywords.views.index'),
     url(r'^keywords/riding/add/$', 'keywords.views.new_riding_keyword'),

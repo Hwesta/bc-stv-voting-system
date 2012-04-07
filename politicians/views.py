@@ -65,33 +65,33 @@ def view_deleted_politicians(request, r_id):
          })
 
 @user_passes_test(define_view_permissions(['EO'],['BEF']))
-def add_politician(request, r_id):
+def add_politician(request):
     if request.method == 'POST':
         form = Politician_Add_Form(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse(add_politician_keyword, args=[r_id,Politician.objects.all().count()]))
+            return HttpResponseRedirect(reverse(add_politician_keyword, args=[Politician.objects.all().count()]))
     else:
         form = Politician_Add_Form()
     riding = Riding.objects.get(id=r_id)
     return render(request, 'politicians/add_politician.html', { 'form':form, 'riding': riding})
     
 @user_passes_test(define_view_permissions(['EO'],['BEF']))
-def add_politician_keyword(request, r_id, p_id):
+def add_politician_keyword(request, p_id):
     PoliticianKeywordValueFormSet = formset_factory(addPoliticianKeywordValueForm, extra = 0)
     if request.method == 'POST':
         formset = PoliticianKeywordValueFormSet(request.POST, request.FILES)
         if formset.is_valid():
             for form in formset:
                 form.save()
-            return HttpResponseRedirect(reverse(view_politicians, args=[r_id]))
+            return HttpResponseRedirect(reverse(view_politicians))
     else:
         data = []
         for i in range(PoliticianKeywordList.objects.all().count()):
             data.append({'politician':p_id,'keyword':i+1})
         formset = PoliticianKeywordValueFormSet(initial=data)
 
-    return render(request,'keywords/addpolitician.html',{'formset':formset,'p_id':p_id,'r_id':r_id})
+    return render(request,'keywords/addpolitician.html',{'formset':formset,'p_id':p_id})
 
 @user_passes_test(define_view_permissions(['EO'],['BEF']))
 def modify_politician(request, p_id):
