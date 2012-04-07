@@ -273,6 +273,8 @@ def calc_winners(request, r_id):
         temp.append(result['actions'][-1]['cstate'][i+1])
         temp.append(fc_votes[int(k)])
         winners.append(temp)
+
+    polls = r.poll_range()
         
     return render(request, 'election/winners.html', {
         'riding': r ,
@@ -280,7 +282,8 @@ def calc_winners(request, r_id):
         'results': result, 
         'numVotes': result['nballots'],
         'numSpoiled': num_spoiled_ballots,
-        'winners': winners
+        'winners': winners,
+	'polls': polls
         })
 
 @user_passes_test(permissions_or(define_view_permissions(['EO'],['DUR','AFT']), define_view_permissions(['REP'],['DUR'])))

@@ -4,27 +4,36 @@
 
 {% block content %}
 <p>Number of Seats: {{riding.num_seats}}</p>
-<p>Number of Eligable Voters: {{riding.num_voters}}</p>
+<p>Number of Eligible Voters: {{riding.num_voters}}</p>
+<p>Poll Range: {{ polls }}</p>
 <p>Number of Ballots Cast: {{numVotes}}</p>
 <p>Number of Spoiled Ballots: {{numSpoiled}}</p>
 <p>Voter Turnout: <script type="text/javascript">
 var v_t = ({{numVotes}}/{{riding.num_voters}} * 100.0);
 document.write((v_t.toFixed(2)+"%"));
 </script></p>
-{% comment %}<table>
+<table>
 <tr>
-<th>Winner</th>
-<th>Number of First Choice Votes</th>
-<th>Number of Second Choice Votes</th>
-<th>Number of Votes Transfered</th>
+<th>Candidate</th>
+<th>Party</th>
+{% if election.status == 'DUR' %}
+<th>Projected Status</th>
+{% endif %}
+{% if election.status == 'AFT' %}
+<th>Status</th>
+{% endif %}
+<th>#First Choice Votes</th>
+<th>#Transferred Votes</th>
 </tr>
-
-</table>{% endcomment %}
 {% for vote in winners %}
-<p>{{vote.0.name}} of the {{vote.0.party}} has been {{vote.1.state}} with {{vote.2}} first choice votes and <script type="text/javascript">
+<tr>
+<td>{{vote.0.name}}</td>
+<td>{{vote.0.party}}</td>
+<td align="center">{{vote.1.state}}</td>
+<td align="center">{{vote.2}}</td>
+<td align="center"><script type="text/javascript">
 var fc_v = {{vote.2}}
 var droop_v = {{vote.1.vote}};
-//var trans_v = fc_v - droop_v.toFixed(0)
 if (fc_v >= droop_v)
 {
     document.write(0);
@@ -33,7 +42,8 @@ else
 {
     document.write(droop_v);
 }
-</script> transferred votes.</p>
+</script></td>
 {% endfor %}
+</table>
 {% endblock %}
 

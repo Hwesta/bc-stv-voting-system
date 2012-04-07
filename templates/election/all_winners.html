@@ -11,7 +11,7 @@
 <p>#Voters: {{data.0.num_voters}}</p>
 <p>Poll Range: {{ data.6 }}</p>
 <p>#Ballots Cast: {{data.3}}</p>
-<p>#Ballots Spoiled: {{data.4}}</p>
+<p>#Spoiled Ballots: {{data.4}}</p>
 <p>Voter Turnout: <script type="text/javascript">
 var v_t = ({{data.3}}/{{data.0.num_voters}} * 100);
 document.write((v_t.toFixed(2)+"%"));
@@ -38,7 +38,6 @@ document.write((v_t.toFixed(2)+"%"));
 <td align="center"><script type="text/javascript">
 var fc_v = {{winner.2}}
 var droop_v = {{winner.1.vote}};
-//var trans_v = fc_v - droop_v.toFixed(0)
 if (fc_v >= droop_v)
 {
     document.write(0);
