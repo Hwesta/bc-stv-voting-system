@@ -152,7 +152,7 @@ INSTALLED_APPS = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = TEMPLATE_CONTEXT_PROCESSORS + (
-    'bcstv.context_processors.election_status',
+    'context_processors.election_status',
 )
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

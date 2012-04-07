@@ -8,6 +8,7 @@ from politicians.models import Politician
 from election.models import define_view_permissions, permissions_or, permissions_and, permission_always
 from django.contrib.auth.decorators import user_passes_test
 from django.db import IntegrityError
+from django.contrib import messages
 
 # Entering Ballots
 @user_passes_test(define_view_permissions(['RO'],['DUR']))
@@ -46,16 +47,16 @@ def auto_accept_ballot(request, ballot_id):
     try:
         correct_ballot.save(current_ro=request.user)
     except IntegrityError as e:
-        msg=str(e)
-        return verify_riding(request, riding_id, flash=[msg])
+        messages.error(request, str(e))
+        return verify_riding(request, riding_id)
                              
     for b in Ballot.objects.exclude(state='R').exclude(id=correct_ballot.id).filter(ballot_num=ballot_num).all():
         b.state='I'
         b.save(current_ro=request.user)
     #b=ballot.object(form.ballot)
 
-    msg="Auto-Accepted Ballot #%s (id=%s)" % (ballot_num, correct_ballot.id)
-    return verify_riding(request, riding_id, flash=[msg])
+    messages.info(request, "Auto-Accepted Ballot #%s (id=%s)" % (ballot_num, correct_ballot.id))
+    return verify_riding(request, riding_id)
 
 @user_passes_test(define_view_permissions(['RO'],['DUR']))
 def accept_ballot(request):
@@ -72,14 +73,14 @@ def accept_ballot(request):
             try:
                 correct_ballot.save(current_ro=request.user)
             except IntegrityError as e:
-                msg=str(e)
-                return verify_riding(request, riding_id, flash=[msg])                
+                messages.error(request, str(e))
+                return verify_riding(request, riding_id)                
             for b in Ballot.objects.exclude(state='R').exclude(id=correct_ballot.id).filter(ballot_num=ballot_num).all():
                 b.state='I'
                 b.save(current_ro=request.user)
             #b=ballot.object(form.ballot)
-            msg="Manually Accepted Ballot #%s (id=%s)" % (ballot_num, correct_ballot.id)
-            return verify_riding(request, riding_id, flash=[msg])
+            messages.info(request, "Manually Accepted Ballot #%s (id=%s)" % (ballot_num, correct_ballot.id))
+            return verify_riding(request, riding_id)
 
     if riding_id > 0:
         return HttpResponseRedirect(reverse(verify_riding, args=(riding_id,)))
@@ -108,14 +109,9 @@ def view_ballot(request, b_id):
     return render(request, 'ballots/view_single.html', {'ballot':ballot, 'ballot_num':b_id})
 
 @user_passes_test(define_view_permissions(['RO'],['DUR']))
-def input_ballot(request, poll_id, *args, **kwargs):
+def input_ballot(request, poll_id):
     poll = Poll.objects.get(id=poll_id)
     candidates = Politician.objects.filter(candidate_riding=poll.riding).filter(delete=False)
-
-    # Shortcut processing here
-    flash = []
-    if 'flash' in kwargs:
-        flash = flash + kwargs['flash']
         
     if request.method == 'POST':
         form = BallotForm(request.POST)
@@ -130,18 +126,17 @@ def input_ballot(request, poll_id, *args, **kwargs):
             try:
                 new_ballot.save(current_ro=request.user)
             except IntegrityError as e:
-                msg=str(e)
-                return input_ballot(modified_request, poll_id, flash=[msg])  
+                messages.error(request, str(e))
+                return input_ballot(modified_request, poll_id)  
             
-            msg = 'Ballot input successful. <a href="/">Done?</a>'
+            messages.success(request, 'Ballot input successful. <a href="/">Done?</a>')
             #return HttpResponseRedirect(reverse(input_ballot, args=(poll.id,)))
-            return input_ballot(modified_request, poll_id, flash=[msg])
+            return input_ballot(modified_request, poll_id)
     else:
         form = BallotForm(initial={'poll': poll_id, 'vote': 'invalid'})
     return render(request, 'ballots/add.html', {
                 'form':form,
                 'candidates':candidates,
-                'flash':flash,
             })
 
 @user_passes_test(define_view_permissions(['RO'],['DUR']))
@@ -164,16 +159,16 @@ def input_ballot_tiebreaker(request, old_ballot_num):
             try:
                 new_ballot.save(current_ro=request.user)
             except IntegrityError as e:
-                msg=str(e)
-                return input_ballot(modified_request, poll_id, flash=[msg])
-            msg = "Added tie-break ballot for ballot number "+old_ballot_num
-            #return verify_riding(request, poll.riding.id, flash=[msg])
+                messages.error(request, str(e))
+                return input_ballot(modified_request, poll_id)
+            messages.success(request, "Added tie-break ballot for ballot number "+old_ballot_num)
+            #return verify_riding(request, poll.riding.id)
             #return HttpResponseRedirect(reverse(verify_riding, args=(poll.riding.id,)))
         else:
-            msg = "Failed to add tie-break ballot for ballot number "+old_ballot_num
+            messages.error(request, "Failed to add tie-break ballot for ballot number "+old_ballot_num)
     else:
-        msg = "Invalid tie-break request for ballot number "+old_ballot_num
-    return verify_riding(request, poll.riding.id, flash=[msg])
+        messages.error(request, "Invalid tie-break request for ballot number "+old_ballot_num)
+    return verify_riding(request, poll.riding.id)
 
 @user_passes_test(define_view_permissions(['RO'],['DUR']))
 def choose_riding_to_verify(request):
@@ -244,18 +239,12 @@ def verify_riding(request, riding_id, *args, **kwargs):
 
     bad_ballots = list(ballots_entered_only_once) + list(ballot_invalid_state_mix)
 
-    # Shortcut processing here
-    flash = []
-    if 'flash' in kwargs:
-        flash = flash + kwargs['flash']
-
     if unverified_count == 0:
         return render(request, 'ballots/view_conflicts.html', {
             'bad': {
                 'Single entry': ballots_entered_only_once,
                 'Invalid state mix': ballot_invalid_state_mix,
             },
-            'flash': flash,
         })
 
     # Pass 4: Double-entry check
@@ -353,5 +342,4 @@ def verify_riding(request, riding_id, *args, **kwargs):
         },
         'auto_ballots': ballots_auto_approve, 
         'manual_ballots': ballots_manual_approve,
-        'flash': flash,
     })

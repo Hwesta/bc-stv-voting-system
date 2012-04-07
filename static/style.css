@@ -101,27 +101,33 @@ h2 {
   color: #002B7F;
   text-decoration: none;
 }
+
 div#messages {
-  border: 1px solid #002B7F;
-  padding: 0.5em;
-  color: #002B7F;
-  background-color: #f0f0ff;
+    border: 1px solid #002B7F;
+    padding: 0.5em;
+    color: #002B7F;
+    background-color: #f0f0ff;
+    margin-bottom: 1em;
 }
-div#messages .success {
-    color: #92be2c;
-    background-repeat: no-repeat;
-    font-weight: bold;
+
+#messages ul {
+    padding: 0;
+    margin: 0;
+    list-style-position:inside;
 }
-div#messages .error {
+#messages.success {
+    border: 1px solid #007F2B;
+    background-color: #f0fff0;
+    color: #007F2B;
+}
+#messages.error {
     color: #CE1126;
     border-color: #CE1126;
-    background-repeat: no-repeat;
-    font-weight: bold;
+    background-color: #fff0f0;
 }
-div#messages .info {
-    color: #075fa3;
-    background-repeat: no-repeat;
-    font-weight: bold;
+#messages.info {
+    color: #002B7F;
+    background-color: #f0f0ff;
 }
 
 /* End stuff from CourSys */
