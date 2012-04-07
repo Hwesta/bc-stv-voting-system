@@ -381,12 +381,11 @@ def calc_all_winners(request):
             winners.append(temp)
         
         info.append(winners)
-        info.append(polls)
+	info.append(polls)
         
         x.append(info)
         
         
     return render(request, 'election/all_winners.html', {
-        'results':x,
-	'polls': p
+        'results':x
         })      
