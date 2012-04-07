@@ -2,7 +2,7 @@
 
 import subprocess
 
-PYTHON_COMMAND="python2"
+PYTHON_COMMAND="python"
 
 subprocess.call([PYTHON_COMMAND, "manage.py", "syncdb", "--noinput"])
 
