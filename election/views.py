@@ -288,7 +288,6 @@ def calc_all_winners(request):
     #lists for attributes for each riding
 
     x = []
-    p = []
     for r in Riding.objects.filter(delete=False):
         # All ballots for a riding
         all_ballots = r.ballots()
@@ -306,9 +305,7 @@ def calc_all_winners(request):
         c2 = dict((i+1,v.id) for i, v in enumerate(list(c)))
         # Dictionary of (key=politician.id, value=droop candidate ID)
         c2b = dict((v,k) for k,v in c2.iteritems())
-	#polls = Poll.objects.filter(riding=r.id)
 	polls = r.poll_range()
-	p.append(polls)
         # List of all the required Data
         info = []
         winners = []
@@ -374,7 +371,6 @@ def calc_all_winners(request):
         info.append(result)
         info.append(result['nballots'])
         info.append(num_spoiled_ballots)
-	info.append(p)
         
         for i in range(len(result['actions'][-1]['cstate'])):
             temp = []
@@ -385,6 +381,7 @@ def calc_all_winners(request):
             winners.append(temp)
         
         info.append(winners)
+        info.append(polls)
         
         x.append(info)
         
