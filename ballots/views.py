@@ -335,11 +335,9 @@ def verify_riding(request, riding_id, *args, **kwargs):
     ballots_manual_approve = Ballot.objects.exclude(id__in=ballots_auto_approve).filter(state='U').filter(id__in=ids).filter(poll__in=poll_ids)
 
     return render(request, 'ballots/view_conflicts.html', {
-        'bad': {
-            'Single entry': ballots_entered_only_once,
-            'Invalid state mix': ballot_invalid_state_mix,
-            'Single RO only': ballots_no_different_ro,
-        },
+        'single_entry': ballots_entered_only_once,
+        'invalid_state_mix': ballot_invalid_state_mix,
+        'single_ro_only': ballots_no_different_ro,
         'auto_ballots': ballots_auto_approve, 
         'manual_ballots': ballots_manual_approve,
     })
