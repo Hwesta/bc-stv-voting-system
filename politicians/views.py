@@ -19,7 +19,7 @@ def view_all_politicians(request):
     t = "Politicians"
     p = Politician.objects.all().filter(delete=False)
     return render(request, 'politicians/politicians.html',
-	{'politicians': p, 'type':t})
+            {'politicians': p, 'type':t})
 
 @user_passes_test(permissions_or(define_view_permissions(['EO'],['BEF','DUR','AFT']), define_view_permissions(['REP'],['DUR'])))
 def view_politician(request, p_id):
@@ -100,9 +100,9 @@ def modify_politician(request, p_id):
         form = Politician_Modify_Form(request.POST,instance=politician)
         if form.is_valid():
             form.save()
-	    if politician.delete:
-		return HttpResponseRedirect(reverse(view_all_politicians))
-	    else:
+            if politician.delete:
+                return HttpResponseRedirect(reverse(view_all_politicians))
+            else:
                 return HttpResponseRedirect(reverse(view_politician, args=[p_id]))
     else:
         form = Politician_Modify_Form(instance=politician)

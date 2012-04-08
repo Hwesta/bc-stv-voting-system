@@ -58,14 +58,14 @@ def modify_user(request, user_id):
 @user_passes_test(define_view_permissions(set(['ADMIN']),set(['BEF','DUR','AFT'])))
 def delete_user(request, user_id):
     """ Delete a user. """
-	# TODO: Missing
+    # TODO: Missing
     return render(request, 'users/delete_user.html',
         {  })
 
 @user_passes_test(define_view_permissions(set(['ADMIN']),set(['BEF','DUR','AFT'])))
 def ban_user(request, user_id):
     """ Leave the user intact, but prevent them from logging in. """
-	# TODO: Missing
+    # TODO: Missing
     return render(request, 'users/ban_user.html',
         {  })
 
