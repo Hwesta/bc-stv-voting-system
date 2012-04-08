@@ -425,6 +425,10 @@ def save_db(request):
     messages.info(request, "save DB")
     #management.call_command('flush', verbosity=0, interactive=False)
     #management.call_command('loaddata', 'test_data', verbosity=0)
+    from StringIO import StringIO
+    buf = StringIO()
+    management.call_command('dumpdata', 'auth.Group', verbosity=1, indent=2, format='json', stdout=buf)
+    buf.seek(0)
     return render(request, 'election/admin_homepage.html',{
         'election_action': election_action,
     })
