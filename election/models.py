@@ -51,24 +51,10 @@ class Election(models.Model):
                 poll.save()
             self.status = 'DUR'
         elif self.status == 'DUR':
-            # ensure all ridings are closed
-            
-            #Changed this for now.
-            #num_ridings = Riding.objects.filter(active=True).count()
-            
-            
-            # if all ridings are closed, all polls are closed
-            # if a poll is closed, all ballots in that poll are verified
-            #if num_ridings > 0:
-                # requires a real error message
-                #print "riding(s) still active"
-                #bad_ridings=[]= " is still active."
-            #else:
             all_closed = True
-            for a_riding in Riding.objects.filter(delete=False):
-                if a_riding.active:
-                    all_closed = False
-                    bad_ridings[a_riding] = ' is still active.'
+            for a_riding in Riding.objects.filter(delete=False, active=True):
+                all_closed = False
+                bad_ridings[a_riding] = ' is still active.'
             
             if all_closed:
                 self.status = 'AFT'
