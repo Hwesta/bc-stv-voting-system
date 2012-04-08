@@ -94,7 +94,7 @@ class Election(models.Model):
         unique_together = (('status', 'description'))
 
 class RecountForm(forms.Form):
-    riding = forms.ModelChoiceField(queryset=Riding.objects.filter(active=False))
+    riding = forms.ModelChoiceField(queryset=Riding.objects.filter(active=False,delete=False))
 
 class ElectionForm(ModelForm):
     class Meta:
