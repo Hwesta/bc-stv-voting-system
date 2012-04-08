@@ -137,15 +137,6 @@ def login(request, redirect_field_name=REDIRECT_FIELD_NAME, **kwargs):
 
 # Election Management
 
-######################################
-@user_passes_test(permissions_or(define_view_permissions(['EO'],['BEF','DUR','AFT']), define_view_permissions(['REP'],['DUR'])))
-def view_election(request):
-	#elec_list = Election.objects.all()
-	#elec_list = elec_list[(elec_list.count()-1)]
-	# FIXME: undefined variable
-	return render(request, 'election/view.html', {'election': (elec_list) })
-######################################
-
 @user_passes_test(define_view_permissions(['ADMIN'],['BEF','DUR','AFT','ARC']))
 def change_election_status(request):
 	election = Election.objects.all()[0]
@@ -207,7 +198,6 @@ def start_recount(request):
 		return HttpResponseRedirect(reverse(index))
 	else:
 		form = RecountForm()
-    
 	return render(request, 'election/start_recount.html', {
 		'form': form,
 		})
