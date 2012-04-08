@@ -31,21 +31,22 @@ class Election(models.Model):
         for a_riding in Riding.objects.filter(delete=False):   
             if a_riding.num_candidates()==0:
                 no_candidates = True
-                bad_ridings[a_riding.name] = ' has no candidates.'
+                bad_ridings[a_riding] = ' has no candidates.'
             elif a_riding.num_seats>a_riding.num_candidates():
                 too_few_candidates = True
-                bad_ridings[a_riding.name] = ' has too few candidates.'
-            if a_riding.num_seats==0:
+                bad_ridings[a_riding] = ' has too few candidates.'
+            elif a_riding.num_seats==0:
                 no_seats = True
-                bad_ridings[a_riding.name] = ' has no seats.'
+                bad_ridings[a_riding] = ' has no seats.'
             
                 
                 
         
         if self.status == 'BEF' and not no_seats and not no_candidates and not too_few_candidates:
-            # activate all ridings, polls
+            # activate all not-deleted ridings
             ridings = Riding.objects.filter(delete=False)            
-            polls = Poll.objects.filter(delete=False)
+            # activate all not-deleted polls, that belong to a not-deleted riding
+            polls = Poll.objects.filter(delete=False,riding__delete=False)
             for riding in ridings:
                 riding.active = True
                 riding.save()
@@ -71,7 +72,7 @@ class Election(models.Model):
             for a_riding in Riding.objects.filter(delete=False):
                 if a_riding.active:
                     all_closed = False
-                    bad_ridings[a_riding.name] = ' is still active.'
+                    bad_ridings[a_riding] = ' is still active.'
             
             if all_closed:
                 self.status = 'AFT'

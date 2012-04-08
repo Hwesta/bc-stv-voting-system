@@ -150,7 +150,7 @@ def change_election_status(request):
 	errors=election.changeStatus()
 	if errors:
 		for (k,v) in errors.iteritems():
-			messages.error(request, "Riding "+k+v)            
+			messages.error(request, "Riding " + k.name + v)            
 		return HttpResponseRedirect(reverse('election.views.admin_homepage'))
 	else:
 		election.save()
