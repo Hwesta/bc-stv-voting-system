@@ -135,7 +135,6 @@ def choose_riding(request):
             riding = form.cleaned_data['riding']
 	    riding_id = Riding.objects.filter(name=riding)
 	    riding_id = riding_id[0].id
-	    print riding_id
 	    return HttpResponseRedirect(reverse(view_polls, args=(riding_id,)))
     else:
 	form = ChooseRidingForm()
