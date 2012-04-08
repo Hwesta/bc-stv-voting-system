@@ -191,7 +191,7 @@ def start_recount(request):
 			riding = form.cleaned_data['riding']
 			riding.active = True
 			riding.save()
-			polls = Poll.objects.filter(riding=riding.id).exclude(delete=True)
+			polls = riding.poll_set.exclude(delete=True)
 
 			for poll in polls:
 				poll.active = True
