@@ -176,3 +176,24 @@ LOGGING = {
         },
     }
 }
+
+TABLE_DUMP_ORDER = [
+    # This MUST be ordered by the depencencies
+    # This is the set of internal models for Django
+    # That also have the referenctial integrity catch
+    # User/Group must come before the others
+    ['auth.Group'],
+    ['auth.User '],
+    ['sessions.Session'],
+    ['sites.Site'],
+    ['auth.Permission'],
+    # For any given Model with a ForeignKey field
+    # The foreignkey referenced table must come before the table that uses it
+    # Eg, Politician references Riding, so Riding must be created First
+    ['election.Election', 'ridings.Riding'],
+    ['keywords.PoliticianKeywordList', 'keywords.RidingKeywordList'],
+    ['ridings.Poll', 'politicians.Politician'],
+    ['ballots.Ballot'], 
+    ['keywords.RidingKeywordValue'],
+    ['keywords.PoliticianKeywordValue'],
+]
