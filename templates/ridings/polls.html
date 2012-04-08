@@ -30,7 +30,7 @@
 <tr>
 <td>{{ poll.poll_num }}</td>
 <td>{{ poll.active }}</td>
-<td>{{ poll.polling_stn }}</td>
+<td align="center">{{ poll.polling_stn }}</td>
 {% if election.status == 'BEF' %}
 <td><a href="{% url ridings.views.modify_poll riding.id poll.id %}">Modify</a></td>
 {% endif %}

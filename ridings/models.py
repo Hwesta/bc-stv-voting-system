@@ -1,3 +1,4 @@
+from django import forms
 from django.db import models
 from django.forms import ModelForm
 from django.db.models import Count, Max, Min
@@ -310,3 +311,7 @@ class Poll_Modify_Form(ModelForm):
     class Meta:
         model = Poll
         exclude = ('riding', 'active',)
+
+# Modified RecountForm
+class ChooseRidingForm(forms.Form):
+    riding = forms.ModelChoiceField(queryset=Riding.objects.filter(delete=False))

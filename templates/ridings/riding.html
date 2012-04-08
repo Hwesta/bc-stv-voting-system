@@ -13,7 +13,9 @@
 <li><a href="{% url politicians.views.add_politician %}">Add Politician</a></li>
 <li><a href="{% url ridings.views.add_poll riding.id %}">Add Poll</a></li>
 {% endif %}
+{% if election.status == 'BEF'%}
 <li><a href="{% url ridings.views.view_polls riding.id %}">View Polls</a></li>
+{% endif %}
 {% if election.status == 'DUR' or election.status == 'AFT' %}
 <li><a href="{% url election.views.calc_winners riding.id %}">View Election Results</a></li>
 {% endif %}

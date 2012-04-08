@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.forms.formsets import formset_factory
-from ridings.models import Riding, Poll, Riding_Add_Form, Riding_Modify_Form, Poll_Add_Form, Poll_Modify_Form
+from ridings.models import Riding, Poll, Riding_Add_Form, Riding_Modify_Form, Poll_Add_Form, Poll_Modify_Form, ChooseRidingForm
 from ballots.models import Ballot
 from politicians.models import Politician
 from keywords.models import RidingKeywordValue, RidingKeywordList, PoliticianKeywordValue, addRidingKeywordValueForm
@@ -113,7 +113,9 @@ def modify_riding(request, r_id):
 # Poll Management
 
 # all poll functions follow the same logic as riding functions
-@user_passes_test(permissions_or(define_view_permissions(['EO'],['BEF','DUR','AFT']), define_view_permissions(['REP'],['DUR'])))
+# Only Admin can access polls during an election.
+# The number of open polls remaining can be calculated by the poll range - ( deleted polls + closed polls ) 
+@user_passes_test(permissions_or(define_view_permissions(['EO'],['BEF','AFT']), define_view_permissions(['ADMIN'],['DUR'])))
 def view_polls(request, riding_id):
     riding = Riding.objects.get(id=riding_id)
     p = Poll.objects.filter(riding=riding).exclude(delete=True)
@@ -121,6 +123,24 @@ def view_polls(request, riding_id):
         {'polls': p,
          'type': str('Polls'),
          'riding': riding,
+        })
+
+# modified start_recount that just passes a riding id to view_polls
+@user_passes_test(define_view_permissions(['ADMIN'],['DUR']))
+def choose_riding(request):
+    if request.method == 'POST': 
+	form = ChooseRidingForm(request.POST) 
+	if form.is_valid():
+            riding = form.cleaned_data['riding']
+	    riding_id = Riding.objects.filter(name=riding)
+	    riding_id = riding_id[0].id
+	    print riding_id
+	    return HttpResponseRedirect(reverse(view_polls, args=(riding_id,)))
+    else:
+	form = ChooseRidingForm()
+
+    return render(request, 'ridings/choose_riding.html',
+        {'form': form,
         })
 
 @user_passes_test(define_view_permissions(['EO'],['BEF']))
@@ -157,7 +177,7 @@ def modify_poll(request, riding_id, poll_id):
          'riding': riding,
         })
 
-@user_passes_test(define_view_permissions(['EO'],['DUR']))
+@user_passes_test(define_view_permissions(['ADMIN'],['DUR']))
 def close_poll(request, riding_id, poll_id):
     poll = Poll.objects.get(id=poll_id)
     # # of ballots belonging to the poll that are unverified

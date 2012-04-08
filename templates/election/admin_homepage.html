@@ -15,6 +15,7 @@
 
 {% if election.status == 'DUR' %}
     <li><a href="{% url election.views.start_recount %}">Start a Recount</a></li>
+    <li><a href="{% url ridings.views.choose_riding  %}">Close a Poll</a></li>
 {% endif  %}
 
 {% if election.status = 'ARC' %}
