@@ -162,6 +162,7 @@ def input_ballot_tiebreaker(request, old_ballot_num):
                 new_ballot.save(current_ro=request.user)
             except IntegrityError as e:
                 messages.error(request, str(e))
+                # FIXME: Undefined variables: modified_request, poll_id
                 return input_ballot(modified_request, poll_id)
             messages.success(request, "Added tie-break ballot for ballot number "+old_ballot_num)
             #return verify_riding(request, poll.riding.id)

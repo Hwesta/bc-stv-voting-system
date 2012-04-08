@@ -140,6 +140,7 @@ def login(request, redirect_field_name=REDIRECT_FIELD_NAME, **kwargs):
 def view_election(request):
 	#elec_list = Election.objects.all()
 	#elec_list = elec_list[(elec_list.count()-1)]
+	# FIXME: undefined variable
 	return render(request, 'election/view.html', {'election': (elec_list) })
 ######################################
 
