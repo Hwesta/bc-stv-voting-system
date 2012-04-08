@@ -52,11 +52,16 @@ class Election(models.Model):
             self.status = 'DUR'
         elif self.status == 'DUR':
             all_closed = True
+            no_recounts = True
             for a_riding in Riding.objects.filter(delete=False, active=True):
                 all_closed = False
                 bad_ridings[a_riding] = ' is still active.'
+
+            for a_riding in Riding.objects.filter(delete=False, recount_needed=True):
+                no_recounts = False
+                bad_ridings[a_riding] = ' has a recount pending.'            
             
-            if all_closed:
+            if all_closed and no_recounts:
                 self.status = 'AFT'
         elif self.status == 'AFT':
             self.status = 'ARC'

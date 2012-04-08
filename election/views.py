@@ -183,6 +183,7 @@ def start_recount(request):
         if form.is_valid():
             riding = form.cleaned_data['riding']
             riding.active = True
+            riding.recount_needed = False
             riding.save()
             polls = riding.poll_set.exclude(delete=True)
 
