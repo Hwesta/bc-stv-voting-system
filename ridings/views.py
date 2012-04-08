@@ -51,8 +51,8 @@ def view_riding(request, r_id):
          'candidates': candidates,
          'incumbents': incumbents,
          'keywords': keywords,
-	 'ballots': ballots,
-	 'spoiled': spoiled,
+         'ballots': ballots,
+         'spoiled': spoiled,
         })
 
 @user_passes_test(define_view_permissions(['EO'],['BEF']))
@@ -163,5 +163,5 @@ def close_poll(request, riding_id, poll_id):
     # # of ballots belonging to the poll that are unverified
     num_u_ballots = Ballot.objects.filter(poll=poll_id, state='U').count()
     if num_u_ballots == 0:
-	poll.close()
+        poll.close()
     return HttpResponseRedirect(reverse(view_polls, args=(riding_id,)))

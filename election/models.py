@@ -23,26 +23,26 @@ class Election(models.Model):
     def changeStatus(self):
         """ Move the election to the next status. """
         if self.status == 'BEF':
-	    # activate all ridings, polls
-	    ridings = Riding.objects.filter(delete=False)
-	    polls = Poll.objects.filter(delete=False)
-	    for riding in ridings:
-		riding.active = True
-		riding.save()
-	    for poll in polls:
-		poll.active = True
-		poll.save()
+            # activate all ridings, polls
+            ridings = Riding.objects.filter(delete=False)
+            polls = Poll.objects.filter(delete=False)
+            for riding in ridings:
+                riding.active = True
+                riding.save()
+            for poll in polls:
+                poll.active = True
+                poll.save()
             self.status = 'DUR'
         elif self.status == 'DUR':
-	    # ensure all ridings are closed
-	    num_ridings = Riding.objects.filter(active=True).count()
-	    # if all ridings are closed, all polls are closed
-	    # if a poll is closed, all ballots in that poll are verified
-	    if num_ridings > 0:
-		# requires a real error message
-		print "riding(s) still active"
-	    else:
-        	self.status = 'AFT'
+            # ensure all ridings are closed
+            num_ridings = Riding.objects.filter(active=True).count()
+            # if all ridings are closed, all polls are closed
+            # if a poll is closed, all ballots in that poll are verified
+            if num_ridings > 0:
+                # requires a real error message
+                print "riding(s) still active"
+            else:
+                self.status = 'AFT'
         elif self.status == 'AFT':
             self.status = 'ARC'
         elif self.status == 'ARC':
@@ -70,7 +70,7 @@ class ElectionForm(ModelForm):
 
 def define_view_permissions(allowed_groups, allowed_status):
     ''' Defines the permissions for a view.
-	If either input is empty, it means ALL values are permitted for that field.
+    If either input is empty, it means ALL values are permitted for that field.
 
     allowed_groups is a set
     allowed_status is a STATUS_CHOICES'''
@@ -103,4 +103,4 @@ def permissions_or(perm1, perm2):
     return f
 
 def permission_always(u):
-	return True
+    return True
