@@ -44,26 +44,25 @@ def new_riding_keyword(request):
     return render(request,'keywords/addridingkeywords.html',{'form':form})
     
 
+@user_passes_test(define_view_permissions(['EO'],['BEF']))
 def assign_keyword_value(request, mode):
-    if int(mode) == 0:
-        name = 'Riding'
-        if request.method == 'POST':
-            form = addaRidingKeywordValueForm(request.POST)
-            if form.is_valid():
-                form.save()
-                return HttpResponseRedirect(reverse(index))
-        else:
-            form = addaRidingKeywordValueForm()
+    mode = mode.lower()
+    name = mode.capitalize()
+    if mode == 'riding':
+        formfunc = addaRidingKeywordValueForm
+    elif mode == 'politician':
+        formfunc = addaPoliticianKeywordValueForm
     else:
-        name = 'Politician'
-        if request.method == 'POST':
-            form = addaPoliticianKeywordValueForm(request.POST)
-            if form.is_valid():
-                form.save()
-                return HttpResponseRedirect(reverse(index))
-        else:
-            form = addaPoliticianKeywordValueForm()
-    return render(request,'keywords/addvalue.html',{'form':form, 'name':name,'mode':int(mode)})
+        # TODO: Raise an error here
+        pass
+    if request.method == 'POST':
+        form = formfunc(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse(index))
+    else:
+        form = formfunc()
+    return render(request,'keywords/addvalue.html',{'form':form, 'name':name, 'mode': mode})
 
 @user_passes_test(define_view_permissions(['EO'],['BEF']))
 def new_riding_keyword_value(request, k_id):
