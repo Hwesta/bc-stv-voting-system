@@ -8,6 +8,7 @@ from politicians.models import Politician
 from keywords.models import RidingKeywordValue, RidingKeywordList, PoliticianKeywordValue, addRidingKeywordValueForm
 from django.contrib.auth.decorators import user_passes_test
 from election.models import define_view_permissions, permissions_or, permissions_and, permission_always
+from django.contrib import messages
 
 # TODO Add decorators limiting access
 
@@ -184,4 +185,6 @@ def close_poll(request, riding_id, poll_id):
     num_u_ballots = Ballot.objects.filter(poll=poll_id, state='U').count()
     if num_u_ballots == 0:
         poll.close()
+    else:
+        messages.error(request, "Poll can't be closed as unverified ballots remain.")
     return HttpResponseRedirect(reverse(view_polls, args=(riding_id,)))
