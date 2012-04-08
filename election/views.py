@@ -137,10 +137,16 @@ def view_election(request):
 
 @user_passes_test(define_view_permissions(['ADMIN'],['BEF','DUR','AFT','ARC']))
 def change_election_status(request):
-   election = Election.objects.all()[0]
-   election.changeStatus()
-   election.save()
-   return HttpResponseRedirect(reverse('election.views.admin_homepage'))
+    election = Election.objects.all()[0]
+    errors=election.changeStatus()
+    if errors:
+        for (k,v) in errors.iteritems():
+            messages.error(request, "Riding "+k+v)            
+        return HttpResponseRedirect(reverse('election.views.admin_homepage'))
+    else:
+        election.save()
+        messages.success(request, "Election state changed to: "+election.get_status_display())
+        return HttpResponseRedirect(reverse('election.views.admin_homepage'))
     
 
 @user_passes_test(define_view_permissions(['ADMIN'],['BEF']))

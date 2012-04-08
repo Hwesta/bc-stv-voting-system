@@ -22,9 +22,29 @@ class Election(models.Model):
     
     def changeStatus(self):
         """ Move the election to the next status. """
-        if self.status == 'BEF':
+        
+        #Check some preconditions for starting an election.
+        bad_ridings={}               
+        no_candidates = False
+        too_few_candidates = False
+        no_seats = False
+        for a_riding in Riding.objects.filter(delete=False):   
+            if a_riding.num_candidates()==0:
+                no_candidates = True
+                bad_ridings[a_riding.name] = ' has no candidates.'
+            elif a_riding.num_seats>a_riding.num_candidates():
+                too_few_candidates = True
+                bad_ridings[a_riding.name] = ' has too few candidates.'
+            if a_riding.num_seats==0:
+                no_seats = True
+                bad_ridings[a_riding.name] = ' has no seats.'
+            
+                
+                
+        
+        if self.status == 'BEF' and not no_seats and not no_candidates and not too_few_candidates:
             # activate all ridings, polls
-            ridings = Riding.objects.filter(delete=False)
+            ridings = Riding.objects.filter(delete=False)            
             polls = Poll.objects.filter(delete=False)
             for riding in ridings:
                 riding.active = True
@@ -35,13 +55,25 @@ class Election(models.Model):
             self.status = 'DUR'
         elif self.status == 'DUR':
             # ensure all ridings are closed
-            num_ridings = Riding.objects.filter(active=True).count()
+            
+            #Changed this for now.
+            #num_ridings = Riding.objects.filter(active=True).count()
+            
+            
             # if all ridings are closed, all polls are closed
             # if a poll is closed, all ballots in that poll are verified
-            if num_ridings > 0:
+            #if num_ridings > 0:
                 # requires a real error message
-                print "riding(s) still active"
-            else:
+                #print "riding(s) still active"
+                #bad_ridings=[]= " is still active."
+            #else:
+            all_closed = True
+            for a_riding in Riding.objects.filter(delete=False):
+                if a_riding.active:
+                    all_closed = False
+                    bad_ridings[a_riding.name] = ' is still active.'
+            
+            if all_closed:
                 self.status = 'AFT'
         elif self.status == 'AFT':
             self.status = 'ARC'
@@ -49,6 +81,8 @@ class Election(models.Model):
             pass
         else:
             self.status = 'BEF'
+        
+        return bad_ridings
     
     def archive(self):
         """ Archive an election """
