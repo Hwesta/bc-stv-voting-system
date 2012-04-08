@@ -183,7 +183,7 @@ TABLE_DUMP_ORDER = [
     # That also have the referenctial integrity catch
     # User/Group must come before the others
     ['auth.Group'],
-    ['auth.User '],
+    ['auth.User'],
     ['sessions.Session'],
     ['sites.Site'],
     ['auth.Permission'],

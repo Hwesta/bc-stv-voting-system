@@ -430,9 +430,9 @@ def save_db(request):
     exports = []
     for tl in TABLE_DUMP_ORDER:
         buf = StringIO()
-        management.call_command('dumpdata', tl, verbosity=1, indent=2, format='json', stdout=buf)
+        management.call_command('dumpdata', *tl, verbosity=1, indent=2, format='json', stdout=buf)
         buf.seek(0)
-        export.append(buf.read())
+        exports.append(buf.read())
     # exports now contains each of the JSON blobs to import, in THAT exact order.
     return render(request, 'election/admin_homepage.html',{
         'election_action': election_action,
