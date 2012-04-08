@@ -178,29 +178,31 @@ def set_location(request):
 
 @user_passes_test(define_view_permissions(['ADMIN'],['DUR','AFT']))
 def start_recount(request):
-	if request.method == 'POST': 
-		form = RecountForm(request.POST) 
-		if form.is_valid():
-			riding = form.cleaned_data['riding']
-			riding.active = True
-			riding.save()
-			polls = riding.poll_set.exclude(delete=True)
+    if request.method == 'POST': 
+        form = RecountForm(request.POST) 
+        if form.is_valid():
+            riding = form.cleaned_data['riding']
+            riding.active = True
+            riding.save()
+            polls = riding.poll_set.exclude(delete=True)
 
-			for poll in polls:
-				poll.active = True
-				poll.save()
+            for poll in polls:
+                poll.active = True
+                poll.save()
 
-			ballots = riding.ballots()
-			for ballot in ballots:
-				ballot.state = 'R'
-				ballot.save()
-		messages.success(request, "Recount started for riding "+riding.name+".")
-		return HttpResponseRedirect(reverse(index))
-	else:
-		form = RecountForm()
-	return render(request, 'election/start_recount.html', {
-		'form': form,
-		})
+            ballots = riding.ballots()
+            for ballot in ballots:
+                ballot.state = 'R'
+                ballot.save()
+            messages.success(request, "Recount started for riding "+riding.name+".")
+            return HttpResponseRedirect(reverse(index))
+        else:
+            messages.error(request, "You must select a riding.")
+    form = RecountForm()
+        
+    return render(request, 'election/start_recount.html', {
+        'form': form,
+        })
 
 @user_passes_test(permissions_or(define_view_permissions(['EO'],['DUR','AFT']), define_view_permissions(['REP'],['DUR'])))
 def calc_winners(request, r_id):
