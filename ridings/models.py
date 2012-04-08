@@ -16,7 +16,7 @@ class Riding(models.Model):
     num_seats = models.IntegerField(verbose_name="Seats", help_text="Number of seats available.", validators=[MinValueValidator(1)])
     active = models.BooleanField(help_text="Whether a riding is accepting ballots.")
     delete = models.BooleanField(default=False)
-    recount_needed = models.BooleanField(help_text="Is a recount required in this riding.", null = True)
+    recount_needed = models.BooleanField(help_text="Is a recount required in this riding.")
 
 
     def __unicode__(self):
