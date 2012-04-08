@@ -80,6 +80,13 @@ class Riding(models.Model):
         return len(unverified_ballots) == 0
 
     def verify(self):
+        # Fix a Django MS-SQL bug first!
+        # http://code.google.com/p/django-mssql/issues/detail?id=120
+        from settings import DATABASES
+        if DATABASES['default']['ENGINE'] == 'sqlserver_ado':
+            from mssql_fix import fix_mssql_row_bug
+            fix_mssql_row_bug()
+
         # Do not put this import at the toplevel!
         # It will break because ballots/models.py imports this file!
         from ballots.models import Ballot
