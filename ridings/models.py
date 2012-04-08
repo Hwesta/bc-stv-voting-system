@@ -2,6 +2,8 @@ from django import forms
 from django.db import models
 from django.forms import ModelForm
 from django.db.models import Count, Max, Min
+from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator
 
 
 MAX_POLLS_PER_RIDING = 10000
@@ -11,7 +13,7 @@ class Riding(models.Model):
 	#map = models.ImageField(upload_to="??")
 	created = models.DateField(help_text="Date the riding was legislated into existance. Format: YYYY-MM-DD")
 	num_voters = models.IntegerField(verbose_name="Voters", help_text="Number of eligible voters.")
-	num_seats = models.IntegerField(verbose_name="Seats", help_text="Number of seats available.")
+	num_seats = models.IntegerField(verbose_name="Seats", help_text="Number of seats available.", validators=[MinValueValidator(1)])
 	active = models.BooleanField(help_text="Whether a riding is accepting ballots.")
 	delete = models.BooleanField(default=False)
 

@@ -27,7 +27,6 @@ class Election(models.Model):
         bad_ridings={}               
         no_candidates = False
         too_few_candidates = False
-        no_seats = False
         for a_riding in Riding.objects.filter(delete=False):   
             if a_riding.num_candidates()==0:
                 no_candidates = True
@@ -35,14 +34,11 @@ class Election(models.Model):
             elif a_riding.num_seats>a_riding.num_candidates():
                 too_few_candidates = True
                 bad_ridings[a_riding] = ' has too few candidates.'
-            elif a_riding.num_seats==0:
-                no_seats = True
-                bad_ridings[a_riding] = ' has no seats.'
             
                 
                 
         
-        if self.status == 'BEF' and not no_seats and not no_candidates and not too_few_candidates:
+        if self.status == 'BEF' and not no_candidates and not too_few_candidates:
             # activate all not-deleted ridings
             ridings = Riding.objects.filter(delete=False)            
             # activate all not-deleted polls, that belong to a not-deleted riding
