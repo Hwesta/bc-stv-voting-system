@@ -74,14 +74,14 @@ def admin_homepage(request):
 	election = Election.objects.all()[0]
 	election_action = 'GOTO: Next Election State (Current State:  '+election.status+')'
 	if election.status=='BEF':
-		election_action = 'Start election.'
+		election_action = 'Start election'
 	elif election.status=='DUR':
-		election_action = 'End election.'
+		election_action = 'End election'
 	elif election.status=='AFT':
-		election_action = 'Archive Election.'
+		election_action = 'Archive Election'
 	#TODO: Do something better with this. Should it start a new election?
 	else:#archive
-		election_action = 'Archive Election.'
+		election_action = 'Archive Election'
 	return render(request, 'election/admin_homepage.html',{
 		'election_action': election_action,
 		})
