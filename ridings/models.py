@@ -73,7 +73,12 @@ class Riding(models.Model):
         if deleted_poll_list != "":
             s += ", excluding %s due to deletion" % (deleted_poll_list, )
         return s
-   
+  
+    def safe_to_close(self):
+        verify_result = self.verify()
+        unverified_ballots = [ballot for tmplist in verify_result.values() for ballot in tmplist]
+        return len(unverified_ballots) > 0
+
     def verify(self):
         # Do not put this import at the toplevel!
         # It will break because ballots/models.py imports this file!
