@@ -97,3 +97,11 @@ class addhPoliticianKeywordValueForm(ModelForm):
     class Meta:
         model = PoliticianKeywordValue
         widgets = {'keyword': forms.HiddenInput()}
+        
+class addaRidingKeywordValueForm(ModelForm):
+    class Meta:
+        model = RidingKeywordValue
+
+class addaPoliticianKeywordValueForm(ModelForm):
+    class Meta:
+        model = PoliticianKeywordValue

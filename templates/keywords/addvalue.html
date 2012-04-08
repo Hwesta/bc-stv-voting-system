@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block h1 %}Add {{name}} Keywords{% endblock %}
+
+{% block subbreadcrumbs %}
+{% endblock %}
+
+{% block content %}
+<form action ="{% url keywords.views.assign_keyword_value mode %}" method ="post">{% csrf_token %}
+<table>
+{{form.as_table}}
+</table>
+<input type="submit" value="Submit"/>
+</form> 
+{% endblock %}

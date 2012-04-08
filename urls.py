@@ -64,6 +64,7 @@ urlpatterns = patterns('',
     url(r'^ridings/(\d+)/polls/(\d+)/modify/$', 'ridings.views.modify_poll'),
 
     url(r'^keywords/$', 'keywords.views.index'),
+    url(r'^keywords/assign/(\d+)/$', 'keywords.views.assign_keyword_value'),
     url(r'^keywords/riding/add/$', 'keywords.views.new_riding_keyword'),
     url(r'^keywords/riding/values/(\d+)/$', 'keywords.views.new_riding_keyword_value'),
     url(r'^keywords/politician/add/$', 'keywords.views.new_politician_keyword'),

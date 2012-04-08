@@ -8,9 +8,9 @@ from django.contrib.auth.decorators import user_passes_test
 from politicians.models import Politician
 from ridings.models import Riding
 from keywords.models import RidingKeywordList, RidingKeywordValue, \
-    addRidingKeywordListForm, editRidingKeywordListForm, addhRidingKeywordValueForm, editRidingKeywordValueForm
+    addRidingKeywordListForm, editRidingKeywordListForm, addhRidingKeywordValueForm, editRidingKeywordValueForm, addaRidingKeywordValueForm
 from keywords.models import PoliticianKeywordList, PoliticianKeywordValue, \
-    addPoliticianKeywordListForm, editPoliticianKeywordListForm, addhPoliticianKeywordValueForm, editPoliticianKeywordValueForm
+    addPoliticianKeywordListForm, editPoliticianKeywordListForm, addhPoliticianKeywordValueForm, editPoliticianKeywordValueForm, addaPoliticianKeywordValueForm
 from election.models import define_view_permissions, permissions_or, permissions_and, permission_always
 from politicians.views import view_politician
 
@@ -42,6 +42,28 @@ def new_riding_keyword(request):
     else:
         form = addRidingKeywordListForm()
     return render(request,'keywords/addridingkeywords.html',{'form':form})
+    
+
+def assign_keyword_value(request, mode):
+    if int(mode) == 0:
+        name = 'Riding'
+        if request.method == 'POST':
+            form = addaRidingKeywordValueForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect(reverse(index))
+        else:
+            form = addaRidingKeywordValueForm()
+    else:
+        name = 'Politician'
+        if request.method == 'POST':
+            form = addaPoliticianKeywordValueForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect(reverse(index))
+        else:
+            form = addaPoliticianKeywordValueForm()
+    return render(request,'keywords/addvalue.html',{'form':form, 'name':name,'mode':int(mode)})
 
 @user_passes_test(define_view_permissions(['EO'],['BEF']))
 def new_riding_keyword_value(request, k_id):
