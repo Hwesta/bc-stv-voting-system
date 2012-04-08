@@ -3,9 +3,14 @@
 {% block h1 %}List of {{type}} in {{ riding }}{% endblock %}
 
 {% block subbreadcrumbs %}
+{% if election.status == 'BEF' or election.status == 'AFT' %}
 <li><a href="{% url ridings.views.view_all_ridings %}">Riding Management</a></li>
 <li><a href="{% url ridings.views.view_riding riding.id%}">View Riding {{ riding }}</a></li>
 <li>View Polls</li>
+{% endif %}
+{% if election.status == 'DUR' %}
+<li>View Polls</li>
+{% endif %}
 {% endblock %}
 
 {% block actions %}

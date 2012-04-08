@@ -66,6 +66,7 @@ class Riding(models.Model):
         minpoll = minmax['minpoll']
         maxpoll = minmax['maxpoll']
         num_polls = minmax['count']
+	num_polls_closed = Poll.objects.filter(active=False, riding=self.id).exclude(delete=True).count()
         if num_polls == 0:
             return "no polls"
         deleted_polls = polls.exclude(delete=False)
@@ -73,6 +74,11 @@ class Riding(models.Model):
         s = "%d-%d" % (minpoll, maxpoll, )
         if deleted_poll_list != "":
             s += ", excluding %s due to deletion" % (deleted_poll_list, )
+	if num_polls_closed > 0:
+	    if num_polls_closed == 1:
+		s += " with "+str(num_polls_closed)+" poll closed."
+	    else:
+		s += " with "+str(num_polls_closed)+" polls closed."
         return s
   
     def safe_to_close(self):
