@@ -130,9 +130,9 @@ def login(request, redirect_field_name=REDIRECT_FIELD_NAME, **kwargs):
 ######################################
 @user_passes_test(permissions_or(define_view_permissions(['EO'],['BEF','DUR','AFT']), define_view_permissions(['REP'],['DUR'])))
 def view_election(request):
-   #elec_list = Election.objects.all()
-   #elec_list = elec_list[(elec_list.count()-1)]
-   return render(request, 'election/view.html', {'election': (elec_list) })
+    #elec_list = Election.objects.all()
+    #elec_list = elec_list[(elec_list.count()-1)]
+    return render(request, 'election/view.html', {'election': (elec_list) })
 ######################################
 
 @user_passes_test(define_view_permissions(['ADMIN'],['BEF','DUR','AFT','ARC']))
@@ -151,46 +151,52 @@ def change_election_status(request):
 
 @user_passes_test(define_view_permissions(['ADMIN'],['BEF']))
 def change_election(request):
-   ##if status isn't initiated yet it can't be used
-   #election = Election.objects.exclude(status='ARC').all()
-   election = Election.objects.all()
+    ##if status isn't initiated yet it can't be used
+    #election = Election.objects.exclude(status='ARC').all()
+    election = Election.objects.all()
     # TODO: This will only work with one election for now
-   if len(election) == 0:
-       election = Election()
-       election.save()
-   else:
-       election = election[0]
+    if len(election) == 0:
+        election = Election()
+        election.save()
+    else:
+        election = election[0]
        
-   if request.method == 'POST':
-       form = ElectionForm(request.POST, instance=election)
-       if form.is_valid():
-           form.save()
-           return HttpResponseRedirect(reverse(index))
-   else:
-       form = ElectionForm(instance=election)
-   return render(request, 'election/change_election_status.html', {'election':election, 'form' : form})
+    if request.method == 'POST':
+        form = ElectionForm(request.POST, instance=election)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse(index))
+    else:
+        form = ElectionForm(instance=election)
+    return render(request, 'election/change_election_status.html', {'election':election, 'form' : form})
 
 @user_passes_test(define_view_permissions(['ADMIN'],['BEF']))
 def set_location(request):
-   return render(request, 'election/set_location.html', {})
+    return render(request, 'election/set_location.html', {})
 
 @user_passes_test(define_view_permissions(['ADMIN'],['DUR','AFT']))
 def start_recount(request):
-    # TODO Add message in redirect saying recount has been started.
     if request.method == 'POST': 
         form = RecountForm(request.POST) 
         if form.is_valid():
             riding = form.cleaned_data['riding']
             riding.active = True
-	    riding.save()
-	    polls = Poll.objects.filter(riding=riding.id).exclude(delete=True)
-	    for poll in polls:
-		poll.active = True
-		poll.save()
-            return HttpResponseRedirect(reverse(index))
+            riding.save()
+            polls = Poll.objects.filter(riding=riding.id).exclude(delete=True)
+        
+            for poll in polls:
+                poll.active = True
+                poll.save()
+            
+            ballots = riding.ballots()
+            for ballot in ballots:
+                ballot.state = 'R'
+                ballot.save()
+        messages.success(request, "Recount started for riding "+riding.name+".")
+        return HttpResponseRedirect(reverse(index))
     else:
         form = RecountForm()
-
+    
     return render(request, 'election/start_recount.html',
         {'form': form,
         })
