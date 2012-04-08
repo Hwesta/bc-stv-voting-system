@@ -27,25 +27,39 @@ class Election(models.Model):
     def __unicode__(self):
         return "Election "+self.status
     
-    def changeStatus(self):
+    def change_status(self):
         """ Move the election to the next status. """
         
         #Check some preconditions for starting an election.
-        bad_ridings={}               
+        bad_ridings={}
+        other_errors=[]
         no_candidates = False
         too_few_candidates = False
+        no_polls = False
+        no_ridings = False
+        
+        if Riding.objects.filter(delete=False).count()==0:
+            no_ridings = True
+            other_errors.append('Can not start an election with no ridings.')
+        
         for a_riding in Riding.objects.filter(delete=False):   
             if a_riding.num_candidates()==0:
                 no_candidates = True
-                bad_ridings[a_riding] = ' has no candidates.'
+                if not a_riding in bad_ridings:
+                    bad_ridings[a_riding]=[]
+                bad_ridings[a_riding].append(' has no candidates.')
             elif a_riding.num_seats>a_riding.num_candidates():
                 too_few_candidates = True
-                bad_ridings[a_riding] = ' has too few candidates.'
-            
-                
-                
-        
-        if self.status == 'BEF' and not no_candidates and not too_few_candidates:
+                if not a_riding in bad_ridings:
+                    bad_ridings[a_riding]=[]
+                bad_ridings[a_riding].append(' has too few candidates.')
+            if a_riding.num_polls()==0:
+                no_polls = True
+                if not a_riding in bad_ridings:
+                    bad_ridings[a_riding]=[]
+                bad_ridings[a_riding].append(' has no polls.')        
+
+        if self.status == 'BEF' and not no_candidates and not too_few_candidates and not no_polls and not no_ridings:
             # activate all not-deleted ridings
             ridings = Riding.objects.filter(delete=False)            
             # activate all not-deleted polls, that belong to a not-deleted riding
@@ -62,11 +76,15 @@ class Election(models.Model):
             no_recounts = True
             for a_riding in Riding.objects.filter(delete=False, active=True):
                 all_closed = False
-                bad_ridings[a_riding] = ' is still active.'
+                if not a_riding in bad_ridings:
+                    bad_ridings[a_riding]=[]
+                bad_ridings[a_riding].append(' is still active.')
 
             for a_riding in Riding.objects.filter(delete=False, recount_needed=True):
                 no_recounts = False
-                bad_ridings[a_riding] = ' has a recount pending.'            
+                if not a_riding in bad_ridings:
+                    bad_ridings[a_riding]=[]
+                bad_ridings[a_riding].append(' has a recount pending.')
             
             if all_closed and no_recounts:
                 self.status = 'AFT'
@@ -77,7 +95,7 @@ class Election(models.Model):
         else:
             self.status = 'BEF'
         
-        return bad_ridings
+        return (bad_ridings, other_errors,)
     
     def archive(self):
         """ Archive an election """

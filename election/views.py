@@ -141,10 +141,13 @@ def login(request, redirect_field_name=REDIRECT_FIELD_NAME, **kwargs):
 @user_passes_test(define_view_permissions(['ADMIN'],['BEF','DUR','AFT','ARC']))
 def change_election_status(request):
     election = Election.objects.all()[0]
-    errors=election.changeStatus()
-    if errors:
-        for (k,v) in errors.iteritems():
-            messages.error(request, "Riding " + k.name + v)            
+    (riding_errors, errors)=election.change_status()
+    if errors or riding_errors:
+        for (k,v) in riding_errors.iteritems():
+            for i in v:
+                messages.error(request, "Riding " + k.name + i)
+        for v in errors:
+            messages.error(request, v)            
         return HttpResponseRedirect(reverse('election.views.admin_homepage'))
     else:
         election.save()
