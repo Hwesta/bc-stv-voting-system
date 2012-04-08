@@ -1,6 +1,7 @@
 import urlparse
 import json
 from itertools import chain
+from datetime import date
 from droop.election import Election as DroopElection
 from droop.profile import ElectionProfile as DroopElectionProfile
 from droop.profile import ElectionProfileError as DroopElectionProfileError
@@ -8,6 +9,7 @@ from droop.profile import ElectionProfileError as DroopElectionProfileError
 from election.rules import BCSTVRule
 # Django
 from django.conf import settings
+from django.core import management
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
@@ -419,17 +421,53 @@ def calc_all_winners(request):
 		})
 
 def save_db(request):
-	election = Election.objects.all()[0]
-	election_action = 'TODO: NEXT ELECTION STATE (presently '+election.status+')'
-	messages.info(request, "save DB")
-	return render(request, 'election/admin_homepage.html',{
-		'election_action': election_action,
-		})
+    election = Election.objects.all()[0]
+    election_action = 'GOTO: Next Election State (Current State:  '+election.status+')'
+    if election.status=='BEF':
+        election_action = 'Start election'
+    elif election.status=='DUR':
+        election_action = 'End election'
+    elif election.status=='AFT':
+        election_action = 'Archive Election'
+    #TODO finish this
+    messages.info(request, "save DB")
+    #management.call_command('flush', verbosity=0, interactive=False)
+    #management.call_command('loaddata', 'test_data', verbosity=0)
+    return render(request, 'election/admin_homepage.html',{
+        'election_action': election_action,
+    })
 
 def reset_db(request):
-	election = Election.objects.all()[0]
-	election_action = 'TODO: NEXT ELECTION STATE (presently '+election.status+')'
-	messages.info(request,"reset DB")
-	return render(request, 'election/admin_homepage.html',{
-		'election_action': election_action,
-		})
+    election = Election.objects.all()[0]
+    election_action = 'GOTO: Next Election State (Current State:  '+election.status+')'
+    if election.status=='BEF':
+        election_action = 'Start election'
+    elif election.status=='DUR':
+        election_action = 'End election'
+    elif election.status=='AFT':
+        election_action = 'Archive Election'
+    # TODO finish this
+    messages.info(request,"reset DB")
+    management.call_command('reset', 'ballots', interactive=False)
+    print 'reset ballots'
+    management.call_command('reset', 'keywords', interactive=False)
+    print 'reset keywords'
+    management.call_command('reset', 'politicians', interactive=False)
+    print 'reset politicians'
+    election.status='BEF'
+    election.save()
+    print "election status reset"
+    return render(request, 'election/admin_homepage.html',{
+        'election_action': election_action,
+    })
+    
+def reset_db_full(request):
+    messages.info(request,"Database completely reset, new election started.  Default user: admin, password: admin")
+    management.call_command('flush', interactive=False)
+    #TODO change election to current date, election name to <date> election
+    election = Election.objects.all()[0]
+    election.start = date.today()
+    election.description = str(date.today())+" Election"
+    election.save()
+    return redirect(index)
+

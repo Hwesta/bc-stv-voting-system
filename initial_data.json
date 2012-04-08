@@ -1,0 +1,81 @@
+[
+  {
+    "pk": 1,
+    "model": "auth.group",
+    "fields": {
+      "name": "ADMIN",
+      "permissions": []
+    }
+  },
+  {
+    "pk": 2,
+    "model": "auth.group",
+    "fields": {
+      "name": "RO",
+      "permissions": []
+    }
+  },
+  {
+    "pk": 3,
+    "model": "auth.group",
+    "fields": {
+      "name": "EO",
+      "permissions": []
+    }
+  },
+  {
+    "pk": 4,
+    "model": "auth.group",
+    "fields": {
+      "name": "REP",
+      "permissions": []
+    }
+  },
+  {
+    "pk": 1,
+    "model": "auth.user",
+    "fields": {
+      "username": "root",
+      "first_name": "",
+      "last_name": "",
+      "is_active": true,
+      "is_superuser": true,
+      "is_staff": true,
+      "last_login": "2012-04-06 21:48:28",
+      "groups": [],
+      "user_permissions": [],
+      "password": "sha1$2fd75$7dd4332367c95eb0c16ae095a38abe7b29a2e980",
+      "email": "user@invalid.com",
+      "date_joined": "2012-03-16 02:12:29"
+    }
+  },
+  {
+    "pk": 5,
+    "model": "auth.user",
+    "fields": {
+      "username": "admin",
+      "first_name": "",
+      "last_name": "",
+      "is_active": true,
+      "is_superuser": false,
+      "is_staff": false,
+      "last_login": "2012-04-05 05:52:18",
+      "groups": [
+        1
+      ],
+      "user_permissions": [],
+      "password": "sha1$3a21a$3d8ffe8839c9f103469bae6d41282d042346e40d",
+      "email": "user@invalid.com",
+      "date_joined": "2012-04-05 05:52:18"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "election.election",
+    "fields": {
+      "status": "BEF",
+      "start": "2012-03-16",
+      "description": ""
+    }
+  }
+]

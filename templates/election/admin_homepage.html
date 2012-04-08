@@ -11,7 +11,9 @@
     {% comment %}<li><a href="{% url election.views.set_location %}">Set Location</a></li>{% endcomment %}
 {% endif  %}
 
+{% if election.status != 'ARC' %}
     <li><a href="{% url election.views.change_election_status %}">{{ election_action }}</a></li>
+{% endif %}
 
 {% if election.status == 'DUR' %}
     <li><a href="{% url election.views.start_recount %}">Start a Recount</a></li>
@@ -20,7 +22,8 @@
 
 {% if election.status = 'ARC' %}
     <li><a href="{% url election.views.save_db %}">Save copy of the election.</a></li>
-    <li><a href="{% url election.views.reset_db %}">Reset database, start new election.</a></li>
+    <li><a href="{% url election.views.reset_db %}">Reset database, start new election, keep riding/user info.</a></li>
+    <li><a href="{% url election.views.reset_db_full %}">Reset entire database, start new election.</a></li>
 {% endif %}
 </ul>
 
