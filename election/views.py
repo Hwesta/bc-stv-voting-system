@@ -115,8 +115,7 @@ def login(request, redirect_field_name=REDIRECT_FIELD_NAME, **kwargs):
                                **kwargs)
 	auth_login(request, user)
 
-	messages.add_message(request, messages.INFO,
-                        'You are now logged in as %s on %s' % (user.get_full_name(), ip))
+	messages.add_message(request, messages.INFO, 'You are now logged in as %s on %s' % (user.get_full_name(), ip))
 
 	netloc = urlparse.urlparse(redirect_to)[1]
 
