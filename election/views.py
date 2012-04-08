@@ -1,5 +1,6 @@
 import urlparse
 import json
+import zipfile
 from itertools import chain
 from datetime import date
 from droop.election import Election as DroopElection
@@ -11,7 +12,7 @@ from election.rules import BCSTVRule
 from django.conf import settings
 from django.core import management
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
@@ -414,20 +415,12 @@ def calc_all_winners(request):
         })
 
 def save_db(request):
-    election = Election.objects.all()[0]
-    election_action = 'GOTO: Next Election State (Current State:  '+election.status+')'
-    if election.status=='BEF':
-        election_action = 'Start election'
-    elif election.status=='DUR':
-        election_action = 'End election'
-    elif election.status=='AFT':
-        election_action = 'Archive Election'
-    #TODO finish this
-    messages.info(request, "save DB")
-    #management.call_command('flush', verbosity=0, interactive=False)
-    #management.call_command('loaddata', 'test_data', verbosity=0)
+    # These are inside the function because they are quite large, and we want to
+    # keep them in local scope, not global
     from StringIO import StringIO
     from settings import TABLE_DUMP_ORDER
+
+    # Generate the dumpdata and save as strings in exports
     exports = []
     for tl in TABLE_DUMP_ORDER:
         buf = StringIO()
@@ -435,9 +428,22 @@ def save_db(request):
         buf.seek(0)
         exports.append(buf.read())
     # exports now contains each of the JSON blobs to import, in THAT exact order.
-    return render(request, 'election/admin_homepage.html',{
-        'election_action': election_action,
-    })
+
+    # from https://code.djangoproject.com/wiki/CookBookDynamicZip
+    response = HttpResponse(mimetype='application/zip')
+    response['Content-Disposition'] = 'filename=election.zip'
+    #now add them to a zip file. note the zip only exist in memory as you add to it
+    buffer = StringIO()
+    electionzip = zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED)
+    for index, election_data in enumerate(exports):
+        electionzip.writestr("election_data_%03d.json" % (index,), election_data)
+    electionzip.close()
+    buffer.flush()
+    #the import detail--we return the content of the buffer
+    ret_zip = buffer.getvalue()
+    buffer.close()
+    response.write(ret_zip)
+    return response
 
 def reset_db(request):
     election = Election.objects.all()[0]
