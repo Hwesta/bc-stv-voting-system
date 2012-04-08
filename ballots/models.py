@@ -121,10 +121,10 @@ class BallotForm(ModelForm):
         hidden = ('vote')
 
 class ChoosePollForm(forms.Form):
-    poll = forms.ModelChoiceField(Poll.objects.all())
+    poll = forms.ModelChoiceField(Poll.objects.filter(delete=False).filter(riding__delete=False))
 
 class ChooseRidingToVerifyForm(forms.Form):
-    riding = forms.ModelChoiceField(Riding.objects.all())
+    riding = forms.ModelChoiceField(Riding.objects.filter(delete=False))
 
 class AcceptBallotForm(forms.Form):
     ballot = forms.ModelChoiceField(Ballot.objects.all())
