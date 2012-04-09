@@ -90,7 +90,7 @@ def admin_homepage(request):
 @never_cache
 def logout_user(request):
     logout(request)
-    # TODO display message telling user they're logged out
+    messages.success(request, "You have been logged out.")
     return HttpResponseRedirect(reverse(index))
 
 @csrf_protect
