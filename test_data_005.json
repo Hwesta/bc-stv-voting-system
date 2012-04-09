@@ -5,7 +5,8 @@
     "fields": {
       "status": "BEF",
       "start": "2012-03-16",
-      "description": "Test Election"
+      "description": "Test Election",
+      "recount_threshold": 0.01
     }
   },
   {
