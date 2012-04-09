@@ -81,9 +81,6 @@ def admin_homepage(request):
         election_action = 'End election'
     elif election.status=='AFT':
         election_action = 'Archive Election'
-    #TODO: Do something better with this. Should it start a new election?
-    else:#archive
-        election_action = 'Archive Election'
     return render(request, 'election/admin_homepage.html',{
         'election_action': election_action,
         })
