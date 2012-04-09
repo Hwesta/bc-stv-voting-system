@@ -2,6 +2,11 @@
 
 {% block h1 %}Modify Politician{% endblock %}
 
+{% block subbreadcrumbs %}
+<li><a href="{% url politicians.views.view_all_politicians %}">Politician Management</a></li>
+<li>Modify Politician</li>
+{% endblock %}
+
 {% block content %}
 <form action="{% url politicians.views.modify_politician politician.id %}" method="post">{% csrf_token %}
 {{ form.as_p }}
