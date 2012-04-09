@@ -329,7 +329,7 @@ class Riding(models.Model):
 
         # candidates in droop order
         for key, candidate in c2.iteritems():
-            data = data + "\"" + str(candidate) + "\"\n"
+            data = data + "\"" + unicode(candidate) + "\"\n"
         # Name of election
         data = data + "\"" + r.name + " Results\""
         # End of BLT generation
@@ -381,8 +381,7 @@ class Poll(models.Model):
 
     def __unicode__(self):
         poll_num = int(-1 if self.poll_num is None else self.poll_num)
-        return "%s, #%d" % (str(self.riding), poll_num)
-        #return str(self.riding)+", "+str(self.polling_stn)+"
+        return "%s, #%d" % (unicode(self.riding), poll_num)
 
     def close(self):
         # riding poll belongs to

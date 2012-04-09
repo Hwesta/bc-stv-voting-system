@@ -20,9 +20,9 @@ class Politician(models.Model):
     def __unicode__(self):
         display=self.name
         if self.candidate_riding != None:
-            display+=", candidate in "+str(self.candidate_riding)
+            display+=", candidate in "+unicode(self.candidate_riding)
         if self.incumbent_riding != None:
-            display+=", incumbent in "+str(self.incumbent_riding)
+            display+=", incumbent in "+unicode(self.incumbent_riding)
         return display
 
 

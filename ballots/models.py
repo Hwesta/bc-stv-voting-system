@@ -35,7 +35,7 @@ class Ballot(models.Model):
     
 
     def __unicode__(self):
-        return str(self.ballot_num)+", "+str(self.state)+", "+str(self.vote)
+        return unicode(self.ballot_num)+", "+unicode(self.state)+", "+unicode(self.vote)
 
     def candidates_as_string(self):
         nice_string=[]

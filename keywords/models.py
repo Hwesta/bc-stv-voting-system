@@ -21,7 +21,7 @@ class RidingKeywordValue(models.Model):
     value = models.CharField(max_length=128, db_index=True)
 
     def __unicode__(self):
-        return str(self.keyword)+" "+str(self.riding)+" "+self.value
+        return unicode(self.keyword)+" "+unicode(self.riding)+" "+self.value
     class Meta:
         unique_together = (('riding','keyword'))
 
@@ -42,7 +42,7 @@ class PoliticianKeywordValue(models.Model):
     value = models.CharField(max_length=128, db_index=True)
 
     def __unicode__(self):
-        return str(self.keyword)+" "+str(self.politician)+" "+self.value
+        return unicode(self.keyword)+" "+unicode(self.politician)+" "+self.value
     class Meta:
         unique_together = (('politician','keyword'))
 
