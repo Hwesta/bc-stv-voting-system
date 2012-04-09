@@ -142,11 +142,13 @@ class IPAddressModelField(models.IPAddressField):
 
 class Range(models.Model):
     user = models.ForeignKey(User, related_name='+')
-    lower = IPAddressModelField(db_index=True, unique=True)
+    lower = IPAddressModelField(db_index=True)
     upper = IPAddressModelField(db_index=True, blank=True, null=True)
+    class Meta:
+        unique_together = (('user', 'lower', ),)
     
     def clean(self):
-        others = Range.objects.exclude(pk=self.pk)
+        others = Range.objects.exclude(pk=self.pk).filter(user=self.user)
         
         if others.filter(lower__lt=self.lower, 
                          upper__gte=self.lower).count() > 0:
