@@ -11,7 +11,7 @@
 
 <form method="post" action="{% url 'login' %}">
 {% csrf_token %}
-<table>
+<table class="minor_th">
 <tr>
     <td>{{ form.username.label_tag }}</td>
     <td>{{ form.username }}</td>
