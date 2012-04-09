@@ -156,15 +156,17 @@ def input_ballot_tiebreaker(request, old_ballot_num):
             new_ballot = form.save(commit=False)
             new_ballot.entered_by = request.user
             new_ballot.state='C'
+            
+            modified_request=request
+            modified_request.method="GET"
+
+            poll_id = new_ballot.poll.id
             try:
                 new_ballot.save(current_ro=request.user)
             except IntegrityError as e:
                 messages.error(request, str(e))
-                # FIXME: Undefined variables: modified_request, poll_id
                 return input_ballot(modified_request, poll_id)
             messages.success(request, "Added tie-break ballot for ballot number "+old_ballot_num)
-            #return verify_riding(request, poll.riding.id)
-            #return HttpResponseRedirect(reverse(verify_riding, args=(poll.riding.id,)))
         else:
             messages.error(request, "Failed to add tie-break ballot for ballot number "+old_ballot_num)
     else:
