@@ -25,8 +25,15 @@ class Politician_Add_Form(ModelForm):
     class Meta:
         model = Politician
         exclude = ('delete',)
+    def __init__(self, *args, **kwargs):
+        super(Politician_Add_Form, self).__init__(*args, **kwargs)
+        self.fields['candidate_riding'].queryset = Riding.objects.filter(delete=False)
+        self.fields['incumbent_riding'].queryset = Riding.objects.filter(delete=False)
 
 class Politician_Modify_Form(ModelForm):
     class Meta:
         model = Politician
-
+    def __init__(self, *args, **kwargs):
+        super(Politician_Modify_Form, self).__init__(*args, **kwargs)
+        self.fields['candidate_riding'].queryset = Riding.objects.filter(delete=False)
+        self.fields['incumbent_riding'].queryset = Riding.objects.filter(delete=False)

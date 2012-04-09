@@ -64,8 +64,6 @@ def add_politician(request):
             return HttpResponseRedirect(reverse(add_politician_keyword, args=[Politician.objects.all().count()]))
     else:
         form = Politician_Add_Form()
-        form.fields['candidate_riding'].queryset = Riding.objects.filter(delete=False)
-        form.fields['incumbent_riding'].queryset = Riding.objects.filter(delete=False)
     return render(request, 'politicians/add_politician.html', { 'form':form})
     
 @user_passes_test(define_view_permissions(['EO'],['BEF']))
@@ -99,6 +97,4 @@ def modify_politician(request, p_id):
                 return HttpResponseRedirect(reverse(view_politician, args=[p_id]))
     else:
         form = Politician_Modify_Form(instance=politician)
-        form.fields['candidate_riding'].queryset = Riding.objects.filter(delete=False)
-        form.fields['incumbent_riding'].queryset = Riding.objects.filter(delete=False)
     return render(request, 'politicians/modify_politician.html', { 'form':form, 'politician':politician })
