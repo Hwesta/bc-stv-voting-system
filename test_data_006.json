@@ -1,33 +1,33 @@
 [
   {
-    "pk": 1, 
-    "model": "keywords.politiciankeywordlist", 
+    "pk": 1,
+    "model": "keywords.politiciankeywordlist",
     "fields": {
-      "name": "Height", 
+      "name": "Height",
       "delete": false
     }
-  }, 
+  },
   {
-    "pk": 2, 
-    "model": "keywords.politiciankeywordlist", 
+    "pk": 2,
+    "model": "keywords.politiciankeywordlist",
     "fields": {
-      "name": "Age", 
+      "name": "Age",
       "delete": false
     }
-  }, 
+  },
   {
-    "pk": 1, 
-    "model": "keywords.ridingkeywordlist", 
+    "pk": 1,
+    "model": "keywords.ridingkeywordlist",
     "fields": {
-      "name": "Area", 
+      "name": "Area",
       "delete": false
     }
-  }, 
+  },
   {
-    "pk": 2, 
-    "model": "keywords.ridingkeywordlist", 
+    "pk": 2,
+    "model": "keywords.ridingkeywordlist",
     "fields": {
-      "name": "Population", 
+      "name": "Population",
       "delete": false
     }
   }

@@ -1,33 +1,33 @@
 [
   {
-    "pk": 1, 
-    "model": "auth.group", 
+    "pk": 1,
+    "model": "auth.group",
     "fields": {
-      "name": "ADMIN", 
+      "name": "ADMIN",
       "permissions": []
     }
-  }, 
+  },
   {
-    "pk": 2, 
-    "model": "auth.group", 
+    "pk": 2,
+    "model": "auth.group",
     "fields": {
-      "name": "RO", 
+      "name": "RO",
       "permissions": []
     }
-  }, 
+  },
   {
-    "pk": 3, 
-    "model": "auth.group", 
+    "pk": 3,
+    "model": "auth.group",
     "fields": {
-      "name": "EO", 
+      "name": "EO",
       "permissions": []
     }
-  }, 
+  },
   {
-    "pk": 4, 
-    "model": "auth.group", 
+    "pk": 4,
+    "model": "auth.group",
     "fields": {
-      "name": "REP", 
+      "name": "REP",
       "permissions": []
     }
   }

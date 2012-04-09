@@ -1,133 +1,155 @@
 [
   {
-    "pk": 1, 
-    "model": "ridings.poll", 
+    "pk": 1,
+    "model": "ridings.poll",
     "fields": {
-      "active": false, 
-      "riding": 1, 
-      "poll_num": 10001, 
-      "polling_stn": "1", 
+      "active": true,
+      "riding": 1,
+      "poll_num": 10001,
+      "polling_stn": "1",
       "delete": false
     }
-  }, 
+  },
   {
-    "pk": 2, 
-    "model": "ridings.poll", 
+    "pk": 2,
+    "model": "ridings.poll",
     "fields": {
-      "active": false, 
-      "riding": 1, 
-      "poll_num": 10002, 
-      "polling_stn": "2", 
+      "active": true,
+      "riding": 1,
+      "poll_num": 10002,
+      "polling_stn": "2",
       "delete": false
     }
-  }, 
+  },
   {
-    "pk": 3, 
-    "model": "ridings.poll", 
+    "pk": 3,
+    "model": "ridings.poll",
     "fields": {
-      "active": false, 
-      "riding": 1, 
-      "poll_num": 10003, 
-      "polling_stn": "3", 
+      "active": true,
+      "riding": 1,
+      "poll_num": 10003,
+      "polling_stn": "3",
       "delete": false
     }
-  }, 
+  },
   {
-    "pk": 4, 
-    "model": "ridings.poll", 
+    "pk": 4,
+    "model": "ridings.poll",
     "fields": {
-      "active": false, 
-      "riding": 2, 
-      "poll_num": 20004, 
-      "polling_stn": "4", 
+      "active": true,
+      "riding": 2,
+      "poll_num": 20004,
+      "polling_stn": "4",
       "delete": false
     }
-  }, 
+  },
   {
-    "pk": 5, 
-    "model": "ridings.poll", 
+    "pk": 5,
+    "model": "ridings.poll",
     "fields": {
-      "active": false, 
-      "riding": 2, 
-      "poll_num": 20005, 
-      "polling_stn": "5", 
+      "active": true,
+      "riding": 2,
+      "poll_num": 20005,
+      "polling_stn": "5",
       "delete": false
     }
-  }, 
+  },
   {
-    "pk": 6, 
-    "model": "ridings.poll", 
+    "pk": 6,
+    "model": "ridings.poll",
     "fields": {
-      "active": false, 
-      "riding": 2, 
-      "poll_num": 20006, 
-      "polling_stn": "6", 
+      "active": true,
+      "riding": 2,
+      "poll_num": 20006,
+      "polling_stn": "6",
       "delete": false
     }
-  }, 
+  },
   {
-    "pk": 1, 
-    "model": "politicians.politician", 
+    "pk": 1,
+    "model": "politicians.politician",
     "fields": {
-      "party": "NDP", 
-      "delete": false, 
-      "name": "Bob", 
-      "incumbent_riding": null, 
+      "party": "NDP",
+      "delete": false,
+      "name": "Bob",
+      "incumbent_riding": null,
       "candidate_riding": 1
     }
-  }, 
+  },
   {
-    "pk": 2, 
-    "model": "politicians.politician", 
+    "pk": 2,
+    "model": "politicians.politician",
     "fields": {
-      "party": "Conservative", 
-      "delete": false, 
-      "name": "Jane", 
-      "incumbent_riding": 1, 
+      "party": "Conservative",
+      "delete": false,
+      "name": "Jane",
+      "incumbent_riding": 1,
       "candidate_riding": null
     }
-  }, 
+  },
   {
-    "pk": 3, 
-    "model": "politicians.politician", 
+    "pk": 3,
+    "model": "politicians.politician",
     "fields": {
-      "party": "Liberal", 
-      "delete": false, 
-      "name": "Alice", 
-      "incumbent_riding": 1, 
+      "party": "Liberal",
+      "delete": false,
+      "name": "Alice",
+      "incumbent_riding": 1,
       "candidate_riding": 2
     }
-  }, 
+  },
   {
-    "pk": 4, 
-    "model": "politicians.politician", 
+    "pk": 4,
+    "model": "politicians.politician",
     "fields": {
-      "party": "Liberal", 
-      "delete": false, 
-      "name": "Mary", 
-      "incumbent_riding": null, 
+      "party": "Liberal",
+      "delete": false,
+      "name": "Mary",
+      "incumbent_riding": null,
       "candidate_riding": 1
     }
-  }, 
+  },
   {
-    "pk": 5, 
-    "model": "politicians.politician", 
+    "pk": 5,
+    "model": "politicians.politician",
     "fields": {
-      "party": "Liberal", 
-      "delete": false, 
-      "name": "Ted", 
-      "incumbent_riding": 1, 
+      "party": "Liberal",
+      "delete": false,
+      "name": "Ted",
+      "incumbent_riding": 1,
       "candidate_riding": 2
     }
-  }, 
+  },
   {
-    "pk": 6, 
-    "model": "politicians.politician", 
+    "pk": 6,
+    "model": "politicians.politician",
     "fields": {
-      "party": "Liberal", 
-      "delete": false, 
-      "name": "Lorynne", 
-      "incumbent_riding": 2, 
+      "party": "Liberal",
+      "delete": false,
+      "name": "Lorynne",
+      "incumbent_riding": 2,
+      "candidate_riding": 1
+    }
+  },
+  {
+    "pk": 7,
+    "model": "politicians.politician",
+    "fields": {
+      "party": "NDP",
+      "delete": false,
+      "name": "Bill",
+      "incumbent_riding": null,
+      "candidate_riding": 1
+    }
+  },
+  {
+    "pk": 8,
+    "model": "politicians.politician",
+    "fields": {
+      "party": "Green",
+      "delete": false,
+      "name": "Yvonne",
+      "incumbent_riding": null,
       "candidate_riding": 1
     }
   }
