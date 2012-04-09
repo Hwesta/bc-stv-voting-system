@@ -18,7 +18,12 @@ class Politician(models.Model):
     delete = models.BooleanField(default=False, db_index=True)
 
     def __unicode__(self):
-        return self.name+", "+self.party+" candidate in "+str(self.candidate_riding)+" incumbent in "+str(self.incumbent_riding)
+        display=self.name
+        if self.candidate_riding != None:
+            display+=", candidate in "+str(self.candidate_riding)
+        if self.incumbent_riding != None:
+            display+=", incumbent in "+str(self.incumbent_riding)
+        return display
 
 
 class Politician_Add_Form(ModelForm):
