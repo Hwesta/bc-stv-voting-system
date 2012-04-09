@@ -17,8 +17,13 @@ class Election(models.Model):
     status = models.CharField(max_length=3, choices=STATUS_CHOICES, default='BEF')
     description = models.CharField(max_length=128, verbose_name="Name", help_text="For later identification")
     start = models.DateField(verbose_name="Date", help_text="Start date of the election.  Format: YYYY-MM-DD")
-    recount_threshold = models.DecimalField(max_digits=4, decimal_places=2,
-        verbose_name="Recount Threshold",
+    # recount_threshold = models.DecimalField(max_digits=4, decimal_places=2,
+        # verbose_name="Recount Threshold",
+        # help_text="Percentage (0.00% to 99.99%) of difference to initiate a recount atuomatically.",
+        # validators=[MinValueValidator(0.00),MaxValueValidator(99.99)],
+        # default=0.01)
+        
+    recount_threshold = models.FloatField(verbose_name="Recount Threshold",
         help_text="Percentage (0.00% to 99.99%) of difference to initiate a recount atuomatically.",
         validators=[MinValueValidator(0.00),MaxValueValidator(99.99)],
         default=0.01)
