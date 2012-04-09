@@ -1,37 +1,37 @@
 [
   {
-    "pk": 1,
-    "model": "election.election",
+    "pk": 1, 
+    "model": "election.election", 
     "fields": {
-      "status": "BEF",
-      "start": "2012-03-16",
-      "description": "Test Election",
+      "status": "BEF", 
+      "start": "2012-03-16", 
+      "description": "Test Election", 
       "recount_threshold": 0.01
     }
-  },
+  }, 
   {
-    "pk": 1,
-    "model": "ridings.riding",
+    "pk": 1, 
+    "model": "ridings.riding", 
     "fields": {
-      "num_voters": 12345,
-      "name": "Burnaby-New West",
-      "created": "2012-03-16",
-      "active": false,
-      "num_seats": 2,
-      "recount_needed": false,
+      "num_voters": 12345, 
+      "name": "Burnaby-New West", 
+      "created": "2012-03-16", 
+      "active": false, 
+      "num_seats": 2, 
+      "recount_needed": false, 
       "delete": false
     }
-  },
+  }, 
   {
-    "pk": 2,
-    "model": "ridings.riding",
+    "pk": 2, 
+    "model": "ridings.riding", 
     "fields": {
-      "num_voters": 2345,
-      "name": "Vancouver",
-      "created": "2012-03-16",
-      "active": false,
-      "num_seats": 1,
-      "recount_needed": false,
+      "num_voters": 2345, 
+      "name": "Vancouver", 
+      "created": "2012-03-16", 
+      "active": false, 
+      "num_seats": 1, 
+      "recount_needed": false, 
       "delete": false
     }
   }
