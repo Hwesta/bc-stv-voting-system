@@ -94,7 +94,21 @@ def modify_riding(request, r_id):
         form = Riding_Modify_Form(request.POST, instance=riding)
         if form.is_valid():
             form.save()
-            if (riding.delete == True):
+            if riding.delete == True:
+                # Remove now deleted riding from candidates and incumbents
+                # If they're no longer a candidate/incumbent, delete them
+                incumbents = riding.incumbents()
+                for i in incumbents.filter(candidate_riding=None):
+                    i.delete=True
+                    i.save()
+                incumbents.update(incumbent_riding=None)
+                        
+                # Remove riding from candidates, delete candidates that are not also incumbents
+                candidates = riding.candidates()
+                for c in candidates.filter(incumbent_riding=None):
+                    c.delete=True
+                    c.save()
+                candidates.update(candidate_riding=None)
                 return HttpResponseRedirect(reverse(view_all_ridings))
             else:
                 return HttpResponseRedirect(reverse(view_riding, args=(r_id,)))
