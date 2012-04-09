@@ -196,4 +196,6 @@ TABLE_DUMP_ORDER = [
     ['ballots.Ballot'], 
     ['keywords.RidingKeywordValue'],
     ['keywords.PoliticianKeywordValue'],
+    # External
+    ['ipauth.Range'],
 ]
