@@ -28,8 +28,16 @@
 <td><a href='{% url politicians.views.view_politician politician.id %}'>
 {{politician.name}}</a></td>
 <td>{{politician.party}}</td>
-<td>{{politician.incumbent_riding}}</td>
-<td>{{politician.candidate_riding}}</td>
+<td>{% if politician.incumbent_riding %}
+        <a href="{% url ridings.views.view_riding politician.incumbent_riding.id %}">{{politician.incumbent_riding}}</a>
+    {% else %}
+        {{politician.incumbent_riding}}
+    {% endif %}</td>
+<td>{% if politician.candidate_riding %}
+        <a href="{% url ridings.views.view_riding politician.candidate_riding.id %}">{{politician.candidate_riding}}</a>
+    {% else %}
+        {{politician.candidate_riding}}
+    {% endif %}</td>
 <td><a href='{% url politicians.views.modify_politician politician.id %}'>Modify</a></td>
 </tr>
 
