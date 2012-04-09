@@ -24,14 +24,6 @@ def view_all_ridings(request):
         'type': str('ridings')
         })
 
-@user_passes_test(define_view_permissions(['ADMIN'],[]))
-def view_deleted_ridings(request):
-    #""" View list of deleted ridings. """
-    # exclude ridings from above function
-    ridings = Riding.objects.filter(delete=True)
-    # render page
-    return render(request, 'ridings/deleted_ridings.html',{'ridings': ridings, 'type': str('ridings')})
-
 @user_passes_test(permissions_or(define_view_permissions(['EO'],['BEF','DUR','AFT']), define_view_permissions(['REP'],['DUR'])))
 def view_riding(request, r_id):
     #""" View all the details about a riding on one page. """

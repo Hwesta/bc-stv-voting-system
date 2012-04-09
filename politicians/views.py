@@ -55,15 +55,6 @@ def view_politicians(request, r_id):
      'r_id': r_id
     })
 
-@user_passes_test(define_view_permissions(['EO'],['BEF', 'DUR', 'AFT']))
-def view_deleted_politicians(request, r_id):
-    p = Politician.objects.all()
-    return render(request, 'politicians/deleted_politicians.html',
-        {'politicians': p,
-         'type':str("Deleted Politicians"),
-     'r_id': r_id
-         })
-
 @user_passes_test(define_view_permissions(['EO'],['BEF']))
 def add_politician(request):
     if request.method == 'POST':
