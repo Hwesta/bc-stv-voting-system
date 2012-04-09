@@ -19,12 +19,16 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'db.sqlite',                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        'ENGINE': 'sqlserver_ado', 
+        'NAME': 'your_db_here',  #Change me                
+        'USER': 'your_db_user_here', #Change me            
+        'PASSWORD': 'your_bd_password_here', #Change me    
+        'HOST': 'your_host_here', #Change me             
+        'PORT': 'your_port_here', #Change me               
+        'OPTIONS' : {
+            'provider': 'SQLOLEDB',
+            'use_mars': True,
+        },
     }
 }
 
