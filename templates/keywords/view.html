@@ -21,7 +21,7 @@
 {% for keyword in riding_keywords %}
 <tr>
 	<td>{{keyword.name}}</td>
-	<td><a href="{% url keywords.views.edit_riding_keyword keyword.id %}">Modify Keyword</a></td>
+	<td><a href="{% url keywords.views.edit_riding_keyword keyword.id %}">Modify or Delete</a></td>
 </tr>
 {% endfor %}
 </table>
@@ -33,7 +33,7 @@
 {% for keyword in politician_keywords %}
 <tr>
     <td>{{keyword.name}}</td>
-    <td><a href="{% url keywords.views.edit_politician_keyword keyword.id %}">Modify Keyword</a></td>
+    <td><a href="{% url keywords.views.edit_politician_keyword keyword.id %}">Modify or Delete</a></td>
 </tr>
 {% endfor %}
 </table>
