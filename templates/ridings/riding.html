@@ -75,7 +75,11 @@ document.write((v_t.toFixed(2)+"%"));
 {% if keywords %}
 <ul>
     {% for keyword in keywords %}
-    <li><a href="{% url keywords.views.edit_riding_keyword_value keyword.id %}">{{ keyword.keyword }}</a>: {{keyword.value}}</li>
+        {% if election.status == 'BEF' %}
+            <li><a href="{% url keywords.views.edit_riding_keyword_value keyword.id %}">{{ keyword.keyword }}</a>: {{keyword.value}}</li>
+        {% else %}
+            <li>{{ keyword.keyword }}: {{keyword.value}}</li>
+        {% endif %}
     {% endfor %}
 </ul>
 {% else %}
