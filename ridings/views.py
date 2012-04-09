@@ -78,9 +78,8 @@ def add_riding_keyword(request, r_id):
             return HttpResponseRedirect(reverse(view_riding, args=[r_id]))
     else:
         data = []
-        for i in range(RidingKeywordList.objects.all().count()):
-            if not RidingKeywordList.objects.get(id=i+1).delete:
-                data.append({'riding':r_id,'keyword':i+1})
+        for kw in RidingKeywordList.objects.filter(delete=False):
+            data.append({'riding':r_id, 'keyword':kw.id})
         formset = RidingKeywordValueFormSet(initial=data)
 
     return render(request,'keywords/addriding.html',{'formset':formset,'id':r_id})
