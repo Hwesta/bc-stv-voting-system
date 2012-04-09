@@ -7,7 +7,7 @@
 <ul>
 {% if election.status == 'BEF' %}
     <li><a href="{% url election.views.change_election %}">Change Election Information</a></li>
-    {% comment %}<li><a href="{% url election.views.set_location %}">Set Location</a></li>{% endcomment %}
+    <li><a href="{% url election.views.set_location %}">Set Location</a></li>
 {% endif  %}
 
 {% if election.status != 'ARC' %}
