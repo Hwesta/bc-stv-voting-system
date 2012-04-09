@@ -22,8 +22,8 @@
 
 {% if election.status = 'ARC' %}
     <li><a href="{% url election.views.save_db %}">Save copy of the election (zip)</a></li>
-    <li><a href="{% url election.views.reset_db %}">Reset database, start new election, keep riding/user info.</a></li>
-    <li><a href="{% url election.views.reset_db_full %}">Reset entire database, start new election.</a></li>
+    <li><a href="{% url election.views.reset_db %}">Start new election: keep riding, riding keyword, and user information</a></li>
+    <li><a href="{% url election.views.reset_db_full %}">Start new election: clear all data</a></li>
 {% endif %}
 </ul>
 

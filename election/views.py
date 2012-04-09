@@ -29,8 +29,7 @@ from ridings.models import Riding, Poll
 from ballots.models import Ballot
 from django.db.models import Count
 from politicians.models import Politician
-
-
+from keywords.models import PoliticianKeywordList, PoliticianKeywordValue
 
 # General
 
@@ -450,36 +449,28 @@ def save_db(request):
     return response
 
 def reset_db(request):
-    election = Election.objects.all()[0]
-    election_action = 'GOTO: Next Election State (Current State:  '+election.status+')'
-    if election.status=='BEF':
-        election_action = 'Start election'
-    elif election.status=='DUR':
-        election_action = 'End election'
-    elif election.status=='AFT':
-        election_action = 'Archive Election'
-    # TODO finish this
-    messages.info(request,"reset DB")
-    management.call_command('reset', 'ballots', interactive=False)
-    print 'reset ballots'
-    management.call_command('reset', 'keywords', interactive=False)
-    print 'reset keywords'
-    management.call_command('reset', 'politicians', interactive=False)
-    print 'reset politicians'
-    election.status='BEF'
-    election.save()
-    print "election status reset"
-    return render(request, 'election/admin_homepage.html',{
-        'election_action': election_action,
-    })
+    messages.success(request, "Ballots, incumbents, candidates, and associated keywords have been deleted.  New election has been started.")
+    Ballot.objects.all().delete()
+    PoliticianKeywordValue.objects.all().delete()
+    PoliticianKeywordList.objects.all().delete()
+    Politician.objects.all().delete()
+    # TODO change all winning candidates to incumbents
     
-def reset_db_full(request):
-    messages.info(request,"Database completely reset, new election started.  Default user: admin, password: admin")
-    management.call_command('flush', interactive=False)
-    #TODO change election to current date, election name to <date> election
     election = Election.objects.all()[0]
     election.start = date.today()
     election.description = str(date.today())+" Election"
+    election.status = 'BEF'
+    election.save()
+    return redirect(admin_homepage)
+    
+def reset_db_full(request):
+    messages.success(request,"Database completely reset, new election started.  Default user: admin, password: admin")
+    management.call_command('flush', interactive=False)
+
+    election = Election.objects.all()[0]
+    election.start = date.today()
+    election.description = str(date.today())+" Election"
+    election.status = 'BEF'
     election.save()
     return redirect(index)
 
