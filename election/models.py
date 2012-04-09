@@ -1,9 +1,11 @@
-from django.db import models
+# Django
 from django import forms
-from ridings.models import Riding, Poll
-from ballots.models import Ballot
+from django.db import models
 from django.forms import ModelForm
 from django.core.validators import MinValueValidator, MaxValueValidator
+# Election
+from ridings.models import Riding, Poll
+from ballots.models import Ballot
 
 STATUS_CHOICES = (
     ('BEF', 'before'),
@@ -101,7 +103,7 @@ class Election(models.Model):
             self.status = 'BEF'
         
         return (bad_ridings, other_errors,)
-    
+   
     def archive(self):
         """ Archive an election """
         # TODO
