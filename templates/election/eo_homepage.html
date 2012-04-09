@@ -4,7 +4,7 @@
 
 {% block content %}
 <ul>
-{% if election.status == 'DUR' or election.status == 'BEF' %}
+{% if election.status != 'ARC' %}
 	<li><a href="{% url ridings.views.view_all_ridings %}">Riding Management</a></li>
 	<li><a href="{% url politicians.views.view_all_politicians %}">Politician Management</a></li>
 {% endif %}
@@ -13,9 +13,6 @@
 {% endif %}
 {% if election.status == 'ARC' %}
    <li>The election is archived. Nothing can be changed.</li>
-{% endif %}
-{% if election.status == 'AFT' %}
-   <li>The election is completed. Nothing can be changed.</li>
 {% endif %}
 </ul>
 
