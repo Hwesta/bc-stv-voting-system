@@ -40,7 +40,7 @@ def view_riding(request, r_id):
     polls = riding.poll_range()
     incumbents = riding.incumbents().filter(delete=False)
     candidates =riding.candidates().filter(delete=False)
-    keywords = RidingKeywordValue.objects.filter(riding=riding)
+    keywords = RidingKeywordValue.objects.filter(riding=riding, keyword__delete=False)
     #these two lines give confirmed and distinct unverified # of ballots
     ballots = riding.ballots().filter(state='C').count()
     ballots = ballots + riding.ballots().filter(state='U').values('ballot_num').distinct().count()

@@ -48,27 +48,38 @@ document.write((v_t.toFixed(2)+"%"));
 </ul>
 
 <h2>Candidates</h2>
+
+{% if candidates %}
 <ul>
-{% for candidate in candidates %}
+    {% for candidate in candidates %}
     <li><a href="{% url politicians.views.view_politician candidate.id %}">{{ candidate.name }}</a> ({{ candidate.party }})</li>
-{% endfor %}
+    {% endfor %}
 </ul>
+{% else %}
+    <p>No candidates in this riding.</p>
+{% endif %}
+
 
 <h2>Incumbents</h2>
+{% if incumbents %}
 <ul>
-{% for incumbent in incumbents %}
+    {% for incumbent in incumbents %}
     <li><a href="{% url politicians.views.view_politician incumbent.id %}">{{ incumbent.name }}</a> ({{ incumbent.party }})</li>
-{% endfor %}
+    {% endfor %}
 </ul>
-
+{% else %}
+<p>No incumbents in this riding.</p>
+{% endif %}
 
 <h2>Keywords</h2>
+{% if keywords %}
 <ul>
-{% for keyword in keywords %}
-{% if not keyword.keyword.delete %}
-<li><a href="{% url keywords.views.edit_riding_keyword_value keyword.id %}">{{ keyword.keyword }}</a>: {{keyword.value}}</li>
-{% endif %}
-{% endfor %}
+    {% for keyword in keywords %}
+    <li><a href="{% url keywords.views.edit_riding_keyword_value keyword.id %}">{{ keyword.keyword }}</a>: {{keyword.value}}</li>
+    {% endfor %}
 </ul>
+{% else %}
+<p>No keywords for this riding.</p>
+{% endif %}
 
 {% endblock %}
