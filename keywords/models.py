@@ -70,12 +70,7 @@ class addPoliticianKeywordListForm(ModelForm):
 # RidingKeywordValue
 # TODO find out what the differences between all these are and combine them
 # so it's not so damn confusing
-class editRidingKeywordValueForm(ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(editRidingKeywordValueForm, self).__init__(*args, **kwargs)
-        self.fields['riding'].queryset = Riding.objects.filter(delete=False)
-        self.fields['keyword'].queryset = RidingKeywordList.objects.filter(delete=False)
-        
+class editRidingKeywordValueForm(ModelForm):        
     class Meta:
         model = RidingKeywordValue
         exclude = ('keyword','riding')
@@ -113,10 +108,6 @@ class addaRidingKeywordValueForm(ModelForm):
 # TODO find out what the differences between all these are and combine them
 # so it's not so damn confusing
 class editPoliticianKeywordValueForm(ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(editPoliticianKeywordValueForm, self).__init__(*args, **kwargs)
-        self.fields['politician'].queryset = Politician.objects.filter(delete=False)
-        self.fields['keyword'].queryset = PoliticianKeywordList.objects.filter(delete=False)
     class Meta:
         model = PoliticianKeywordValue
         exclude = ('keyword','politician')
