@@ -3,6 +3,8 @@
 {% block h1 %}Add {{name}} Keywords{% endblock %}
 
 {% block subbreadcrumbs %}
+<li><a href="{% url keywords.views.index %}">Keyword Management</a></li>
+<li>Assign {{name}} Keyword Values</li>
 {% endblock %}
 
 {% block content %}

@@ -140,7 +140,7 @@ def edit_riding_keyword_value(request, k_id):
             return HttpResponseRedirect(reverse(index))
     else:
         form = editRidingKeywordValueForm(instance=keyword)
-    return render(request, 'keywords/modifyridingkeywordvalue.html', {'form':form,'keyword':keyword})
+    return render(request, 'keywords/modifyridingkeywordvalue.html', {'form':form,'keyword':keyword, 'riding':keyword.riding})
 
 @user_passes_test(define_view_permissions(['EO'],['BEF']))
 def edit_politician_keyword(request, k_id):

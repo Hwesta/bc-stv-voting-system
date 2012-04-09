@@ -2,6 +2,11 @@
 
 {% block h1 %}Modify Riding Keyword{% endblock %}
 
+{% block subbreadcrumbs %}
+<li><a href="{% url keywords.views.index %}">Keyword Management</a></li>
+<li>Modify Riding Keyword</li>
+{% endblock %}
+
 {% block content %}
 <form action ="{% url keywords.views.edit_riding_keyword keyword.id %}" method ="post">{% csrf_token %}
 {{form.as_p}}
