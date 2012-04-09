@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-<form action="{% url election.views.change_election_status %}" method="post">{% csrf_token %}
+<form action="{% url election.views.change_election %}" method="post">{% csrf_token %}
 {{ form.as_p }}
 <input type="submit" value= "Submit">
 

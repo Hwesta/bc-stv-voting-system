@@ -171,10 +171,11 @@ def change_election(request):
         form = ElectionForm(request.POST, instance=election)
         if form.is_valid():
             form.save()
+            messages.success(request, "Election information successfully updated.")
             return HttpResponseRedirect(reverse(index))
     else:
         form = ElectionForm(instance=election)
-    return render(request, 'election/change_election_status.html', {'election':election, 'form' : form})
+    return render(request, 'election/change_election.html', {'election':election, 'form' : form})
 
 @user_passes_test(define_view_permissions(['ADMIN'],['BEF']))
 def set_location(request):
