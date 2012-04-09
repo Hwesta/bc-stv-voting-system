@@ -24,19 +24,19 @@ class Riding(models.Model):
 
     def candidates(self):
     #""" Return all the candidates in the riding. """
-        return self.candidate_riding.filter(candidate_riding__isnull=False)
+        return self.candidate_riding.filter(candidate_riding__isnull=False,delete=False)
 
     def num_candidates(self):
         """ Return the number of candidates in the riding. """
-        return self.candidates().filter(delete=False).count()
+        return self.candidates().count()
 
     def incumbents(self):
         """ Return all the incumbents in the riding. """
-        return self.incumbent_riding.filter(incumbent_riding__isnull=False)
+        return self.incumbent_riding.filter(incumbent_riding__isnull=False,delete=False)
 
     def num_incumbents(self):
         """ Return the number of incumbents in the riding. """
-        return self.incumbents().filter(delete=False).count()
+        return self.incumbents().count()
 
     def polls(self):
         """ Return all the polls in the riding. """
@@ -257,7 +257,7 @@ class Riding(models.Model):
             'auto_ballots': ballots_auto_approve, 
             'manual_ballots': ballots_manual_approve,
             }
-
+    
     # Private
     def _poll_minmaxcount(self):
         return self.poll_set.aggregate(maxpoll=Max('poll_num'),minpoll=Min('poll_num'),count=Count('id'))
