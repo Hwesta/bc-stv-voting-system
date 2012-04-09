@@ -276,7 +276,7 @@ class Poll(models.Model):
 
     def __unicode__(self):
         poll_num = int(-1 if self.poll_num is None else self.poll_num)
-        return "%s, #%d %s" % (str(self.riding), poll_num, self.polling_stn, )
+        return "%s, #%d" % (str(self.riding), poll_num)
         #return str(self.riding)+", "+str(self.polling_stn)+"
 
     def close(self):

@@ -17,14 +17,14 @@ from election.models import define_view_permissions, permissions_or, permissions
 @user_passes_test(permissions_or(define_view_permissions(['EO'],['BEF','DUR','AFT']), define_view_permissions(['REP'],['DUR'])))
 def view_all_politicians(request):
     t = "Politicians"
-    p = Politician.objects.all().filter(delete=False)
+    p = Politician.objects.filter(delete=False)
     return render(request, 'politicians/politicians.html',
             {'politicians': p, 'type':t})
 
 @user_passes_test(permissions_or(define_view_permissions(['EO'],['BEF','DUR','AFT']), define_view_permissions(['REP'],['DUR'])))
 def view_politician(request, p_id):
-    p = Politician.objects.get(id=p_id)
-    k = PoliticianKeywordValue.objects.filter(politician=p)
+    p = Politician.objects.get(id=p_id,delete=False)
+    k = PoliticianKeywordValue.objects.filter(politician=p, keyword__delete=False)
     return render(request, 'politicians/politician.html',
     {'politician': p,
      'keywords': k,

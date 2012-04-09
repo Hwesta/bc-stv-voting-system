@@ -31,6 +31,18 @@ h2 {
     font-size: 1.2em;
 }
 
+table {
+    border-bottom: 1px solid #000;
+}
+
+th {
+    border-bottom: 1px solid #000000;
+}
+
+td {
+    padding: 0px .5em;
+}
+
 /* Layout */
 #header {
     width: 99%;
@@ -68,7 +80,7 @@ h2 {
 #breadcrumbs li:before { content: "> "; }
 #breadcrumbs li:first-child:before { content: ""; }
 
-/* From CourSys stylesheets by Greg Baker et. al. */
+/* Base on code from CourSys stylesheets by Greg Baker et. al. */
 #actions {
   border: 1px solid #002B7F;
   float: right;
@@ -167,4 +179,12 @@ div#messages {
     display: block;
     padding-left: .5em;
 }
+
+/* Page specific styling */
+
+.minor_th {
+    border: none;
+}
+
+
 

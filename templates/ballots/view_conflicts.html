@@ -10,9 +10,9 @@
 
 {% if single_entry %}
 <h2>Ballots with problems: Single Entry</h2>
-<table>
+<table class="ballot_verification">
     <tr>
-        <th>Ballot Number</th>
+        <th>Ballot #</th>
         <th>Poll</th>
         <th>Vote Data</th>
         <th>Resolve</th>
@@ -32,14 +32,14 @@
     {% endfor %}
 </table>
 {% else %}
-	<h2>No ballots with problem: Single Entry</h2>
+	<h2>No ballots only entered once.</h2>
 {% endif %}
 
 {% if auto_ballots %}
 <h2>Ballots eligible for automatic verification</h2>
-<table>
+<table class="ballot_verification">
     <tr>
-        <th>Ballot Number</th>
+        <th>Ballot #</th>
         <th>Poll</th>
         <th>Vote Data</th>
         <th>Resolve</th>
@@ -64,9 +64,9 @@
 
 {% if manual_ballots %}
 <h2>Ballots requiring manual verification</h2>
-<table>
+<table class="ballot_verification">
     <tr>
-        <th>Ballot Number</th>
+        <th>Ballot #</th>
         <th>Poll</th>
         <th>Vote Data</th>
         <th>Resolve</th>
@@ -91,9 +91,9 @@
 
 {% if invalid_state_mix %}
 <h2>Ballots with problems: Invalid State Mix</h2>
-<table>
+<table class="ballot_verification">
     <tr>
-        <th>Ballot Number</th>
+        <th>Ballot #</th>
         <th>Poll</th>
         <th>Vote Data</th>
         <th>Resolve</th>
@@ -116,9 +116,9 @@
 
 {% if single_ro_only %}
 <h2>Ballots with problems: Single RO Only</h2>
-<table>
+<table class="ballot_verification">
     <tr>
-        <th>Ballot Number</th>
+        <th>Ballot #</th>
         <th>Poll</th>
         <th>Vote Data</th>
         <th>Resolve</th>
