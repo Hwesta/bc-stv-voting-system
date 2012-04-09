@@ -2,6 +2,12 @@
 
 {% block h1 %}{{riding.name}} Results{% endblock %}
 
+{% block subbreadcrumbs %}
+<li><a href="{% url ridings.views.view_all_ridings %}">Riding Management</a></li>
+<li><a href="{% url ridings.views.view_riding riding.id %}">View Riding {{riding.name}}</a></li>
+<li>Election Results</li>
+{% endblock %}
+
 {% block content %}
 <p>Number of Seats: {{riding.num_seats}}</p>
 <p>Number of Eligible Voters: {{riding.num_voters}}</p>

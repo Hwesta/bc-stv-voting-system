@@ -2,6 +2,11 @@
 
 {% block h1 %}Election Results{% endblock %}
 
+{% block subbreadcrumbs %}
+<li><a href="{% url ridings.views.view_all_ridings %}">Riding Management</a></li>
+<li>Election Results</li>
+{% endblock %}
+
 {% block content %}
 
 {% for data in results %}

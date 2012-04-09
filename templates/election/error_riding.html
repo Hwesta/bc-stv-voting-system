@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 
-{% block h1 %}Result Error{% endblock %}
+{% block h1 %}{{riding.name}} Result Error{% endblock %}
 
 {% block subbreadcrumbs %}
 <li><a href="{% url ridings.views.view_all_ridings %}">Riding Management</a></li>
+<li><a href="{% url ridings.views.view_riding riding.id %}">View Riding {{riding.name}}</a></li>
 <li>Result Calculation Error</li>
 {% endblock %}
 
@@ -12,6 +13,6 @@
 <p>{{error}}</p>
 
 
-<p><a href='{% url ridings.views.view_all_ridings %}'>Return to Riding Management</a></p>
+<p><a href='{% url ridings.views.view_riding riding.id %}'>Return to Riding</a></p>
 {% endblock %}
 

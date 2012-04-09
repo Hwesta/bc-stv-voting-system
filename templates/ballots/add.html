@@ -4,7 +4,7 @@
 
 {% block subbreadcrumbs %}
 <li><a href="{% url ballots.views.choose_poll %}">Choose Poll</a></li>
-<li>Enter Ballot for Poll {{ form.poll.value }}</li>{% endblock %}
+<li>Enter Ballot for Poll {{ poll.poll_num }}</li>{% endblock %}
 {% block content %}
 	    <script src="/static/jquery.js"></script>
 	    <script src="/static/json2.js"></script>

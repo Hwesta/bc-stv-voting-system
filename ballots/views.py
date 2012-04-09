@@ -135,6 +135,7 @@ def input_ballot(request, poll_id, *args, **kwargs):
     else:
         form = BallotForm(initial={'poll': poll_id, 'vote': 'invalid'})
     return render(request, 'ballots/add.html', {
+                'poll':poll,
                 'form':form,
                 'candidates':candidates,
             })
