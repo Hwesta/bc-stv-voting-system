@@ -3,7 +3,7 @@ from django.core import management
 from StringIO import StringIO
 import settings
 setup_environ(settings)
-import os
+import os, os.path
 for idx, tl in enumerate(settings.TABLE_DUMP_ORDER):
     output_file = "test_data_%03d.json" % (idx, )
     buf = StringIO()
@@ -14,5 +14,5 @@ for idx, tl in enumerate(settings.TABLE_DUMP_ORDER):
         buf.seek(0)
         f.write(buf.read())
         f.close()
-    else:
+    elif os.path.exists(output_file):
         os.unlink(output_file)
