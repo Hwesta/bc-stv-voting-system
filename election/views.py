@@ -260,7 +260,6 @@ def calc_winners(request, r_id):
                     fc_votes[int(_c)] += ballot['cnt']
                     first = False
 
-        print fc_votes
         # 0 to say no more candidates on ballot
         data = data + "0\n"
     # 0 to say no more ballots

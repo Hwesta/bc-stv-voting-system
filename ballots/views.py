@@ -64,10 +64,8 @@ def accept_ballot(request):
     riding_id = -1
     if request.method == 'POST':
         form = AcceptBallotForm(request.POST)
-        #print form.cleaned_data
         if form.is_valid():
             correct_ballot = form.cleaned_data['ballot']
-            #print "Saving ballot", correct_ballot
             ballot_num = correct_ballot.ballot_num
             correct_ballot.state='C'
             riding_id = correct_ballot.poll.riding.id
