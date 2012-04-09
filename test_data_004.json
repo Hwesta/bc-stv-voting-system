@@ -135,30 +135,30 @@
     }
   },
   {
-    "pk": 28,
+    "pk": 49,
     "model": "auth.permission",
     "fields": {
-      "codename": "add_ballot",
-      "name": "Can add ballot",
-      "content_type": 10
+      "codename": "add_poll",
+      "name": "Can add poll",
+      "content_type": 17
     }
   },
   {
-    "pk": 29,
+    "pk": 50,
     "model": "auth.permission",
     "fields": {
-      "codename": "change_ballot",
-      "name": "Can change ballot",
-      "content_type": 10
+      "codename": "change_poll",
+      "name": "Can change poll",
+      "content_type": 17
     }
   },
   {
-    "pk": 30,
+    "pk": 51,
     "model": "auth.permission",
     "fields": {
-      "codename": "delete_ballot",
-      "name": "Can delete ballot",
-      "content_type": 10
+      "codename": "delete_poll",
+      "name": "Can delete poll",
+      "content_type": 17
     }
   },
   {
@@ -243,6 +243,33 @@
     }
   },
   {
+    "pk": 34,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_ridingkeywordvalue",
+      "name": "Can add riding keyword value",
+      "content_type": 12
+    }
+  },
+  {
+    "pk": 35,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_ridingkeywordvalue",
+      "name": "Can change riding keyword value",
+      "content_type": 12
+    }
+  },
+  {
+    "pk": 36,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_ridingkeywordvalue",
+      "name": "Can delete riding keyword value",
+      "content_type": 12
+    }
+  },
+  {
     "pk": 37,
     "model": "auth.permission",
     "fields": {
@@ -270,30 +297,30 @@
     }
   },
   {
-    "pk": 40,
+    "pk": 28,
     "model": "auth.permission",
     "fields": {
-      "codename": "add_politiciankeywordvalue",
-      "name": "Can add politician keyword value",
-      "content_type": 14
+      "codename": "add_ballot",
+      "name": "Can add ballot",
+      "content_type": 10
     }
   },
   {
-    "pk": 41,
+    "pk": 29,
     "model": "auth.permission",
     "fields": {
-      "codename": "change_politiciankeywordvalue",
-      "name": "Can change politician keyword value",
-      "content_type": 14
+      "codename": "change_ballot",
+      "name": "Can change ballot",
+      "content_type": 10
     }
   },
   {
-    "pk": 42,
+    "pk": 30,
     "model": "auth.permission",
     "fields": {
-      "codename": "delete_politiciankeywordvalue",
-      "name": "Can delete politician keyword value",
-      "content_type": 14
+      "codename": "delete_ballot",
+      "name": "Can delete ballot",
+      "content_type": 10
     }
   },
   {
@@ -324,84 +351,30 @@
     }
   },
   {
-    "pk": 34,
+    "pk": 40,
     "model": "auth.permission",
     "fields": {
-      "codename": "add_ridingkeywordvalue",
-      "name": "Can add riding keyword value",
-      "content_type": 12
+      "codename": "add_politiciankeywordvalue",
+      "name": "Can add politician keyword value",
+      "content_type": 14
     }
   },
   {
-    "pk": 35,
+    "pk": 41,
     "model": "auth.permission",
     "fields": {
-      "codename": "change_ridingkeywordvalue",
-      "name": "Can change riding keyword value",
-      "content_type": 12
+      "codename": "change_politiciankeywordvalue",
+      "name": "Can change politician keyword value",
+      "content_type": 14
     }
   },
   {
-    "pk": 36,
+    "pk": 42,
     "model": "auth.permission",
     "fields": {
-      "codename": "delete_ridingkeywordvalue",
-      "name": "Can delete riding keyword value",
-      "content_type": 12
-    }
-  },
-  {
-    "pk": 43,
-    "model": "auth.permission",
-    "fields": {
-      "codename": "add_politician",
-      "name": "Can add politician",
-      "content_type": 15
-    }
-  },
-  {
-    "pk": 44,
-    "model": "auth.permission",
-    "fields": {
-      "codename": "change_politician",
-      "name": "Can change politician",
-      "content_type": 15
-    }
-  },
-  {
-    "pk": 45,
-    "model": "auth.permission",
-    "fields": {
-      "codename": "delete_politician",
-      "name": "Can delete politician",
-      "content_type": 15
-    }
-  },
-  {
-    "pk": 49,
-    "model": "auth.permission",
-    "fields": {
-      "codename": "add_poll",
-      "name": "Can add poll",
-      "content_type": 17
-    }
-  },
-  {
-    "pk": 50,
-    "model": "auth.permission",
-    "fields": {
-      "codename": "change_poll",
-      "name": "Can change poll",
-      "content_type": 17
-    }
-  },
-  {
-    "pk": 51,
-    "model": "auth.permission",
-    "fields": {
-      "codename": "delete_poll",
-      "name": "Can delete poll",
-      "content_type": 17
+      "codename": "delete_politiciankeywordvalue",
+      "name": "Can delete politician keyword value",
+      "content_type": 14
     }
   },
   {
@@ -429,6 +402,33 @@
       "codename": "delete_riding",
       "name": "Can delete riding",
       "content_type": 16
+    }
+  },
+  {
+    "pk": 43,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "add_politician",
+      "name": "Can add politician",
+      "content_type": 15
+    }
+  },
+  {
+    "pk": 44,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "change_politician",
+      "name": "Can change politician",
+      "content_type": 15
+    }
+  },
+  {
+    "pk": 45,
+    "model": "auth.permission",
+    "fields": {
+      "codename": "delete_politician",
+      "name": "Can delete politician",
+      "content_type": 15
     }
   },
   {
