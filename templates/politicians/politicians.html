@@ -18,7 +18,9 @@
 <th>Party</th>
 <th>Incumbent in:</th>
 <th>Candidate in:</th>
+{% if election.status == 'BEF' %}
 <th>Modify</th>
+{% endif %}
 </tr>
 
 
@@ -38,7 +40,9 @@
     {% else %}
         {{politician.candidate_riding}}
     {% endif %}</td>
+{% if election.status == 'BEF' %}
 <td><a href='{% url politicians.views.modify_politician politician.id %}'>Modify or Delete</a></td>
+{% endif %}
 </tr>
 
 {% endfor %}
