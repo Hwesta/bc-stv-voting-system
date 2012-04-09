@@ -25,12 +25,19 @@ class ModifyUserForm(UserChangeForm):
 
     class Meta:
         model = User
-        exclude = ('first_name', 'last_name', 'user_permissions', 'email', 'is_staff', 'is_active', 'is_superuser', 'password', 'last_login', 'date_joined')
+        exclude = ('first_name', 'last_name', 'user_permissions', 'email', 'is_staff', 'is_superuser', 'password', 'last_login', 'date_joined')
     
     def __init__(self, *args, **kwargs):
         super(ModifyUserForm, self).__init__(*args, **kwargs)
         # Hide long message about permissions
         self.fields['groups'].help_text = "Select exactly one group"
+        self.fields['is_active'].help_text = "Uncheck this to ban/delete a user."
+        self.fields.keyOrder = [
+            'username',
+            'groups',
+            'password1',
+            'password2',
+            'is_active']
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1", "")

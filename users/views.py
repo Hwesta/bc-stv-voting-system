@@ -10,7 +10,7 @@ from election.models import define_view_permissions, permission_always
 @user_passes_test(define_view_permissions(set(['ADMIN']),set(['BEF','DUR','AFT'])))
 def index(request):
     """ View summary information about all users. """
-    users = User.objects.filter(is_staff=False)
+    users = User.objects.filter(is_staff=False, is_active=True).order_by('username')
     return render(request, 'users/view_all_users.html',
         { 'users': users })
 

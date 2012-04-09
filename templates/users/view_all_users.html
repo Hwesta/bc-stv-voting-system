@@ -15,15 +15,11 @@
     <tr>
         <th>User</th>
         <th>Modify</th>
-        <th>Ban</th>
-        <th>Delete</th>
     </tr>
 {% for user in users %}
     <tr>
         <td>{{ user }}</td>
-        <td><a href="{% url users.views.modify_user user.id %}">Modify</a></td>
-        <td><a href="{% url users.views.ban_user user.id %}">Ban</a></td>
-        <td><a href="{% url users.views.delete_user user.id %}">Delete</a></td>
+        <td><a href="{% url users.views.modify_user user.id %}">Modify or Delete</a></td>
     </tr>
 {% endfor %}
 </table>
