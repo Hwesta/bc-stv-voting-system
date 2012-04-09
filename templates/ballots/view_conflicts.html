@@ -108,7 +108,7 @@
             {% else %}
                 {{ballot.candidates_as_string}}
         {% endif %}</td>
-        <td><a href="{% url ballots.views.input_ballot ballot.poll %}">Add Another</a></td>
+        <td><a href="{% url ballots.views.compare_ballot ballot.id %}">Add Another</a></td>
     </tr>
     {% endfor %}
 </table>
@@ -133,7 +133,7 @@
             {% else %}
                 {{ballot.candidates_as_string}}
         {% endif %}</td>
-            <td><a href="{% url ballots.views.input_ballot ballot.poll %}">Add Another</a></td>
+            <td><a href="{% url ballots.views.compare_ballot ballot.id %}">Add Another</a></td>
     </tr>
     {% endfor %}
 </table>
