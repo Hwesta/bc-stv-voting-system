@@ -9,9 +9,10 @@
 {% endblock %}
 
 {% block content %}
+<script src="/static/jquery.js"></script>
 <p>Number of Seats: {{riding.num_seats}}</p>
 <p>Number of Eligible Voters: {{riding.num_voters}}</p>
-<p>Poll Range: {{ polls }}</p>
+<p>Poll Range: {{ riding.poll_range }}</p>
 {% if election.status == 'DUR' %}
 <p>Number of Verified Ballots: {{numVotes}}</p>
 {% endif %}
@@ -36,25 +37,58 @@ document.write((v_t.toFixed(2)+"%"));
 <th>#First Choice Votes</th>
 <th>#Transferred Votes</th>
 </tr>
-{% for vote in winners %}
+{% for candidate, candidate_result in candidate_states.items %}
 <tr>
-<td>{{vote.0.name}}</td>
-<td>{{vote.0.party}}</td>
-<td align="center">{{vote.1.state}}</td>
-<td align="center">{{vote.2}}</td>
+<td>{{candidate.name}}</td>
+<td>{{candidate.party}}</td>
+<td align="center">{{candidate_result.droop_cstate.state}}</td>
+<td align="center">{{candidate_result.first_choice_votes}}</td>
 <td align="center"><script type="text/javascript">
-var fc_v = {{vote.2}}
-var droop_v = {{vote.1.vote}};
-if (fc_v >= droop_v)
-{
-    document.write(0);
+var fc_v = {{candidate_result.first_choice_votes}}
+var droop_v = {{candidate_result.droop_cstate.vote}};
+var v = droop_v;
+if (fc_v >= droop_v) {
+	v = 0;
 }
-else
-{
-    document.write(droop_v);
-}
+document.write(v);
 </script></td>
 {% endfor %}
 </table>
+
+<div>
+    <br />
+    <a onclick="$('.election-calc').toggle()">Show/Hide STV calculation</a>
+</div>
+<div class="election-calc" style="display: none">
+<h3>Election calculation</h3>
+<table>
+    <tr>
+        <th>Candidate</th>
+        <th>ID</th>
+        <th>STV Candidate #</th>
+    </tr>
+    {% for candidate, candidate_result in candidate_states.items %}
+    <tr>
+        <td>{{ candidate.name }}</td>
+        <td>{{ candidate_result.cand_id }}</td>
+        <td>{{ candidate_result.droop_id }}</td>
+    </tr>
+{% endfor %}
+</table>
+<table>
+    <tr>
+        {% for th in dumphtmlhead %}
+            <th>{{ th }}</th>
+        {% endfor %}
+    </tr>
+    {% for tr in dumphtml %}
+    <tr>
+        {% for td in tr %}
+            <td>{{ td }}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+</div>
 {% endblock %}
 

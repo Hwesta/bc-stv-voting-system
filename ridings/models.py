@@ -1,9 +1,19 @@
+# Json
+import json
+# Django
 from django import forms
-from django.db import models
-from django.forms import ModelForm
-from django.db.models import Count, Max, Min
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
+from django.db import models
+from django.db.models import Count, Max, Min
+from django.forms import ModelForm
+# Droop
+from droop.election import Election as DroopElection
+from droop.profile import ElectionProfile as DroopElectionProfile
+from droop.profile import ElectionProfileError as DroopElectionProfileError
+# This is our BCSTV rules for Droop
+from election.rules import BCSTVRule
+# Election
 
 
 MAX_POLLS_PER_RIDING = 10000
@@ -257,6 +267,101 @@ class Riding(models.Model):
             'auto_ballots': ballots_auto_approve, 
             'manual_ballots': ballots_manual_approve,
             }
+
+    def calc_winners(self):
+        # Import here to avoid loop in loading
+        from politicians.models import Politician
+        r = self
+        # All ballots for a riding
+        all_ballots = r.ballots()
+        # All ballots for the calculation
+        # TODO: Should this filtering move to the Riding class or Ballot class?
+        calculation_ballots = all_ballots.filter(state='C').filter(spoiled=False)
+        # All spoiled ballots
+        # TODO: Should this filtering move to the Riding class or Ballot class?
+        num_spoiled_ballots = r.num_spoiled_ballots()
+        # All candidates for the riding
+        c = self.candidates()
+        # Get distinct ballot contents and how many times they occured
+        b2 = calculation_ballots.values("vote").annotate(cnt=Count('vote'))
+        # Dictionary of (key=droop candidate ID, value=politician.id)
+        c2 = dict((i+1,v.id) for i, v in enumerate(list(c)))
+        # Dictionary of (key=politician.id, value=droop candidate ID)
+        c2b = dict((v,k) for k,v in c2.iteritems())
+        fc_votes = {}
+        for politician in c:
+            fc_votes[politician.id] = 0
+
+        # More sanity
+        if r.num_seats < 1:
+            raise DroopElectionProfileError("Too few Seats in " + r.name)
+        if r.num_candidates() < r.num_seats:
+            raise DroopElectionProfileError("Too few Candidates in " + r.name + ". " + str(r.num_seats) + " seats for " + str(r.num_candidates()) + " candidates.")
+        #check if the number of ballots is enough for BCSTV
+        if calculation_ballots.count() < (r.num_candidates() + 1):
+            raise DroopElectionProfileError("Too few ballots to calculate BCSTV")
+
+        # Start of BLT generation
+        # Number of candidates, Number of seats
+        data = str(c.count()) + " " + str(r.num_seats) + "\n"
+        # For each distinct ballot content
+        for ballot in b2:
+            # Count of timesro_home.html
+            data = data + str(ballot['cnt']) + " "
+            # Content of ballot
+            vote_line = json.loads(ballot['vote'])
+            first = True
+            for _i, _c in vote_line.iteritems():
+                # Of the droop ID numbers for the candidate
+                if _c == "":
+                    # If empty, skip (empty line on ballot)
+                    pass
+                else:
+                    data = data + str(c2b[int(_c)]) + " "
+                    if first:
+                        fc_votes[int(_c)] += ballot['cnt']
+                        first = False
+
+            # 0 to say no more candidates on ballot
+            data = data + "0\n"
+        # 0 to say no more ballots
+        data = data + "0\n"
+
+        # candidates in droop order
+        for key, candidate in c2.iteritems():
+            data = data + "\"" + str(candidate) + "\"\n"
+        # Name of election
+        data = data + "\"" + r.name + " Results\""
+        # End of BLT generation
+        try:
+            E = DroopElection(DroopElectionProfile(data=data.encode('ascii', 'ignore')), dict(rule='bcstv'))
+        except DroopElectionProfileError as e:
+            raise e
+
+        E.count()
+        result = E.record()
+        candidate_states = {}
+        for i in range(len(result['actions'][-1]['cstate'])):
+            temp = {}
+            k = result['cdict'][i+1]['name']
+            pol = Politician.objects.get(id = k)
+            temp['droop_cstate'] = result['actions'][-1]['cstate'][i+1]
+            temp['first_choice_votes'] = fc_votes[int(k)]
+            temp['droop_id'] = i
+            temp['cand_id'] = k
+            candidate_states[pol] = temp
+
+        return {
+                'E': E, 
+                'candidate_states': candidate_states, 
+                'result': result, 
+                'candidates': c,
+                'num_spoiled_ballots': num_spoiled_ballots,
+                'nballots': result['nballots'],
+                'riding': self,
+                }
+    
+
     
     # Private
     def _poll_minmaxcount(self):
