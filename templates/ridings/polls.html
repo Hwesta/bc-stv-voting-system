@@ -9,6 +9,7 @@
 <li>View Polls</li>
 {% endif %}
 {% if election.status == 'DUR' %}
+<li><a href="{% url ridings.views.choose_riding %}">Choose Riding</a></li>
 <li>View Polls</li>
 {% endif %}
 {% endblock %}
